@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace VierGewinnt
 {
     public partial class Form2 : Form
@@ -44,6 +45,10 @@ namespace VierGewinnt
             
 
             g.DrawEllipse(new Pen(Color.FromName("SlateBlue")), 10, 10, 10, 10);
+            g = this.CreateGraphics();
+            g.DrawLine(new Pen(new SolidBrush(Color.Black)),10, 10,10,10);
+            g.DrawEllipse(new Pen(new SolidBrush(Color.Black)), 1000, 1000, 30, 30);
+
         }
     }
 }
