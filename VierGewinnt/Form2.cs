@@ -12,6 +12,8 @@ namespace VierGewinnt
 {
     public partial class Form2 : Form
     {
+        Graphics g;
+
         public Form2()
         {
             InitializeComponent();
@@ -23,6 +25,8 @@ namespace VierGewinnt
             
             frm.Show();
             this.Hide();
+            this.Hide();
+            g.DrawEllipse(new Pen(Color.FromName("SlateBlue")),10,10,10,10);
 
         }
     }
