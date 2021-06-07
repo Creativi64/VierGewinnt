@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace VierGewinnt
 {
     public partial class Form1 : Form
@@ -21,9 +22,9 @@ namespace VierGewinnt
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Form1 frm = new Form1();
+            Form2 frm = new Form2();
             frm.Show();
-
+            this.Hide();
 
         }
     }
