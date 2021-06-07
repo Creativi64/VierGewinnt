@@ -7,17 +7,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Drawing;
 
 namespace VierGewinnt
 {
    
     public partial class Form1 : Form
     {
+        public bool Fullscreen;
        
         public Form1()
         {
             InitializeComponent();
+
+        
+
+            
 
         
 
@@ -28,7 +32,7 @@ namespace VierGewinnt
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            this.TopMost = true;
+            //this.TopMost = true;
             //this.FormBorderStyle = FormBorderStyle.None;
             //this.WindowState = FormWindowState.Maximized;
         }
@@ -39,6 +43,7 @@ namespace VierGewinnt
             frm.Show();
         }
 
+        }
         private void btn_Network_Click(object sender, EventArgs e)
         {
         }
@@ -54,14 +59,14 @@ namespace VierGewinnt
             {
                 this.FormBorderStyle = FormBorderStyle.FixedSingle;
                 this.WindowState = FormWindowState.Normal;
-
+                Fullscreen = false;
                 
             }
             else
             {
                 this.FormBorderStyle = FormBorderStyle.None;
                 this.WindowState = FormWindowState.Maximized;
-                
+                Fullscreen = true;
             }
             
         }
