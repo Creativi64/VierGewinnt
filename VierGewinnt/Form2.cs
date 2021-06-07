@@ -40,6 +40,9 @@ namespace VierGewinnt
 
         private void button2_Click(object sender, EventArgs e)
         {
+            
+            
+
             g.DrawEllipse(new Pen(Color.FromName("SlateBlue")), 10, 10, 10, 10);
         }
     }
