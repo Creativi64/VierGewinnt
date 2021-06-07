@@ -19,7 +19,7 @@ namespace VierGewinnt
         {
             InitializeComponent();
 
-        }
+        
 
             
 
@@ -37,6 +37,7 @@ namespace VierGewinnt
         {
             Form2 frm = new Form2();
             frm.Show();
+        }
 
         private void btn_Network_Click(object sender, EventArgs e)
         {
