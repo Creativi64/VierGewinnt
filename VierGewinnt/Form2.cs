@@ -14,10 +14,13 @@ namespace VierGewinnt
     {
         private int X, Y;
         private Graphics g;
-
+       
         public Form2(bool Fullscreen)
         {
+
             InitializeComponent();
+
+            g = this.CreateGraphics();
 
             if (Fullscreen == true)
             {
@@ -50,20 +53,21 @@ namespace VierGewinnt
         
         private void btn_Up_Click(object sender, EventArgs e)
         {
+            g.Clear(Form2.DefaultBackColor);
             Y += 100;
             Kreis(X, Y);
         }
 
         private void btn_down_Click(object sender, EventArgs e)
         {
-
+            g.Clear(Form2.DefaultBackColor);
             Y -= 100;
             Kreis(X, Y);
         }
         private void  Kreis(int X, int Y)
         {
             
-            g = this.CreateGraphics();
+            //g = this.CreateGraphics();
            
             //g.DrawEllipse(new Pen(Color.FromName("Red")), 100, 100, 100, 100);
 

@@ -115,7 +115,7 @@ namespace VierGewinnt
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MinimumSize = new System.Drawing.Size(810, 490);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "                      ";
             this.ResumeLayout(false);
             this.PerformLayout();
 
