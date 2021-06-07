@@ -12,22 +12,22 @@ namespace VierGewinnt
 {
     public partial class Form2 : Form
     {
-        public bool Fullscreen { get; private set; }
-        Graphics g;
+        private Graphics g;
 
-        public Form2()
+        public Form2(bool Fullscreen)
         {
             InitializeComponent();
 
-            this.Load += Form1_Load;
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            //this.TopMost = true;
-            
-            this.FormBorderStyle = FormBorderStyle.None;
-            this.WindowState = FormWindowState.Maximized;
+            if (Fullscreen == true)
+            {
+                this.FormBorderStyle = FormBorderStyle.None;
+                this.WindowState = FormWindowState.Maximized;
+            }
+            else
+            {
+                this.FormBorderStyle = FormBorderStyle.FixedSingle;
+                this.WindowState = FormWindowState.Normal;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -41,7 +41,6 @@ namespace VierGewinnt
         private void button2_Click(object sender, EventArgs e)
         {
             g.DrawEllipse(new Pen(Color.FromName("SlateBlue")), 10, 10, 10, 10);
-
         }
     }
 }

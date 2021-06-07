@@ -10,40 +10,31 @@ using System.Windows.Forms;
 
 namespace VierGewinnt
 {
-   
     public partial class Form1 : Form
     {
-        public bool Fullscreen;
-       
+        public bool Fullscreen { get; private set; }
+        
+
         public Form1()
         {
             InitializeComponent();
-
-        
-
-            
-
-        
-
-            
 
             this.Load += Form1_Load;
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //this.TopMost = true;
             //this.FormBorderStyle = FormBorderStyle.None;
             //this.WindowState = FormWindowState.Maximized;
         }
 
         private void btn_Play_Click(object sender, EventArgs e)
         {
-            Form2 frm = new Form2();
+            Form2 frm = new Form2(Fullscreen);
             frm.Show();
+            this.Hide();
         }
 
-        }
         private void btn_Network_Click(object sender, EventArgs e)
         {
         }
@@ -60,7 +51,6 @@ namespace VierGewinnt
                 this.FormBorderStyle = FormBorderStyle.FixedSingle;
                 this.WindowState = FormWindowState.Normal;
                 Fullscreen = false;
-                
             }
             else
             {
@@ -68,7 +58,6 @@ namespace VierGewinnt
                 this.WindowState = FormWindowState.Maximized;
                 Fullscreen = true;
             }
-            
         }
     }
 }
