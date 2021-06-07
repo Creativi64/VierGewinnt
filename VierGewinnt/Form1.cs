@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.VisualBasic.PowerPacks.Vs;
 
 namespace VierGewinnt
 {
@@ -15,6 +16,7 @@ namespace VierGewinnt
         public Form1()
         {
             InitializeComponent();
+            OvalShape os = new OvalShape();
         }
 
 
