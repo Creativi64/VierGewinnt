@@ -8,12 +8,16 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace VierGewinnt
 {
     public partial class Form2 : Form
     {
         public bool Fullscreen { get; private set; }
+
+        Bitmap image;
         Graphics g;
+
 
         public Form2()
         {
@@ -40,7 +44,9 @@ namespace VierGewinnt
 
         private void button2_Click(object sender, EventArgs e)
         {
-            g.DrawEllipse(new Pen(Color.FromName("SlateBlue")), 10, 10, 10, 10);
+            g = this.CreateGraphics();
+            g.DrawLine(new Pen(new SolidBrush(Color.Black)),10, 10,10,10);
+            g.DrawEllipse(new Pen(new SolidBrush(Color.Black)), 10, 10, 10, 10);
 
         }
     }

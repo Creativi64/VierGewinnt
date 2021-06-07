@@ -43,7 +43,7 @@ namespace VierGewinnt
             frm.Show();
         }
 
-        }
+        
         private void btn_Network_Click(object sender, EventArgs e)
         {
         }
