@@ -103,23 +103,34 @@ namespace VierGewinnt
             }
         }
 
+        protected override void OnClosed(EventArgs e)
+        {
+            MessageBox.Show("Spiel Beendet",
+                "Close Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            base.OnClosed(e);
+
+            Application.Exit();
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             Form1 frm = new Form1();
 
             frm.Show();
-            this.Hide();
+            this.Close();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            Console.WriteLine(  "asdasd");
+            Console.WriteLine(  "asdasd");
             X = 100;
             Y = 100;
             Kreis(X, Y);
 
 
 
-
+            
             
 
 
@@ -192,6 +203,7 @@ namespace VierGewinnt
                     Kreis(X, Y);
                     Thread.Sleep(25);
                 }
+
             }
             );
             animation.Start();
@@ -199,10 +211,6 @@ namespace VierGewinnt
 
         private void Kreis(int X, int Y)
         {
-            //g = this.CreateGraphics();
-
-            //g.DrawEllipse(new Pen(Color.FromName("Red")), 100, 100, 100, 100);
-
             Color farbe = Color.Goldenrod;
             using (SolidBrush pinsel = new SolidBrush(farbe))
             {
