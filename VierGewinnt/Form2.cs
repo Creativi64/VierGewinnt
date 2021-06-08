@@ -15,7 +15,7 @@ namespace VierGewinnt
 {
     public partial class Form2 : Form
     {
-        private struct Spielfeldtile
+        public struct Spielfeldtile
         {
             public int x, y, iwidth, iheight;
             public string farbe;
@@ -70,13 +70,21 @@ namespace VierGewinnt
                 // wird Aufgerufen wenn Das From Geladen Wurde
                 SpielfeldZeichnen();
             });
+            for (int x = 0; x < iSpielfeldwidth; x++)
+            {
+                for (int y = 0; y < iSpielfeldheight; y++)
+                {
+                    spielfelder[x,y].farbe = "white";
+                }
+            }
         }
+        public Spielfeldtile[,] spielfelder;
 
         private void SpielfeldZeichnen()
         {
             //erstellung des Spielfeldes
 
-            Spielfeldtile[,] spielfelder = new Spielfeldtile[iSpielfeldwidth, iSpielfeldheight];
+            spielfelder = new Spielfeldtile[iSpielfeldwidth, iSpielfeldheight];
 
             int ispielfeldformat;
             if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)
@@ -246,8 +254,26 @@ namespace VierGewinnt
             graphics.DrawRectangle(pen, -60, -30, 120, 60);
         }
 
+        public string 
         private void Form2_Click(object sender, EventArgs e)
         {
+            string currentcolor = "red";
+            if (this.PointToClient(Cursor.Position).X>spielfelder[0,0].x && this.PointToClient(Cursor.Position).X<spielfelder[iSpielfeldwidth-1, iSpielfeldheight-1].x+spielfelder[iSpielfeldwidth-1, iSpielfeldheight-1].iwidth       &&     this.PointToClient(Cursor.Position).Y > spielfelder[0, 0].y && this.PointToClient(Cursor.Position).Y < spielfelder[iSpielfeldwidth-1, iSpielfeldheight-1].y + spielfelder[iSpielfeldwidth-1, iSpielfeldheight-1].iheight)
+            {
+                int spalte;
+                spalte = (this.PointToClient(Cursor.Position).X - spielfelder[0, 0].x)/ spielfelder[0, 0].iwidth;
+                Console.WriteLine(spalte);
+                for (int i = iSpielfeldheight; i > 0; i--)
+                {
+                    if (spielfelder[i, spalte].farbe == "white")
+                    {
+                        i = 0;
+                        spielfelder[i, spalte].farbe = currentcolor;
+                    }
+                }
+
+            }
+
             Console.WriteLine(this.PointToClient(new Point(X, Y)));
         }
 
