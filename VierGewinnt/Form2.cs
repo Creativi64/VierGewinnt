@@ -15,6 +15,7 @@ namespace VierGewinnt
 {
     public partial class Form2 : Form
     {
+        string currentcolor;
         public struct Spielfeldtile
         {
             public int x, y, iwidth, iheight;
@@ -24,8 +25,8 @@ namespace VierGewinnt
         private int iSpielfeldheightpx;
         private int iSpielfeldwidthpx;
 
-        private int iSpielfeldheight = 10;
-        private int iSpielfeldwidth = 12;
+        private int iSpielfeldheight = 40;
+        private int iSpielfeldwidth = 62;
 
         private int X, Y;
 
@@ -82,13 +83,21 @@ namespace VierGewinnt
                         spielfelder[x, y].farbe = "white";
                     }
                 }
+                if((new Random()).Next(0, 2)==0)
+                {
+                    currentcolor = "red";
+                    Console.WriteLine("easgtfvsgb");
+                }
+                else
+                {
+                    currentcolor = "yellow";
+                }
             });
         }
 
         private void SpielfeldZeichnen()
         {
             //erstellung des Spielfeldes
-
             int ispielfeldformat;
             if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)
             {
@@ -109,8 +118,14 @@ namespace VierGewinnt
                     spielfelder[x, y].iheight = ispielfeldformat;
 
                     spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
+                    if (spielfelder[x, y].farbe != "white" && spielfelder[x, y].farbe != null)
+                    {
+                        Kreiszeichnen(x, y, spielfelder[x, y].farbe);
+
+                    }
                 }
             }
+
         }
 
         protected override void OnClosed(EventArgs e)
@@ -225,6 +240,7 @@ namespace VierGewinnt
 
         private void Form2_Paint(object sender, PaintEventArgs e)
         {
+            SpielfeldZeichnen();
         }
 
         private void button3_Click(object sender, PaintEventArgs e)
@@ -232,13 +248,13 @@ namespace VierGewinnt
             //spielfeldtilezeichnen(20, 20, 20, 20);
         }
 
-        private string currentcolor = "red";
+
 
         private void Form2_Click(object sender, EventArgs e)
         {
             if (this.PointToClient(Cursor.Position).X > spielfelder[0, 0].x && this.PointToClient(Cursor.Position).X < spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].x + spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].iwidth && this.PointToClient(Cursor.Position).Y > spielfelder[0, 0].y && this.PointToClient(Cursor.Position).Y < spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].y + spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].iheight)
             {
-                int spalte;
+                int spalte, reihe;
                 bool gesetzt = false;
                 spalte = (this.PointToClient(Cursor.Position).X - spielfelder[0, 0].x) / spielfelder[0, 0].iwidth;
                 for (int i = iSpielfeldheight - 1; i >= 0; i--)
@@ -248,10 +264,23 @@ namespace VierGewinnt
                         gesetzt = true;
                         spielfelder[spalte, i].farbe = currentcolor;
                         Kreiszeichnen(spalte, i, currentcolor);
-                        Console.WriteLine(currentcolor);
+                        reihe = i;
                         i = 0;
                     }
                 }
+
+                for (int x = 0; x < 5; x++)
+                {
+                    for (int y = 0; y < 5; y++)
+                    {
+
+                    }
+                }
+
+
+
+
+
                 if (gesetzt)
                 {
                     if (currentcolor == "red")
@@ -270,6 +299,9 @@ namespace VierGewinnt
 
         private void Kreiszeichnen(int X, int Y, string farbe)
         {
+            {
+                punkte.FillEllipse(new SolidBrush(Color.FromName(farbe)), spielfelder[0, 0].x + X* spielfelder[0, 0].iwidth+2, spielfelder[0, 0].y + Y * spielfelder[0, 0].iheight+2, spielfelder[0,0].iwidth-4, spielfelder[0, 0].iheight-4);
+            }
             Task animation1 = new Task(() =>
                 {
                     AimationFlag = true;
