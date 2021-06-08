@@ -22,8 +22,8 @@ namespace VierGewinnt
         int iSpielfeldheightpx = 200;
         int iSpielfeldwidthpx = 500;
 
-        int iSpielfeldheight = 20;
-        int iSpielfeldwidth = 37;
+        int iSpielfeldheight = 7;
+        int iSpielfeldwidth = 7;
 
         private int X, Y;
         private Graphics spielfeldgraphic;
@@ -52,6 +52,7 @@ namespace VierGewinnt
             {
                 SpielfeldZeichnen();
             });
+
         }
 
         private void SpielfeldZeichnen()
@@ -86,7 +87,10 @@ namespace VierGewinnt
 
         }
 
-        
+        private void mybutton_Click(object sender, EventArgs e)
+        {
+            
+        }
         protected override void OnClosed(EventArgs e)
         {
             MessageBox.Show("Spiel Beendet",
@@ -111,9 +115,6 @@ namespace VierGewinnt
             X = 100;
             Y = 100;
             Kreis(X, Y);
-
-            
-
         }
 
         private void spielfeldtilezeichnen(int x, int y, int iwidth, int iheight)
@@ -190,31 +191,17 @@ namespace VierGewinnt
 
         private void Form2_Paint(object sender, PaintEventArgs e)
         {
-            Spielfeldtile[,] spielfelder = new Spielfeldtile[iSpielfeldwidth, iSpielfeldheight];
+            SpielfeldZeichnen();
+        }
 
-            int ispielfeldformat;
-            if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)
-            {
-                ispielfeldformat = iSpielfeldheightpx / iSpielfeldheight;
-            }
-            else
-            {
-                ispielfeldformat = iSpielfeldwidthpx / iSpielfeldwidth;
-            }
+        private void button3_Click(object sender, EventArgs e)
+        {
+            spielfeldtilezeichnen(20, 20, 20, 20);
+        }
 
-
-            for (int x = 0; x < iSpielfeldwidth; x++)
-            {
-                for (int y = 0; y < iSpielfeldheight; y++)
-                {
-                    spielfelder[x, y].x = (this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2) + x * ispielfeldformat;
-                    spielfelder[x, y].y = (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2) + y * ispielfeldformat;
-                    spielfelder[x, y].iwidth = ispielfeldformat;
-                    spielfelder[x, y].iheight = ispielfeldformat;
-
-                    spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
-                }
-            }
+        private void Form2_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine(this.PointToClient(new Point(X, Y)));
         }
 
         private void Kreis(int X, int Y)
