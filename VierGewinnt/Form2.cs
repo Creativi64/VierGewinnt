@@ -13,14 +13,25 @@ namespace VierGewinnt
 {
     public partial class Form2 : Form
     {
+        struct Spielfeldtile
+        {
+            public int x, y, iwidth, iheight;
+            public string farbe;
+        }
+
+        int iSpielfeldheight = 6;
+        int iSpielfeldwidth = 7;
+
         private int X, Y;
-        private Graphics g;
+        private Graphics spielfeldgraphic;
 
         public Form2(bool Fullscreen)
         {
             InitializeComponent();
+            Console.WriteLine("test");
 
-            g = this.CreateGraphics();
+            
+            spielfeldgraphic = this.CreateGraphics();
 
             if (Fullscreen == true)
             {
@@ -31,6 +42,64 @@ namespace VierGewinnt
             {
                 this.FormBorderStyle = FormBorderStyle.FixedSingle;
                 this.WindowState = FormWindowState.Normal;
+            }
+
+            //erstellung des Spielfeldes
+            Spielfeldtile[,] spielfelder = new Spielfeldtile[iSpielfeldwidth, iSpielfeldheight];
+
+            int ispielfeldformat;
+            if(spielfeldpanel.Height/ iSpielfeldheight <= spielfeldpanel.Width/iSpielfeldwidth)
+            {
+                ispielfeldformat = spielfeldpanel.Height / iSpielfeldheight;
+            }
+            else
+            {
+                ispielfeldformat = spielfeldpanel.Width / iSpielfeldwidth;
+            }
+
+
+            for (int x = 0; x < iSpielfeldwidth; x++)
+            {
+                for (int y = 0; y < iSpielfeldheight; y++)
+                {
+                    spielfelder[x,y].x = spielfeldpanel.Location.X + x * ispielfeldformat;
+                    spielfelder[x,y].y = spielfeldpanel.Location.Y + y * ispielfeldformat;
+                    spielfelder[x, y].iwidth = ispielfeldformat;
+                    spielfelder[x, y].iheight = ispielfeldformat;
+
+                    spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
+                } 
+            }
+        }
+
+        private void AfterLoading(object sender, EventArgs e)
+        {
+            this.Activated -= AfterLoading;
+
+            Spielfeldtile[,] spielfelder = new Spielfeldtile[iSpielfeldwidth, iSpielfeldheight];
+
+            int ispielfeldformat;
+            if (spielfeldpanel.Height / iSpielfeldheight <= spielfeldpanel.Width / iSpielfeldwidth)
+            {
+                ispielfeldformat = spielfeldpanel.Height / iSpielfeldheight;
+            }
+            else
+            {
+                ispielfeldformat = spielfeldpanel.Width / iSpielfeldwidth;
+            }
+
+
+            for (int x = 0; x < iSpielfeldwidth; x++)
+            {
+                for (int y = 0; y < iSpielfeldheight; y++)
+                {
+                    spielfelder[x, y].x = spielfeldpanel.Location.X + x * ispielfeldformat;
+                    spielfelder[x, y].y = spielfeldpanel.Location.Y + y * ispielfeldformat;
+                    spielfelder[x, y].iwidth = ispielfeldformat;
+                    spielfelder[x, y].iheight = ispielfeldformat;
+
+                    spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
+                }
             }
         }
 
@@ -50,11 +119,15 @@ namespace VierGewinnt
 
 
 
-            
+
             
 
+
+
+
+
         }
-        private void spielfeldtileerstellung(int x, int y, int iwidth, int iheight)
+        private void spielfeldtilezeichnen(int x, int y, int iwidth, int iheight)
         {
             //int x = 50, y = 50, iwidth = 100, iheight = 100;
             double dDreieckkprozent = 0.3;
@@ -76,8 +149,8 @@ namespace VierGewinnt
             Dreieckspunkte[3, 2] = new PointF((x + iwidth), (float)(y + iheight - (iheight * dDreieckkprozent)));
 
 
-            g.DrawRectangle(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
-            g.DrawEllipse(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
+            spielfeldgraphic.DrawRectangle(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
+            spielfeldgraphic.DrawEllipse(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
 
             PointF[] hilfsarray = new PointF[3];
 
@@ -87,7 +160,7 @@ namespace VierGewinnt
                 {
                     hilfsarray[i] = Dreieckspunkte[j, i];
                 }
-                g.FillPolygon(new SolidBrush(Color.Blue), hilfsarray);
+                spielfeldgraphic.FillPolygon(new SolidBrush(Color.Blue), hilfsarray);
             }
         }
 
@@ -97,7 +170,7 @@ namespace VierGewinnt
             {
                 for (int i = 0; i < 10; i++)
                 {
-                    g.Clear(Form2.DefaultBackColor);
+                    spielfeldgraphic.Clear(Form2.DefaultBackColor);
                     Y -= 10;
                     Kreis(X, Y);
                     Thread.Sleep(25);
@@ -114,7 +187,7 @@ namespace VierGewinnt
                 for (int i = 0; i < 10; i++)
                 {
                     
-                    g.Clear(Form2.DefaultBackColor);
+                    spielfeldgraphic.Clear(Form2.DefaultBackColor);
                     Y += 10;
                     Kreis(X, Y);
                     Thread.Sleep(25);
@@ -133,7 +206,7 @@ namespace VierGewinnt
             Color farbe = Color.Goldenrod;
             using (SolidBrush pinsel = new SolidBrush(farbe))
             {
-                g.FillEllipse((pinsel), X, Y, 100, 100);
+                spielfeldgraphic.FillEllipse((pinsel), X, Y, 100, 100);
             }
         }
     }
