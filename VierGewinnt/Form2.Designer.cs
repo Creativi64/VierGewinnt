@@ -30,13 +30,9 @@ namespace VierGewinnt
         private void InitializeComponent()
         {
             this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.btn_Test = new System.Windows.Forms.Button();
             this.btn_Up = new System.Windows.Forms.Button();
             this.btn_down = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
@@ -49,23 +45,15 @@ namespace VierGewinnt
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button2
+            // btn_Test
             // 
-            this.button2.Location = new System.Drawing.Point(698, 318);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "button2";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.pictureBox1);
-            this.panel1.Location = new System.Drawing.Point(225, 120);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(350, 300);
-            this.panel1.TabIndex = 3;
+            this.btn_Test.Location = new System.Drawing.Point(698, 318);
+            this.btn_Test.Name = "btn_Test";
+            this.btn_Test.Size = new System.Drawing.Size(75, 23);
+            this.btn_Test.TabIndex = 2;
+            this.btn_Test.Text = "Test";
+            this.btn_Test.UseVisualStyleBackColor = true;
+            this.btn_Test.Click += new System.EventHandler(this.btn_Test_Click);
             // 
             // btn_Up
             // 
@@ -87,14 +75,6 @@ namespace VierGewinnt
             this.btn_down.UseVisualStyleBackColor = true;
             this.btn_down.Click += new System.EventHandler(this.btn_down_Click);
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Location = new System.Drawing.Point(99, 7);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(100, 50);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -102,13 +82,10 @@ namespace VierGewinnt
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.btn_down);
             this.Controls.Add(this.btn_Up);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.btn_Test);
             this.Controls.Add(this.button1);
             this.Name = "Form2";
             this.Text = "Menue";
-            this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -116,10 +93,8 @@ namespace VierGewinnt
         #endregion
 
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button btn_Test;
         private System.Windows.Forms.Button btn_Up;
         private System.Windows.Forms.Button btn_down;
-        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

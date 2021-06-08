@@ -42,18 +42,11 @@ namespace VierGewinnt
             this.Hide();
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            X = 100;
-            Y = 100;
-            Kreis(X, Y);
-
-            g.DrawEllipse(new Pen(Color.Goldenrod, 20), 50 - 45, 50 - 45, 45 * 2, 45 * 2);
-        }
+        
 
         private void btn_Up_Click(object sender, EventArgs e)
         {
-            Task animation = new Task(() =>
+            Task animation1 = new Task(() =>
             {
                 for (int i = 0; i < 10; i++)
                 {
@@ -64,7 +57,7 @@ namespace VierGewinnt
                 }
             }
             );
-            animation.Start();
+            animation1.Start();
         }
 
         private void btn_down_Click(object sender, EventArgs e)
@@ -73,7 +66,6 @@ namespace VierGewinnt
             {
                 for (int i = 0; i < 10; i++)
                 {
-                    
                     g.Clear(Form2.DefaultBackColor);
                     Y += 10;
                     Kreis(X, Y);
@@ -84,13 +76,15 @@ namespace VierGewinnt
             animation.Start();
         }
 
+        private void btn_Test_Click(object sender, EventArgs e)
+        {
+            
+        }
+
         private void Kreis(int X, int Y)
         {
-            //g = this.CreateGraphics();
-
-            //g.DrawEllipse(new Pen(Color.FromName("Red")), 100, 100, 100, 100);
-
-            Color farbe = Color.Goldenrod;
+            
+            Color farbe = Color.Black;
             using (SolidBrush pinsel = new SolidBrush(farbe))
             {
                 g.FillEllipse((pinsel), X, Y, 100, 100);
