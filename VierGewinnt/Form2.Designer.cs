@@ -45,7 +45,7 @@ namespace VierGewinnt
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // btn_Test
+            // button2
             // 
             this.button2.Location = new System.Drawing.Point(698, 318);
             this.button2.Name = "button2";
@@ -86,6 +86,7 @@ namespace VierGewinnt
             this.Controls.Add(this.button1);
             this.Name = "Form2";
             this.Text = "Menue";
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form2_Paint);
             this.ResumeLayout(false);
 
         }

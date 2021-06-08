@@ -22,8 +22,8 @@ namespace VierGewinnt
         int iSpielfeldheightpx = 200;
         int iSpielfeldwidthpx = 500;
 
-        int iSpielfeldheight = 6;
-        int iSpielfeldwidth = 7;
+        int iSpielfeldheight = 20;
+        int iSpielfeldwidth = 37;
 
         private int X, Y;
         private Graphics spielfeldgraphic;
@@ -210,6 +210,35 @@ namespace VierGewinnt
         private void btn_Test_Click(object sender, EventArgs e)
         {
             
+        }
+
+        private void Form2_Paint(object sender, PaintEventArgs e)
+        {
+            Spielfeldtile[,] spielfelder = new Spielfeldtile[iSpielfeldwidth, iSpielfeldheight];
+
+            int ispielfeldformat;
+            if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)
+            {
+                ispielfeldformat = iSpielfeldheightpx / iSpielfeldheight;
+            }
+            else
+            {
+                ispielfeldformat = iSpielfeldwidthpx / iSpielfeldwidth;
+            }
+
+
+            for (int x = 0; x < iSpielfeldwidth; x++)
+            {
+                for (int y = 0; y < iSpielfeldheight; y++)
+                {
+                    spielfelder[x, y].x = (this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2) + x * ispielfeldformat;
+                    spielfelder[x, y].y = (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2) + y * ispielfeldformat;
+                    spielfelder[x, y].iwidth = ispielfeldformat;
+                    spielfelder[x, y].iheight = ispielfeldformat;
+
+                    spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
+                }
+            }
         }
 
         private void Kreis(int X, int Y)
