@@ -24,8 +24,18 @@ namespace VierGewinnt
         private void btn_Play_Click(object sender, EventArgs e)
         {
             Form2 frm = new Form2(Fullscreen);
+
             frm.Show();
-            this.Close();
+            this.Hide();
+
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            MessageBox.Show("Spiel Beendet",
+                "Close Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            base.OnClosed(e);
+            Application.Exit();
         }
 
         private void btn_Network_Click(object sender, EventArgs e)

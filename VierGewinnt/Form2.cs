@@ -16,12 +16,11 @@ namespace VierGewinnt
         private int X, Y;
         private Graphics g;
 
-       
-
         public Form2(bool Fullscreen)
         {
             InitializeComponent();
 
+            
             g = this.CreateGraphics();
 
             if (Fullscreen == true)
@@ -36,6 +35,15 @@ namespace VierGewinnt
             }
         }
 
+        protected override void OnClosed(EventArgs e)
+        {
+            MessageBox.Show("Spiel Beendet",
+                "Close Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            base.OnClosed(e);
+
+            Application.Exit();
+        }
+
         private void button1_Click(object sender, EventArgs e)
         {
             Form1 frm = new Form1();
@@ -46,16 +54,13 @@ namespace VierGewinnt
 
         private void button2_Click(object sender, EventArgs e)
         {
+            Console.WriteLine(  "asdasd");
+            Console.WriteLine(  "asdasd");
             X = 100;
             Y = 100;
             Kreis(X, Y);
-
-
-
-            
-            
-
         }
+
         private void spielfeldtileerstellung(int x, int y, int iwidth, int iheight)
         {
             //int x = 50, y = 50, iwidth = 100, iheight = 100;
@@ -76,7 +81,6 @@ namespace VierGewinnt
             Dreieckspunkte[3, 0] = new PointF(x + iwidth, y + iheight);
             Dreieckspunkte[3, 1] = new PointF((float)(x + iwidth - (iwidth * dDreieckkprozent)), y + iheight);
             Dreieckspunkte[3, 2] = new PointF((x + iwidth), (float)(y + iheight - (iheight * dDreieckkprozent)));
-
 
             g.DrawRectangle(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
             g.DrawEllipse(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
@@ -99,7 +103,7 @@ namespace VierGewinnt
             {
                 for (int i = 0; i < 10; i++)
                 {
-                    //g.Clear(Form2.DefaultBackColor);
+                    g.Clear(Form2.DefaultBackColor);
                     Y -= 10;
                     Kreis(X, Y);
                     Thread.Sleep(25);
@@ -115,11 +119,12 @@ namespace VierGewinnt
             {
                 for (int i = 0; i < 10; i++)
                 {
-                    //g.Clear(Form2.DefaultBackColor);
+                    g.Clear(Form2.DefaultBackColor);
                     Y += 10;
                     Kreis(X, Y);
                     Thread.Sleep(25);
                 }
+
             }
             );
             animation.Start();
