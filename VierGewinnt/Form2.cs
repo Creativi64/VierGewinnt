@@ -14,10 +14,9 @@ namespace VierGewinnt
     {
         private int X, Y;
         private Graphics g;
-       
+
         public Form2(bool Fullscreen)
         {
-
             InitializeComponent();
 
             g = this.CreateGraphics();
@@ -49,26 +48,28 @@ namespace VierGewinnt
             Kreis(X, Y);
         }
 
-        
-        
         private void btn_Up_Click(object sender, EventArgs e)
         {
-            g.Clear(Form2.DefaultBackColor);
-            Y += 100;
-            Kreis(X, Y);
+           
+                g.Clear(Form2.DefaultBackColor);
+                Y -= 10;
+                Kreis(X, Y);
+            
         }
 
         private void btn_down_Click(object sender, EventArgs e)
         {
-            g.Clear(Form2.DefaultBackColor);
-            Y -= 100;
-            Kreis(X, Y);
-        }
-        private void  Kreis(int X, int Y)
-        {
             
+                g.Clear(Form2.DefaultBackColor);
+                Y += 10;
+                Kreis(X, Y);
+            
+        }
+
+        private void Kreis(int X, int Y)
+        {
             //g = this.CreateGraphics();
-           
+
             //g.DrawEllipse(new Pen(Color.FromName("Red")), 100, 100, 100, 100);
 
             Color farbe = Color.Goldenrod;
@@ -76,7 +77,6 @@ namespace VierGewinnt
             {
                 g.FillEllipse((pinsel), X, Y, 100, 100);
             }
-            
         }
     }
 }
