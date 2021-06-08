@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace VierGewinnt
 {
@@ -14,10 +15,17 @@ namespace VierGewinnt
     {
         public bool Fullscreen { get; private set; }
 
-        
+        #region Console
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool AllocConsole();
+
+        #endregion
         public Form1()
         {
             InitializeComponent();
+            AllocConsole();
         }
 
 

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 
 namespace VierGewinnt
 {
@@ -19,22 +20,31 @@ namespace VierGewinnt
             public string farbe;
         }
 
-        private int iSpielfeldheightpx = 200;
-        private int iSpielfeldwidthpx = 500;
+        private int iSpielfeldheightpx;
+        private int iSpielfeldwidthpx;
 
-        private int iSpielfeldheight = 20;
-        private int iSpielfeldwidth = 37;
+        private int iSpielfeldheight = 10;
+        private int iSpielfeldwidth = 12;
 
         private int X, Y;
         private Graphics spielfeldgraphic;
+        private Graphics punkte;
+
+        private bool AimationFlag = false;
+
+        #region Console
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        private static extern bool AllocConsole();
+
+        #endregion
 
         public Form2(bool Fullscreen)
         {
             InitializeComponent();
-            iSpielfeldheightpx = this.Height - 100;
-            iSpielfeldwidthpx = this.Width - 100;
 
-            spielfeldgraphic = this.CreateGraphics();
+            AllocConsole();
 
             if (Fullscreen == true)
             {
@@ -46,9 +56,15 @@ namespace VierGewinnt
                 this.FormBorderStyle = FormBorderStyle.FixedSingle;
                 this.WindowState = FormWindowState.Normal;
             }
+            iSpielfeldheightpx = this.Height - 100;
+            iSpielfeldwidthpx = this.Width - 100;
+
+            spielfeldgraphic = this.CreateGraphics();
+            punkte = this.CreateGraphics();
 
             this.BeginInvoke((MethodInvoker)delegate
             {
+                // wird Aufgerufen wenn Das From Geladen Wurde
                 SpielfeldZeichnen();
             });
         }
@@ -85,9 +101,11 @@ namespace VierGewinnt
 
         protected override void OnClosed(EventArgs e)
         {
-            MessageBox.Show("Spiel Beendet",
-                "Close Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            base.OnClosed(e);
+            // wenn man mit X das Programm Schließet Schliest es sich Komlett mit einer Meldung
+
+            //MessageBox.Show("Spiel Beendet",
+            //    "Close Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            //base.OnClosed(e);
 
             Application.Exit();
         }
@@ -102,8 +120,6 @@ namespace VierGewinnt
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Console.WriteLine("asdasd");
-            Console.WriteLine("asdasd");
             X = 100;
             Y = 100;
             Kreis(X, Y);
@@ -147,65 +163,56 @@ namespace VierGewinnt
 
         private void btn_Up_Click(object sender, EventArgs e)
         {
+            // Task Um Die "Animation" des Herrauf "Flüssig" zumachen und nicht Sofortig
             Task animation1 = new Task(() =>
             {
+                AimationFlag = true;
                 for (int i = 0; i < 10; i++)
                 {
-                    spielfeldgraphic.Clear(Form2.DefaultBackColor);
+                    punkte.Clear(Form2.DefaultBackColor);
                     Y -= 10;
                     Kreis(X, Y);
                     Thread.Sleep(25);
                 }
             }
             );
+            Console.WriteLine(animation1.Status);
             animation1.Start();
+            Console.WriteLine(animation1.Status);
+            if (animation1.IsCompleted == true)
+            {
+                AimationFlag = false;
+            }
         }
 
         private void btn_down_Click(object sender, EventArgs e)
         {
+            // Task Um Die "Animation" des Herrunter "Flüssig" zumachen und nicht Sofortig
             Task animation = new Task(() =>
             {
+                AimationFlag = true;
                 for (int i = 0; i < 10; i++)
                 {
-                    spielfeldgraphic.Clear(Form2.DefaultBackColor);
+                    punkte.Clear(Form2.DefaultBackColor);
                     Y += 10;
                     Kreis(X, Y);
                     Thread.Sleep(25);
                 }
             }
             );
-            animation.Start();
-        }
 
-        private void btn_Test_Click(object sender, EventArgs e)
-        {
+            animation.Start();
+            if (animation.IsCompleted == true)
+            {
+                AimationFlag = false;
+            }
         }
 
         private void Form2_Paint(object sender, PaintEventArgs e)
         {
-            Spielfeldtile[,] spielfelder = new Spielfeldtile[iSpielfeldwidth, iSpielfeldheight];
-
-            int ispielfeldformat;
-            if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)
+            if (AimationFlag == false)
             {
-                ispielfeldformat = iSpielfeldheightpx / iSpielfeldheight;
-            }
-            else
-            {
-                ispielfeldformat = iSpielfeldwidthpx / iSpielfeldwidth;
-            }
-
-            for (int x = 0; x < iSpielfeldwidth; x++)
-            {
-                for (int y = 0; y < iSpielfeldheight; y++)
-                {
-                    spielfelder[x, y].x = (this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2) + x * ispielfeldformat;
-                    spielfelder[x, y].y = (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2) + y * ispielfeldformat;
-                    spielfelder[x, y].iwidth = ispielfeldformat;
-                    spielfelder[x, y].iheight = ispielfeldformat;
-
-                    spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
-                }
+                SpielfeldZeichnen();
             }
         }
 
@@ -214,7 +221,7 @@ namespace VierGewinnt
             Color farbe = Color.Goldenrod;
             using (SolidBrush pinsel = new SolidBrush(farbe))
             {
-                spielfeldgraphic.FillEllipse((pinsel), X, Y, 100, 100);
+                punkte.FillEllipse((pinsel), X, Y, 100, 100);
             }
         }
     }
