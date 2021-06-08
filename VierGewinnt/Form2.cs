@@ -48,7 +48,47 @@ namespace VierGewinnt
             Y = 100;
             Kreis(X, Y);
 
-            g.DrawEllipse(new Pen(Color.Goldenrod, 20), 50 - 45, 50 - 45, 45 * 2, 45 * 2);
+
+
+            
+            
+
+        }
+        private void spielfeldtileerstellung(int x, int y, int iwidth, int iheight)
+        {
+            //int x = 50, y = 50, iwidth = 100, iheight = 100;
+            double dDreieckkprozent = 0.3;
+            PointF[,] Dreieckspunkte = new PointF[4, 3];
+            Dreieckspunkte[0, 0] = new PointF(x, y);
+            Dreieckspunkte[0, 1] = new PointF((float)(x + (iwidth * dDreieckkprozent)), y);
+            Dreieckspunkte[0, 2] = new PointF((x), (float)(y + (iheight * dDreieckkprozent)));
+
+            Dreieckspunkte[1, 0] = new PointF(x + iwidth, y);
+            Dreieckspunkte[1, 1] = new PointF((float)(x + iwidth - (iwidth * dDreieckkprozent)), y);
+            Dreieckspunkte[1, 2] = new PointF((x + iwidth), (float)(y + (iheight * dDreieckkprozent)));
+
+            Dreieckspunkte[2, 0] = new PointF(x, y + iheight);
+            Dreieckspunkte[2, 1] = new PointF((float)(x + (iwidth * dDreieckkprozent)), y + iheight);
+            Dreieckspunkte[2, 2] = new PointF((x), (float)(y + iheight - (iheight * dDreieckkprozent)));
+
+            Dreieckspunkte[3, 0] = new PointF(x + iwidth, y + iheight);
+            Dreieckspunkte[3, 1] = new PointF((float)(x + iwidth - (iwidth * dDreieckkprozent)), y + iheight);
+            Dreieckspunkte[3, 2] = new PointF((x + iwidth), (float)(y + iheight - (iheight * dDreieckkprozent)));
+
+
+            g.DrawRectangle(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
+            g.DrawEllipse(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
+
+            PointF[] hilfsarray = new PointF[3];
+
+            for (int j = 0; j < 4; j++)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    hilfsarray[i] = Dreieckspunkte[j, i];
+                }
+                g.FillPolygon(new SolidBrush(Color.Blue), hilfsarray);
+            }
         }
 
         private void btn_Up_Click(object sender, EventArgs e)
