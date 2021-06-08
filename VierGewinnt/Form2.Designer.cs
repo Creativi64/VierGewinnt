@@ -45,7 +45,7 @@ namespace VierGewinnt
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // button2
+            // btn_Test
             // 
             this.button2.Location = new System.Drawing.Point(698, 318);
             this.button2.Name = "button2";

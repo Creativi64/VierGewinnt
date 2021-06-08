@@ -175,7 +175,7 @@ namespace VierGewinnt
 
         private void btn_Up_Click(object sender, EventArgs e)
         {
-            Task animation = new Task(() =>
+            Task animation1 = new Task(() =>
             {
                 for (int i = 0; i < 10; i++)
                 {
@@ -186,7 +186,7 @@ namespace VierGewinnt
                 }
             }
             );
-            animation.Start();
+            animation1.Start();
         }
 
         private void btn_down_Click(object sender, EventArgs e)
@@ -205,6 +205,11 @@ namespace VierGewinnt
             }
             );
             animation.Start();
+        }
+
+        private void btn_Test_Click(object sender, EventArgs e)
+        {
+            
         }
 
         private void Kreis(int X, int Y)
