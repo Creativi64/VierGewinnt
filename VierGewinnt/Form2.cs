@@ -67,6 +67,7 @@ namespace VierGewinnt
                 // wird Aufgerufen wenn Das From Geladen Wurde
                 SpielfeldZeichnen();
             });
+
         }
 
         private void SpielfeldZeichnen()
@@ -210,6 +211,18 @@ namespace VierGewinnt
 
         private void Form2_Paint(object sender, PaintEventArgs e)
         {
+            SpielfeldZeichnen();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            spielfeldtilezeichnen(20, 20, 20, 20);
+        }
+
+        private void Form2_Click(object sender, EventArgs e)
+        {
+            Console.WriteLine(this.PointToClient(new Point(X, Y)));
+            
             if (AimationFlag == false)
             {
                 SpielfeldZeichnen();
