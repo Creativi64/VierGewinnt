@@ -87,11 +87,12 @@ namespace VierGewinnt
             this.button3.BackColor = System.Drawing.Color.Transparent;
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button3.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.button3.Location = new System.Drawing.Point(12, 12);
+            this.button3.Location = new System.Drawing.Point(111, 12);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 6;
             this.button3.UseVisualStyleBackColor = false;
+   
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // Form2

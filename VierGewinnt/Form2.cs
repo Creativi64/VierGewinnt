@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -32,13 +33,15 @@ namespace VierGewinnt
 
         private bool AimationFlag = false;
 
+        
+
         #region Console
 
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool AllocConsole();
 
-        #endregion
+        #endregion Console
 
         public Form2(bool Fullscreen)
         {
@@ -67,7 +70,6 @@ namespace VierGewinnt
                 // wird Aufgerufen wenn Das From Geladen Wurde
                 SpielfeldZeichnen();
             });
-
         }
 
         private void SpielfeldZeichnen()
@@ -129,37 +131,45 @@ namespace VierGewinnt
         private void spielfeldtilezeichnen(int x, int y, int iwidth, int iheight)
         {
             //int x = 50, y = 50, iwidth = 100, iheight = 100;
-            double dDreieckkprozent = 0.3;
-            PointF[,] Dreieckspunkte = new PointF[4, 3];
-            Dreieckspunkte[0, 0] = new PointF(x, y);
-            Dreieckspunkte[0, 1] = new PointF((float)(x + (iwidth * dDreieckkprozent)), y);
-            Dreieckspunkte[0, 2] = new PointF((x), (float)(y + (iheight * dDreieckkprozent)));
-
-            Dreieckspunkte[1, 0] = new PointF(x + iwidth, y);
-            Dreieckspunkte[1, 1] = new PointF((float)(x + iwidth - (iwidth * dDreieckkprozent)), y);
-            Dreieckspunkte[1, 2] = new PointF((x + iwidth), (float)(y + (iheight * dDreieckkprozent)));
-
-            Dreieckspunkte[2, 0] = new PointF(x, y + iheight);
-            Dreieckspunkte[2, 1] = new PointF((float)(x + (iwidth * dDreieckkprozent)), y + iheight);
-            Dreieckspunkte[2, 2] = new PointF((x), (float)(y + iheight - (iheight * dDreieckkprozent)));
-
-            Dreieckspunkte[3, 0] = new PointF(x + iwidth, y + iheight);
-            Dreieckspunkte[3, 1] = new PointF((float)(x + iwidth - (iwidth * dDreieckkprozent)), y + iheight);
-            Dreieckspunkte[3, 2] = new PointF((x + iwidth), (float)(y + iheight - (iheight * dDreieckkprozent)));
-
-            spielfeldgraphic.DrawRectangle(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
-            spielfeldgraphic.DrawEllipse(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
-
-            PointF[] hilfsarray = new PointF[3];
-
-            for (int j = 0; j < 4; j++)
+            Task FeldZeichnen = new Task(() =>
             {
-                for (int i = 0; i < 3; i++)
+                GraphicsContainer graphicsContainer;
+                graphicsContainer = spielfeldgraphic.BeginContainer();
+                double dDreieckkprozent = 0.3;
+                PointF[,] Dreieckspunkte = new PointF[4, 3];
+                Dreieckspunkte[0, 0] = new PointF(x, y);
+                Dreieckspunkte[0, 1] = new PointF((float)(x + (iwidth * dDreieckkprozent)), y);
+                Dreieckspunkte[0, 2] = new PointF((x), (float)(y + (iheight * dDreieckkprozent)));
+
+                Dreieckspunkte[1, 0] = new PointF(x + iwidth, y);
+                Dreieckspunkte[1, 1] = new PointF((float)(x + iwidth - (iwidth * dDreieckkprozent)), y);
+                Dreieckspunkte[1, 2] = new PointF((x + iwidth), (float)(y + (iheight * dDreieckkprozent)));
+
+                Dreieckspunkte[2, 0] = new PointF(x, y + iheight);
+                Dreieckspunkte[2, 1] = new PointF((float)(x + (iwidth * dDreieckkprozent)), y + iheight);
+                Dreieckspunkte[2, 2] = new PointF((x), (float)(y + iheight - (iheight * dDreieckkprozent)));
+
+                Dreieckspunkte[3, 0] = new PointF(x + iwidth, y + iheight);
+                Dreieckspunkte[3, 1] = new PointF((float)(x + iwidth - (iwidth * dDreieckkprozent)), y + iheight);
+                Dreieckspunkte[3, 2] = new PointF((x + iwidth), (float)(y + iheight - (iheight * dDreieckkprozent)));
+
+                spielfeldgraphic.DrawRectangle(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
+                spielfeldgraphic.DrawEllipse(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
+
+                PointF[] hilfsarray = new PointF[3];
+
+                for (int j = 0; j < 4; j++)
                 {
-                    hilfsarray[i] = Dreieckspunkte[j, i];
+                    for (int i = 0; i < 3; i++)
+                    {
+                        hilfsarray[i] = Dreieckspunkte[j, i];
+                    }
+                    spielfeldgraphic.FillPolygon(new SolidBrush(Color.Blue), hilfsarray);
                 }
-                spielfeldgraphic.FillPolygon(new SolidBrush(Color.Blue), hilfsarray);
+                spielfeldgraphic.EndContainer(graphicsContainer);
             }
+            );
+            FeldZeichnen.RunSynchronously();
         }
 
         private void btn_Up_Click(object sender, EventArgs e)
@@ -170,7 +180,7 @@ namespace VierGewinnt
                 AimationFlag = true;
                 for (int i = 0; i < 10; i++)
                 {
-                    punkte.Clear(Form2.DefaultBackColor);
+                    punkte.Clear(this.BackColor);
                     Y -= 10;
                     Kreis(X, Y);
                     Thread.Sleep(25);
@@ -178,7 +188,7 @@ namespace VierGewinnt
             }
             );
             Console.WriteLine(animation1.Status);
-            animation1.Start();
+            animation1.RunSynchronously();
             Console.WriteLine(animation1.Status);
             if (animation1.IsCompleted == true)
             {
@@ -194,15 +204,16 @@ namespace VierGewinnt
                 AimationFlag = true;
                 for (int i = 0; i < 10; i++)
                 {
-                    punkte.Clear(Form2.DefaultBackColor);
+                    punkte.Clear(this.BackColor);
                     Y += 10;
                     Kreis(X, Y);
                     Thread.Sleep(25);
                 }
             }
             );
-
-            animation.Start();
+            Console.WriteLine(animation.Status);
+            animation.RunSynchronously();
+            Console.WriteLine(animation.Status);
             if (animation.IsCompleted == true)
             {
                 AimationFlag = false;
@@ -211,22 +222,33 @@ namespace VierGewinnt
 
         private void Form2_Paint(object sender, PaintEventArgs e)
         {
-            SpielfeldZeichnen();
+            //spielfeldgraphic.CopyFromScreen(x,y,x,y,new Size(iwidth, iheight));
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            spielfeldtilezeichnen(20, 20, 20, 20);
+            //spielfeldtilezeichnen(20, 20, 20, 20);
+
+            Graphics graphics = this.CreateGraphics();
+
+            Pen pen = new Pen(Color.Red);
+            GraphicsContainer graphicsContainer;
+            graphics.FillRectangle(Brushes.Black, 100, 80, 3, 3);
+
+            graphics.TranslateTransform(100, 80);
+
+            graphicsContainer = graphics.BeginContainer();
+
+            graphics.RotateTransform(30);
+            graphics.DrawRectangle(pen, -60, -30, 120, 60);
+            graphics.EndContainer(graphicsContainer);
+
+            graphics.DrawRectangle(pen, -60, -30, 120, 60);
         }
 
         private void Form2_Click(object sender, EventArgs e)
         {
             Console.WriteLine(this.PointToClient(new Point(X, Y)));
-            
-            if (AimationFlag == false)
-            {
-                SpielfeldZeichnen();
-            }
         }
 
         private void Kreis(int X, int Y)
