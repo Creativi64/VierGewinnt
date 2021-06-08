@@ -13,7 +13,7 @@ namespace VierGewinnt
 {
     public partial class Form2 : Form
     {
-        struct Spielfeldtile
+        private struct Spielfeldtile
         {
             public int x, y, iwidth, iheight;
             public string farbe;
@@ -48,7 +48,16 @@ namespace VierGewinnt
                 this.WindowState = FormWindowState.Normal;
             }
 
+            this.BeginInvoke((MethodInvoker)delegate
+            {
+                SpielfeldZeichnen();
+            });
+        }
+
+        private void SpielfeldZeichnen()
+        {
             //erstellung des Spielfeldes
+
             Spielfeldtile[,] spielfelder = new Spielfeldtile[iSpielfeldwidth, iSpielfeldheight];
 
             int ispielfeldformat;
@@ -74,8 +83,8 @@ namespace VierGewinnt
                     spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
                 }
             }
-        }
 
+        }
 
         
         protected override void OnClosed(EventArgs e)
@@ -92,50 +101,21 @@ namespace VierGewinnt
             Form1 frm = new Form1();
 
             frm.Show();
-            this.Close();
+            this.Hide();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Console.WriteLine(  "asdasd");
-            Console.WriteLine(  "asdasd");
+            Console.WriteLine("asdasd");
+            Console.WriteLine("asdasd");
             X = 100;
             Y = 100;
             Kreis(X, Y);
 
-
-
-
-
-            Spielfeldtile[,] spielfelder = new Spielfeldtile[iSpielfeldwidth, iSpielfeldheight];
-
-            int ispielfeldformat;
-            if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)
-            {
-                ispielfeldformat = iSpielfeldheightpx / iSpielfeldheight;
-            }
-            else
-            {
-                ispielfeldformat = iSpielfeldwidthpx / iSpielfeldwidth;
-            }
-
-
-            for (int x = 0; x < iSpielfeldwidth; x++)
-            {
-                for (int y = 0; y < iSpielfeldheight; y++)
-                {
-                    spielfelder[x, y].x = (this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2) + x * ispielfeldformat;
-                    spielfelder[x, y].y = (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2) + y * ispielfeldformat;
-                    spielfelder[x, y].iwidth = ispielfeldformat;
-                    spielfelder[x, y].iheight = ispielfeldformat;
-
-                    spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
-                }
-            }
-
-
+            
 
         }
+
         private void spielfeldtilezeichnen(int x, int y, int iwidth, int iheight)
         {
             //int x = 50, y = 50, iwidth = 100, iheight = 100;
@@ -156,7 +136,6 @@ namespace VierGewinnt
             Dreieckspunkte[3, 0] = new PointF(x + iwidth, y + iheight);
             Dreieckspunkte[3, 1] = new PointF((float)(x + iwidth - (iwidth * dDreieckkprozent)), y + iheight);
             Dreieckspunkte[3, 2] = new PointF((x + iwidth), (float)(y + iheight - (iheight * dDreieckkprozent)));
-
 
             spielfeldgraphic.DrawRectangle(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
             spielfeldgraphic.DrawEllipse(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
@@ -195,13 +174,11 @@ namespace VierGewinnt
             {
                 for (int i = 0; i < 10; i++)
                 {
-                    
                     spielfeldgraphic.Clear(Form2.DefaultBackColor);
                     Y += 10;
                     Kreis(X, Y);
                     Thread.Sleep(25);
                 }
-
             }
             );
             animation.Start();
@@ -209,7 +186,6 @@ namespace VierGewinnt
 
         private void btn_Test_Click(object sender, EventArgs e)
         {
-            
         }
 
         private void Form2_Paint(object sender, PaintEventArgs e)
