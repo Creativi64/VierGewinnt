@@ -28,12 +28,15 @@ namespace VierGewinnt
         private int iSpielfeldwidth = 12;
 
         private int X, Y;
+
+        private GraphicsContainer SpielfeldContainer;
         private Graphics spielfeldgraphic;
+        
         private Graphics punkte;
 
         private bool AimationFlag = false;
 
-        
+        public Spielfeldtile[,] spielfelder;
 
         #region Console
 
@@ -65,27 +68,27 @@ namespace VierGewinnt
             spielfeldgraphic = this.CreateGraphics();
             punkte = this.CreateGraphics();
 
+            
+
             this.BeginInvoke((MethodInvoker)delegate
             {
                 // wird Aufgerufen wenn Das From Geladen Wurde
                 SpielfeldZeichnen();
             });
-            for (int x = 0; x < iSpielfeldwidth; x++)
-            {
-                for (int y = 0; y < iSpielfeldheight; y++)
-                {
-                    spielfelder[x,y].farbe = "white";
-                }
-            }
         }
-        public Spielfeldtile[,] spielfelder;
 
         private void SpielfeldZeichnen()
         {
             //erstellung des Spielfeldes
-
+            SpielfeldContainer = spielfeldgraphic.BeginContainer();
             spielfelder = new Spielfeldtile[iSpielfeldwidth, iSpielfeldheight];
-
+            for (int x = 0; x < iSpielfeldwidth; x++)
+            {
+                for (int y = 0; y < iSpielfeldheight; y++)
+                {
+                    spielfelder[x, y].farbe = "white";
+                }
+            }
             int ispielfeldformat;
             if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)
             {
@@ -108,6 +111,8 @@ namespace VierGewinnt
                     spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
                 }
             }
+
+            spielfeldgraphic.EndContainer(SpielfeldContainer);
         }
 
         protected override void OnClosed(EventArgs e)
@@ -230,38 +235,25 @@ namespace VierGewinnt
 
         private void Form2_Paint(object sender, PaintEventArgs e)
         {
-            //spielfeldgraphic.CopyFromScreen(x,y,x,y,new Size(iwidth, iheight));
+            
+            
+
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void button3_Click(object sender, PaintEventArgs e)
         {
             //spielfeldtilezeichnen(20, 20, 20, 20);
 
-            Graphics graphics = this.CreateGraphics();
-
-            Pen pen = new Pen(Color.Red);
-            GraphicsContainer graphicsContainer;
-            graphics.FillRectangle(Brushes.Black, 100, 80, 3, 3);
-
-            graphics.TranslateTransform(100, 80);
-
-            graphicsContainer = graphics.BeginContainer();
-
-            graphics.RotateTransform(30);
-            graphics.DrawRectangle(pen, -60, -30, 120, 60);
-            graphics.EndContainer(graphicsContainer);
-
-            graphics.DrawRectangle(pen, -60, -30, 120, 60);
+            
         }
 
-        public string 
         private void Form2_Click(object sender, EventArgs e)
         {
             string currentcolor = "red";
-            if (this.PointToClient(Cursor.Position).X>spielfelder[0,0].x && this.PointToClient(Cursor.Position).X<spielfelder[iSpielfeldwidth-1, iSpielfeldheight-1].x+spielfelder[iSpielfeldwidth-1, iSpielfeldheight-1].iwidth       &&     this.PointToClient(Cursor.Position).Y > spielfelder[0, 0].y && this.PointToClient(Cursor.Position).Y < spielfelder[iSpielfeldwidth-1, iSpielfeldheight-1].y + spielfelder[iSpielfeldwidth-1, iSpielfeldheight-1].iheight)
+            if (this.PointToClient(Cursor.Position).X > spielfelder[0, 0].x && this.PointToClient(Cursor.Position).X < spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].x + spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].iwidth && this.PointToClient(Cursor.Position).Y > spielfelder[0, 0].y && this.PointToClient(Cursor.Position).Y < spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].y + spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].iheight)
             {
                 int spalte;
-                spalte = (this.PointToClient(Cursor.Position).X - spielfelder[0, 0].x)/ spielfelder[0, 0].iwidth;
+                spalte = (this.PointToClient(Cursor.Position).X - spielfelder[0, 0].x) / spielfelder[0, 0].iwidth;
                 Console.WriteLine(spalte);
                 for (int i = iSpielfeldheight; i > 0; i--)
                 {
@@ -271,7 +263,6 @@ namespace VierGewinnt
                         spielfelder[i, spalte].farbe = currentcolor;
                     }
                 }
-
             }
 
             Console.WriteLine(this.PointToClient(new Point(X, Y)));
