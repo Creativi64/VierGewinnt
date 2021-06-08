@@ -30,7 +30,8 @@ namespace VierGewinnt
         private void InitializeComponent()
         {
             this.button1 = new System.Windows.Forms.Button();
-            this.btn_Test = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.spielfeldpanel = new System.Windows.Forms.Panel();
             this.btn_Up = new System.Windows.Forms.Button();
             this.btn_down = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -47,13 +48,20 @@ namespace VierGewinnt
             // 
             // btn_Test
             // 
-            this.btn_Test.Location = new System.Drawing.Point(698, 318);
-            this.btn_Test.Name = "btn_Test";
-            this.btn_Test.Size = new System.Drawing.Size(75, 23);
-            this.btn_Test.TabIndex = 2;
-            this.btn_Test.Text = "Test";
-            this.btn_Test.UseVisualStyleBackColor = true;
-            this.btn_Test.Click += new System.EventHandler(this.btn_Test_Click);
+            this.button2.Location = new System.Drawing.Point(698, 318);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 2;
+            this.button2.Text = "button2";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // spielfeldpanel
+            // 
+            this.spielfeldpanel.Location = new System.Drawing.Point(225, 120);
+            this.spielfeldpanel.Name = "spielfeldpanel";
+            this.spielfeldpanel.Size = new System.Drawing.Size(350, 300);
+            this.spielfeldpanel.TabIndex = 3;
             // 
             // btn_Up
             // 
@@ -82,7 +90,8 @@ namespace VierGewinnt
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.btn_down);
             this.Controls.Add(this.btn_Up);
-            this.Controls.Add(this.btn_Test);
+            this.Controls.Add(this.spielfeldpanel);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Name = "Form2";
             this.Text = "Menue";
@@ -93,7 +102,8 @@ namespace VierGewinnt
         #endregion
 
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button btn_Test;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Panel spielfeldpanel;
         private System.Windows.Forms.Button btn_Up;
         private System.Windows.Forms.Button btn_down;
     }
