@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -46,24 +47,40 @@ namespace VierGewinnt
             X = 100;
             Y = 100;
             Kreis(X, Y);
+
+            g.DrawEllipse(new Pen(Color.Goldenrod, 20), 50 - 20, 50 - 20, 20 * 2, 20 * 2);
         }
 
         private void btn_Up_Click(object sender, EventArgs e)
         {
-           
-                g.Clear(Form2.DefaultBackColor);
-                Y -= 10;
-                Kreis(X, Y);
-            
+            Task animation = new Task(() =>
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    g.Clear(Form2.DefaultBackColor);
+                    Y -= 10;
+                    Kreis(X, Y);
+                    Thread.Sleep(25);
+                }
+            }
+            );
         }
 
         private void btn_down_Click(object sender, EventArgs e)
         {
-            
-                g.Clear(Form2.DefaultBackColor);
-                Y += 10;
-                Kreis(X, Y);
-            
+            Task animation = new Task(() =>
+            {
+                for (int i = 0; i < 10; i++)
+                {
+                    
+                    g.Clear(Form2.DefaultBackColor);
+                    Y += 10;
+                    Kreis(X, Y);
+                    Thread.Sleep(25);
+                }
+            }
+            );
+           
         }
 
         private void Kreis(int X, int Y)
