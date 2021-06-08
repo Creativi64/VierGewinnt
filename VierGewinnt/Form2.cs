@@ -31,7 +31,7 @@ namespace VierGewinnt
 
         private GraphicsContainer SpielfeldContainer;
         private Graphics spielfeldgraphic;
-        
+
         private Graphics punkte;
 
         private bool AimationFlag = false;
@@ -45,9 +45,6 @@ namespace VierGewinnt
         private static extern bool AllocConsole();
 
         #endregion Console
-
-        public Spielfeldtile[,] spielfelder;
-
 
         public Form2(bool Fullscreen)
         {
@@ -71,13 +68,10 @@ namespace VierGewinnt
             spielfeldgraphic = this.CreateGraphics();
             punkte = this.CreateGraphics();
 
-            
-
             this.BeginInvoke((MethodInvoker)delegate
             {
                 // wird Aufgerufen wenn Das From Geladen Wurde
                 spielfelder = new Spielfeldtile[iSpielfeldwidth, iSpielfeldheight];
-
 
                 SpielfeldZeichnen();
                 Console.WriteLine("schese");
@@ -89,15 +83,11 @@ namespace VierGewinnt
                     }
                 }
             });
-
         }
 
         private void SpielfeldZeichnen()
         {
             //erstellung des Spielfeldes
-
-
-
 
             int ispielfeldformat;
             if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)
@@ -121,8 +111,6 @@ namespace VierGewinnt
                     spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
                 }
             }
-
-            spielfeldgraphic.EndContainer(SpielfeldContainer);
         }
 
         protected override void OnClosed(EventArgs e)
@@ -155,8 +143,6 @@ namespace VierGewinnt
             //int x = 50, y = 50, iwidth = 100, iheight = 100;
             Task FeldZeichnen = new Task(() =>
             {
-                GraphicsContainer graphicsContainer;
-                graphicsContainer = spielfeldgraphic.BeginContainer();
                 double dDreieckkprozent = 0.3;
                 PointF[,] Dreieckspunkte = new PointF[4, 3];
                 Dreieckspunkte[0, 0] = new PointF(x, y);
@@ -188,80 +174,74 @@ namespace VierGewinnt
                     }
                     spielfeldgraphic.FillPolygon(new SolidBrush(Color.Blue), hilfsarray);
                 }
-                spielfeldgraphic.EndContainer(graphicsContainer);
             }
             );
             FeldZeichnen.RunSynchronously();
         }
 
-        private void btn_Up_Click(object sender, EventArgs e)
-        {
-            // Task Um Die "Animation" des Herrauf "Flüssig" zumachen und nicht Sofortig
-            Task animation1 = new Task(() =>
-            {
-                AimationFlag = true;
-                for (int i = 0; i < 10; i++)
-                {
-                    punkte.Clear(this.BackColor);
-                    Y -= 10;
-                    Thread.Sleep(25);
-                }
-            }
-            );
-            animation1.Start();
-            if (animation1.IsCompleted == true)
-            {
-                AimationFlag = false;
-            }
-        }
+        //private void btn_Up_Click(object sender, EventArgs e)
+        //{
+        //    // Task Um Die "Animation" des Herrauf "Flüssig" zumachen und nicht Sofortig
+        //    Task animation1 = new Task(() =>
+        //    {
+        //        AimationFlag = true;
+        //        for (int i = 0; i < 10; i++)
+        //        {
+        //            punkte.Clear(this.BackColor);
+        //            Y -= 10;
+        //            Thread.Sleep(25);
+        //        }
+        //    }
+        //    );
+        //    animation1.Start();
+        //    if (animation1.IsCompleted == true)
+        //    {
+        //        AimationFlag = false;
+        //    }
+        //}
 
-        private void btn_down_Click(object sender, EventArgs e)
-        {
-            // Task Um Die "Animation" des Herrunter "Flüssig" zumachen und nicht Sofortig
-            Task animation = new Task(() =>
-            {
-                AimationFlag = true;
-                for (int i = 0; i < 10; i++)
-                {
-                    punkte.Clear(this.BackColor);
-                    Y += 10;
-                    Thread.Sleep(25);
-                }
-            }
-            );
-            Console.WriteLine(animation.Status);
-            animation.RunSynchronously();
-            Console.WriteLine(animation.Status);
-            if (animation.IsCompleted == true)
-            {
-                AimationFlag = false;
-            }
-        }
+        //private void btn_down_Click(object sender, EventArgs e)
+        //{
+        //    // Task Um Die "Animation" des Herrunter "Flüssig" zumachen und nicht Sofortig
+        //    Task animation = new Task(() =>
+        //    {
+        //        AimationFlag = true;
+        //        for (int i = 0; i < 10; i++)
+        //        {
+        //            punkte.Clear(this.BackColor);
+        //            Y += 10;
+        //            Thread.Sleep(25);
+        //        }
+        //    }
+        //    );
+        //    Console.WriteLine(animation.Status);
+        //    animation.RunSynchronously();
+        //    Console.WriteLine(animation.Status);
+        //    if (animation.IsCompleted == true)
+        //    {
+        //        AimationFlag = false;
+        //    }
+        //}
 
         private void Form2_Paint(object sender, PaintEventArgs e)
         {
-            
-            
-
         }
 
         private void button3_Click(object sender, PaintEventArgs e)
         {
             //spielfeldtilezeichnen(20, 20, 20, 20);
-
-            
         }
 
-        string currentcolor = "red";
+        private string currentcolor = "red";
 
         private void Form2_Click(object sender, EventArgs e)
         {
-            if (this.PointToClient(Cursor.Position).X>spielfelder[0,0].x && this.PointToClient(Cursor.Position).X<spielfelder[iSpielfeldwidth-1, iSpielfeldheight-1].x+spielfelder[iSpielfeldwidth-1, iSpielfeldheight-1].iwidth       &&     this.PointToClient(Cursor.Position).Y > spielfelder[0, 0].y && this.PointToClient(Cursor.Position).Y < spielfelder[iSpielfeldwidth-1, iSpielfeldheight-1].y + spielfelder[iSpielfeldwidth-1, iSpielfeldheight-1].iheight)
+            if (this.PointToClient(Cursor.Position).X > spielfelder[0, 0].x && this.PointToClient(Cursor.Position).X < spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].x + spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].iwidth && this.PointToClient(Cursor.Position).Y > spielfelder[0, 0].y && this.PointToClient(Cursor.Position).Y < spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].y + spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].iheight)
             {
                 int spalte;
                 bool gesetzt = false;
-                spalte = (this.PointToClient(Cursor.Position).X - spielfelder[0, 0].x)/ spielfelder[0, 0].iwidth;
-                for (int i = iSpielfeldheight-1; i >= 0; i--)
+                spalte = (this.PointToClient(Cursor.Position).X - spielfelder[0, 0].x) / spielfelder[0, 0].iwidth;
+                for (int i = iSpielfeldheight - 1; i >= 0; i--)
                 {
                     if (spielfelder[spalte, i].farbe == "white")
                     {
@@ -274,7 +254,7 @@ namespace VierGewinnt
                 }
                 if (gesetzt)
                 {
-                    if(currentcolor == "red")
+                    if (currentcolor == "red")
                     {
                         currentcolor = "yellow";
                     }
@@ -290,9 +270,18 @@ namespace VierGewinnt
 
         private void Kreiszeichnen(int X, int Y, string farbe)
         {
-            {
-                punkte.FillEllipse(new SolidBrush(Color.FromName(farbe)), spielfelder[0, 0].x + X* spielfelder[0, 0].iwidth, spielfelder[0, 0].y + Y * spielfelder[0, 0].iheight, spielfelder[0,0].iwidth, spielfelder[0, 0].iheight);
-            }
+            Task animation1 = new Task(() =>
+                {
+                    AimationFlag = true;
+                    for (int i = 0; i < Y; i += 1)
+                    {
+                        Thread.Sleep(25);
+                    }
+                }
+                );
+            animation1.Start();
+
+            punkte.FillEllipse(new SolidBrush(Color.FromName(farbe)), spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth, Y * spielfelder[0, 0].iheight, spielfelder[0, 0].iwidth, spielfelder[0, 0].iheight);
         }
     }
 }
