@@ -40,6 +40,9 @@ namespace VierGewinnt
 
         #endregion
 
+        public Spielfeldtile[,] spielfelder;
+
+
         public Form2(bool Fullscreen)
         {
             InitializeComponent();
@@ -65,23 +68,28 @@ namespace VierGewinnt
             this.BeginInvoke((MethodInvoker)delegate
             {
                 // wird Aufgerufen wenn Das From Geladen Wurde
+                spielfelder = new Spielfeldtile[iSpielfeldwidth, iSpielfeldheight];
+
+
                 SpielfeldZeichnen();
-            });
-            for (int x = 0; x < iSpielfeldwidth; x++)
-            {
-                for (int y = 0; y < iSpielfeldheight; y++)
+                Console.WriteLine("schese");
+                for (int x = 0; x < iSpielfeldwidth; x++)
                 {
-                    spielfelder[x,y].farbe = "white";
+                    for (int y = 0; y < iSpielfeldheight; y++)
+                    {
+                        spielfelder[x, y].farbe = "white";
+                    }
                 }
-            }
+            });
+
         }
-        public Spielfeldtile[,] spielfelder;
 
         private void SpielfeldZeichnen()
         {
             //erstellung des Spielfeldes
 
-            spielfelder = new Spielfeldtile[iSpielfeldwidth, iSpielfeldheight];
+
+
 
             int ispielfeldformat;
             if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)
@@ -109,11 +117,11 @@ namespace VierGewinnt
 
         protected override void OnClosed(EventArgs e)
         {
-            // wenn man mit X das Programm Schließet Schliest es sich Komlett mit einer Meldung
+            //wenn man mit X das Programm Schließet Schliest es sich Komlett mit einer Meldung
 
-            //MessageBox.Show("Spiel Beendet",
-            //    "Close Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            //base.OnClosed(e);
+            MessageBox.Show("Spiel Beendet",
+                "Close Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            base.OnClosed(e);
 
             Application.Exit();
         }
@@ -130,7 +138,6 @@ namespace VierGewinnt
         {
             X = 100;
             Y = 100;
-            Kreis(X, Y);
         }
 
         private void spielfeldtilezeichnen(int x, int y, int iwidth, int iheight)
@@ -179,14 +186,11 @@ namespace VierGewinnt
                 {
                     punkte.Clear(Form2.DefaultBackColor);
                     Y -= 10;
-                    Kreis(X, Y);
                     Thread.Sleep(25);
                 }
             }
             );
-            Console.WriteLine(animation1.Status);
             animation1.Start();
-            Console.WriteLine(animation1.Status);
             if (animation1.IsCompleted == true)
             {
                 AimationFlag = false;
@@ -203,7 +207,6 @@ namespace VierGewinnt
                 {
                     punkte.Clear(Form2.DefaultBackColor);
                     Y += 10;
-                    Kreis(X, Y);
                     Thread.Sleep(25);
                 }
             }
@@ -226,21 +229,35 @@ namespace VierGewinnt
             spielfeldtilezeichnen(20, 20, 20, 20);
         }
 
-        public string 
+        string currentcolor = "red";
+
         private void Form2_Click(object sender, EventArgs e)
         {
-            string currentcolor = "red";
             if (this.PointToClient(Cursor.Position).X>spielfelder[0,0].x && this.PointToClient(Cursor.Position).X<spielfelder[iSpielfeldwidth-1, iSpielfeldheight-1].x+spielfelder[iSpielfeldwidth-1, iSpielfeldheight-1].iwidth       &&     this.PointToClient(Cursor.Position).Y > spielfelder[0, 0].y && this.PointToClient(Cursor.Position).Y < spielfelder[iSpielfeldwidth-1, iSpielfeldheight-1].y + spielfelder[iSpielfeldwidth-1, iSpielfeldheight-1].iheight)
             {
                 int spalte;
+                bool gesetzt = false;
                 spalte = (this.PointToClient(Cursor.Position).X - spielfelder[0, 0].x)/ spielfelder[0, 0].iwidth;
-                Console.WriteLine(spalte);
-                for (int i = iSpielfeldheight; i > 0; i--)
+                for (int i = iSpielfeldheight-1; i >= 0; i--)
                 {
-                    if (spielfelder[i, spalte].farbe == "white")
+                    if (spielfelder[spalte, i].farbe == "white")
                     {
+                        gesetzt = true;
+                        spielfelder[spalte, i].farbe = currentcolor;
+                        Kreiszeichnen(spalte, i, currentcolor);
+                        Console.WriteLine(currentcolor);
                         i = 0;
-                        spielfelder[i, spalte].farbe = currentcolor;
+                    }
+                }
+                if (gesetzt)
+                {
+                    if(currentcolor == "red")
+                    {
+                        currentcolor = "yellow";
+                    }
+                    else
+                    {
+                        currentcolor = "red";
                     }
                 }
 
@@ -248,12 +265,10 @@ namespace VierGewinnt
 
         }
 
-        private void Kreis(int X, int Y)
+        private void Kreiszeichnen(int X, int Y, string farbe)
         {
-            Color farbe = Color.Goldenrod;
-            using (SolidBrush pinsel = new SolidBrush(farbe))
             {
-                punkte.FillEllipse((pinsel), X, Y, 100, 100);
+                punkte.FillEllipse(new SolidBrush(Color.FromName(farbe)), spielfelder[0, 0].x + X* spielfelder[0, 0].iwidth, spielfelder[0, 0].y + Y * spielfelder[0, 0].iheight, spielfelder[0,0].iwidth, spielfelder[0, 0].iheight);
             }
         }
     }
