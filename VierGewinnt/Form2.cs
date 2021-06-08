@@ -19,8 +19,8 @@ namespace VierGewinnt
             public string farbe;
         }
 
-        int iSpielfeldheightpx = 200;
-        int iSpielfeldwidthpx = 500;
+        private int iSpielfeldheightpx = 200;
+        private int iSpielfeldwidthpx = 500;
 
         int iSpielfeldheight = 7;
         int iSpielfeldwidth = 7;
@@ -31,9 +31,8 @@ namespace VierGewinnt
         public Form2(bool Fullscreen)
         {
             InitializeComponent();
-            iSpielfeldheightpx = this.Height-100;
-            iSpielfeldwidthpx = this.Width-100;
-
+            iSpielfeldheightpx = this.Height - 100;
+            iSpielfeldwidthpx = this.Width - 100;
 
             spielfeldgraphic = this.CreateGraphics();
 
@@ -71,7 +70,6 @@ namespace VierGewinnt
                 ispielfeldformat = iSpielfeldwidthpx / iSpielfeldwidth;
             }
 
-
             for (int x = 0; x < iSpielfeldwidth; x++)
             {
                 for (int y = 0; y < iSpielfeldheight; y++)
@@ -84,13 +82,8 @@ namespace VierGewinnt
                     spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
                 }
             }
-
         }
 
-        private void mybutton_Click(object sender, EventArgs e)
-        {
-            
-        }
         protected override void OnClosed(EventArgs e)
         {
             MessageBox.Show("Spiel Beendet",
@@ -202,6 +195,18 @@ namespace VierGewinnt
         private void Form2_Click(object sender, EventArgs e)
         {
             Console.WriteLine(this.PointToClient(new Point(X, Y)));
+            for (int x = 0; x < iSpielfeldwidth; x++)
+            {
+                for (int y = 0; y < iSpielfeldheight; y++)
+                {
+                    spielfelder[x, y].x = (this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2) + x * ispielfeldformat;
+                    spielfelder[x, y].y = (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2) + y * ispielfeldformat;
+                    spielfelder[x, y].iwidth = ispielfeldformat;
+                    spielfelder[x, y].iheight = ispielfeldformat;
+
+                    spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
+                }
+            }
         }
 
         private void Kreis(int X, int Y)
