@@ -19,11 +19,11 @@ namespace VierGewinnt
             public string farbe;
         }
 
-        int iSpielfeldheightpx = 200;
-        int iSpielfeldwidthpx = 500;
+        private int iSpielfeldheightpx = 200;
+        private int iSpielfeldwidthpx = 500;
 
-        int iSpielfeldheight = 20;
-        int iSpielfeldwidth = 37;
+        private int iSpielfeldheight = 20;
+        private int iSpielfeldwidth = 37;
 
         private int X, Y;
         private Graphics spielfeldgraphic;
@@ -31,9 +31,8 @@ namespace VierGewinnt
         public Form2(bool Fullscreen)
         {
             InitializeComponent();
-            iSpielfeldheightpx = this.Height-100;
-            iSpielfeldwidthpx = this.Width-100;
-
+            iSpielfeldheightpx = this.Height - 100;
+            iSpielfeldwidthpx = this.Width - 100;
 
             spielfeldgraphic = this.CreateGraphics();
 
@@ -70,7 +69,6 @@ namespace VierGewinnt
                 ispielfeldformat = iSpielfeldwidthpx / iSpielfeldwidth;
             }
 
-
             for (int x = 0; x < iSpielfeldwidth; x++)
             {
                 for (int y = 0; y < iSpielfeldheight; y++)
@@ -83,10 +81,8 @@ namespace VierGewinnt
                     spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
                 }
             }
-
         }
 
-        
         protected override void OnClosed(EventArgs e)
         {
             MessageBox.Show("Spiel Beendet",
@@ -111,9 +107,6 @@ namespace VierGewinnt
             X = 100;
             Y = 100;
             Kreis(X, Y);
-
-            
-
         }
 
         private void spielfeldtilezeichnen(int x, int y, int iwidth, int iheight)
@@ -201,7 +194,6 @@ namespace VierGewinnt
             {
                 ispielfeldformat = iSpielfeldwidthpx / iSpielfeldwidth;
             }
-
 
             for (int x = 0; x < iSpielfeldwidth; x++)
             {
