@@ -48,7 +48,7 @@ namespace VierGewinnt
             Y = 100;
             Kreis(X, Y);
 
-            g.DrawEllipse(new Pen(Color.Goldenrod, 20), 50 - 20, 50 - 20, 20 * 2, 20 * 2);
+            g.DrawEllipse(new Pen(Color.Goldenrod, 20), 50 - 45, 50 - 45, 45 * 2, 45 * 2);
         }
 
         private void btn_Up_Click(object sender, EventArgs e)
@@ -64,6 +64,7 @@ namespace VierGewinnt
                 }
             }
             );
+            animation.Start();
         }
 
         private void btn_down_Click(object sender, EventArgs e)
@@ -80,7 +81,7 @@ namespace VierGewinnt
                 }
             }
             );
-           
+            animation.Start();
         }
 
         private void Kreis(int X, int Y)
