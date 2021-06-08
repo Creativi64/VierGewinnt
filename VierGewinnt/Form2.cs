@@ -19,8 +19,11 @@ namespace VierGewinnt
             public string farbe;
         }
 
-        private int iSpielfeldheight = 6;
-        private int iSpielfeldwidth = 7;
+        int iSpielfeldheightpx = 200;
+        int iSpielfeldwidthpx = 500;
+
+        int iSpielfeldheight = 6;
+        int iSpielfeldwidth = 7;
 
         private int X, Y;
         private Graphics spielfeldgraphic;
@@ -28,7 +31,9 @@ namespace VierGewinnt
         public Form2(bool Fullscreen)
         {
             InitializeComponent();
-            Console.WriteLine("test");
+            iSpielfeldheightpx = this.Height-100;
+            iSpielfeldwidthpx = this.Width-100;
+
 
             spielfeldgraphic = this.CreateGraphics();
 
@@ -56,21 +61,21 @@ namespace VierGewinnt
             Spielfeldtile[,] spielfelder = new Spielfeldtile[iSpielfeldwidth, iSpielfeldheight];
 
             int ispielfeldformat;
-            if (spielfeldpanel.Height / iSpielfeldheight <= spielfeldpanel.Width / iSpielfeldwidth)
+            if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)
             {
-                ispielfeldformat = spielfeldpanel.Height / iSpielfeldheight;
+                ispielfeldformat = iSpielfeldheightpx / iSpielfeldheight;
             }
             else
             {
-                ispielfeldformat = spielfeldpanel.Width / iSpielfeldwidth;
+                ispielfeldformat = iSpielfeldwidthpx / iSpielfeldwidth;
             }
 
             for (int x = 0; x < iSpielfeldwidth; x++)
             {
                 for (int y = 0; y < iSpielfeldheight; y++)
                 {
-                    spielfelder[x, y].x = spielfeldpanel.Location.X + x * ispielfeldformat;
-                    spielfelder[x, y].y = spielfeldpanel.Location.Y + y * ispielfeldformat;
+                    spielfelder[x, y].x = (this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2) + x * ispielfeldformat;
+                    spielfelder[x, y].y = (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2) + y * ispielfeldformat;
                     spielfelder[x, y].iwidth = ispielfeldformat;
                     spielfelder[x, y].iheight = ispielfeldformat;
 
@@ -102,11 +107,7 @@ namespace VierGewinnt
                     spielfelder[x, y].iwidth = ispielfeldformat;
                     spielfelder[x, y].iheight = ispielfeldformat;
 
-                    spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
-                }
-            }
-        }
-
+        
         protected override void OnClosed(EventArgs e)
         {
             MessageBox.Show("Spiel Beendet",
@@ -131,7 +132,38 @@ namespace VierGewinnt
             X = 100;
             Y = 100;
             Kreis(X, Y);
-        }
+
+
+
+
+
+            Spielfeldtile[,] spielfelder = new Spielfeldtile[iSpielfeldwidth, iSpielfeldheight];
+
+            int ispielfeldformat;
+            if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)
+            {
+                ispielfeldformat = iSpielfeldheightpx / iSpielfeldheight;
+            }
+            else
+            {
+                ispielfeldformat = iSpielfeldwidthpx / iSpielfeldwidth;
+            }
+
+
+            for (int x = 0; x < iSpielfeldwidth; x++)
+            {
+                for (int y = 0; y < iSpielfeldheight; y++)
+                {
+                    spielfelder[x, y].x = (this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2) + x * ispielfeldformat;
+                    spielfelder[x, y].y = (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2) + y * ispielfeldformat;
+                    spielfelder[x, y].iwidth = ispielfeldformat;
+                    spielfelder[x, y].iheight = ispielfeldformat;
+
+                    spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
+                }
+            }
+
+
 
         private void spielfeldtilezeichnen(int x, int y, int iwidth, int iheight)
         {
