@@ -70,6 +70,7 @@ namespace VierGewinnt
                 ispielfeldformat = iSpielfeldwidthpx / iSpielfeldwidth;
             }
 
+
             for (int x = 0; x < iSpielfeldwidth; x++)
             {
                 for (int y = 0; y < iSpielfeldheight; y++)
@@ -82,30 +83,8 @@ namespace VierGewinnt
                     spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
                 }
             }
+
         }
-
-        private void AfterLoading(object sender, EventArgs e)
-        {
-            Spielfeldtile[,] spielfelder = new Spielfeldtile[iSpielfeldwidth, iSpielfeldheight];
-
-            int ispielfeldformat;
-            if (spielfeldpanel.Height / iSpielfeldheight <= spielfeldpanel.Width / iSpielfeldwidth)
-            {
-                ispielfeldformat = spielfeldpanel.Height / iSpielfeldheight;
-            }
-            else
-            {
-                ispielfeldformat = spielfeldpanel.Width / iSpielfeldwidth;
-            }
-
-            for (int x = 0; x < iSpielfeldwidth; x++)
-            {
-                for (int y = 0; y < iSpielfeldheight; y++)
-                {
-                    spielfelder[x, y].x = spielfeldpanel.Location.X + x * ispielfeldformat;
-                    spielfelder[x, y].y = spielfeldpanel.Location.Y + y * ispielfeldformat;
-                    spielfelder[x, y].iwidth = ispielfeldformat;
-                    spielfelder[x, y].iheight = ispielfeldformat;
 
         
         protected override void OnClosed(EventArgs e)
@@ -133,37 +112,9 @@ namespace VierGewinnt
             Y = 100;
             Kreis(X, Y);
 
+            
 
-
-
-
-            Spielfeldtile[,] spielfelder = new Spielfeldtile[iSpielfeldwidth, iSpielfeldheight];
-
-            int ispielfeldformat;
-            if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)
-            {
-                ispielfeldformat = iSpielfeldheightpx / iSpielfeldheight;
-            }
-            else
-            {
-                ispielfeldformat = iSpielfeldwidthpx / iSpielfeldwidth;
-            }
-
-
-            for (int x = 0; x < iSpielfeldwidth; x++)
-            {
-                for (int y = 0; y < iSpielfeldheight; y++)
-                {
-                    spielfelder[x, y].x = (this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2) + x * ispielfeldformat;
-                    spielfelder[x, y].y = (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2) + y * ispielfeldformat;
-                    spielfelder[x, y].iwidth = ispielfeldformat;
-                    spielfelder[x, y].iheight = ispielfeldformat;
-
-                    spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
-                }
-            }
-
-
+        }
 
         private void spielfeldtilezeichnen(int x, int y, int iwidth, int iheight)
         {
