@@ -70,7 +70,7 @@ namespace VierGewinnt
             this.btn_Up.TabIndex = 4;
             this.btn_Up.Text = "up";
             this.btn_Up.UseVisualStyleBackColor = true;
-            this.btn_Up.Click += new System.EventHandler(this.btn_Up_Click);
+            //this.btn_Up.Click += new System.EventHandler(this.btn_Up_Click);
             // 
             // btn_down
             // 
@@ -80,7 +80,7 @@ namespace VierGewinnt
             this.btn_down.TabIndex = 5;
             this.btn_down.Text = "down";
             this.btn_down.UseVisualStyleBackColor = true;
-            this.btn_down.Click += new System.EventHandler(this.btn_down_Click);
+            //this.btn_down.Click += new System.EventHandler(this.btn_down_Click);
             // 
             // button3
             // 
@@ -93,7 +93,8 @@ namespace VierGewinnt
             this.button3.TabIndex = 6;
             this.button3.UseVisualStyleBackColor = false;
    
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+
+            this.Paint += new System.Windows.Forms.PaintEventHandler(this.button3_Click);
             // 
             // Form2
             // 
