@@ -36,6 +36,8 @@ namespace VierGewinnt
         private Graphics spielfeldgraphic;
 
         private Graphics punkte;
+        private Graphics spielfeldbitmapgraphic;
+
 
         private bool AimationFlag = false;
 
@@ -78,7 +80,6 @@ namespace VierGewinnt
                 spielfelder = new Spielfeldtile[iSpielfeldwidth, iSpielfeldheight];
 
                 SpielfeldZeichnen();
-                Console.WriteLine("schese");
                 for (int x = 0; x < iSpielfeldwidth; x++)
                 {
                     for (int y = 0; y < iSpielfeldheight; y++)
@@ -98,39 +99,45 @@ namespace VierGewinnt
             });
         }
 
+        Bitmap spielfeld;
         private void SpielfeldZeichnen()
         {
             //erstellung des Spielfeldes
-            Task Spielfeld = new Task(() =>
+            if (spielfeld == null)
+            {
+                int ispielfeldformat;
+                if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)
                 {
-                    int ispielfeldformat;
-                    if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)
-                    {
-                        ispielfeldformat = iSpielfeldheightpx / iSpielfeldheight;
-                    }
-                    else
-                    {
-                        ispielfeldformat = iSpielfeldwidthpx / iSpielfeldwidth;
-                    }
+                    ispielfeldformat = iSpielfeldheightpx / iSpielfeldheight;
+                }
+                else
+                {
+                    ispielfeldformat = iSpielfeldwidthpx / iSpielfeldwidth;
+                }
 
-                    for (int x = 0; x < iSpielfeldwidth; x++)
+                for (int x = 0; x < iSpielfeldwidth; x++)
+                {
+                    for (int y = 0; y < iSpielfeldheight; y++)
                     {
-                        for (int y = 0; y < iSpielfeldheight; y++)
-                        {
-                            spielfelder[x, y].x = (this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2) + x * ispielfeldformat;
-                            spielfelder[x, y].y = (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2) + y * ispielfeldformat;
-                            spielfelder[x, y].iwidth = ispielfeldformat;
-                            spielfelder[x, y].iheight = ispielfeldformat;
+                        spielfelder[x, y].x = (this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2) + x * ispielfeldformat;
+                        spielfelder[x, y].y = (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2) + y * ispielfeldformat;
+                        spielfelder[x, y].iwidth = ispielfeldformat;
+                        spielfelder[x, y].iheight = ispielfeldformat;
+                        spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
 
-                            spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
-                            if (spielfelder[x, y].farbe != "white" && spielfelder[x, y].farbe != null)
-                            {
-                                Kreiszeichnen(x, y, spielfelder[x, y].farbe);
-                            }
-                        }
+                        //if (spielfelder[x, y].farbe != "white" && spielfelder[x, y].farbe != null)
+                        //{
+                        //    Kreiszeichnen(x, y, spielfelder[x, y].farbe);
+
+                        //}
+
                     }
-                });
-            Spielfeld.RunSynchronously();
+                }
+                spielfeld = new Bitmap(spielfelder[0,0].iwidth*iSpielfeldwidth, spielfelder[0, 0].iheight * iSpielfeldheight);
+
+
+            }
+
         }
 
         protected override void OnClosed(EventArgs e)
@@ -157,8 +164,16 @@ namespace VierGewinnt
 
         
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            X = 100;
+            Y = 100;
+        }
+
+        bool tileerstellt = false;
         private void spielfeldtilezeichnen(int x, int y, int iwidth, int iheight)
         {
+
             //int x = 50, y = 50, iwidth = 100, iheight = 100;
 
             double dDreieckkprozent = 0.3;
