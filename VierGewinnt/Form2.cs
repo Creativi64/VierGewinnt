@@ -25,12 +25,14 @@ namespace VierGewinnt
         private int iSpielfeldheightpx;
         private int iSpielfeldwidthpx;
 
-        private int iSpielfeldheight = 40;
-        private int iSpielfeldwidth = 62;
+        private int iSpielfeldheight = 6;
+        private int iSpielfeldwidth = 7;
 
         private int X, Y;
         private Graphics spielfeldgraphic;
         private Graphics punkte;
+        private Graphics spielfeldbitmapgraphic;
+
 
         private bool AimationFlag = false;
 
@@ -76,7 +78,6 @@ namespace VierGewinnt
 
 
                 SpielfeldZeichnen();
-                Console.WriteLine("schese");
                 for (int x = 0; x < iSpielfeldwidth; x++)
                 {
                     for (int y = 0; y < iSpielfeldheight; y++)
@@ -97,35 +98,43 @@ namespace VierGewinnt
 
         }
 
+        Bitmap spielfeld;
         private void SpielfeldZeichnen()
         {
             //erstellung des Spielfeldes
-            int ispielfeldformat;
-            if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)
+            if (spielfeld == null)
             {
-                ispielfeldformat = iSpielfeldheightpx / iSpielfeldheight;
-            }
-            else
-            {
-                ispielfeldformat = iSpielfeldwidthpx / iSpielfeldwidth;
-            }
-
-            for (int x = 0; x < iSpielfeldwidth; x++)
-            {
-                for (int y = 0; y < iSpielfeldheight; y++)
+                int ispielfeldformat;
+                if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)
                 {
-                    spielfelder[x, y].x = (this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2) + x * ispielfeldformat;
-                    spielfelder[x, y].y = (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2) + y * ispielfeldformat;
-                    spielfelder[x, y].iwidth = ispielfeldformat;
-                    spielfelder[x, y].iheight = ispielfeldformat;
+                    ispielfeldformat = iSpielfeldheightpx / iSpielfeldheight;
+                }
+                else
+                {
+                    ispielfeldformat = iSpielfeldwidthpx / iSpielfeldwidth;
+                }
 
-                    spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
-                    if (spielfelder[x, y].farbe != "white" && spielfelder[x, y].farbe != null)
+                for (int x = 0; x < iSpielfeldwidth; x++)
+                {
+                    for (int y = 0; y < iSpielfeldheight; y++)
                     {
-                        Kreiszeichnen(x, y, spielfelder[x, y].farbe);
+                        spielfelder[x, y].x = (this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2) + x * ispielfeldformat;
+                        spielfelder[x, y].y = (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2) + y * ispielfeldformat;
+                        spielfelder[x, y].iwidth = ispielfeldformat;
+                        spielfelder[x, y].iheight = ispielfeldformat;
+                        spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
+
+                        //if (spielfelder[x, y].farbe != "white" && spielfelder[x, y].farbe != null)
+                        //{
+                        //    Kreiszeichnen(x, y, spielfelder[x, y].farbe);
+
+                        //}
 
                     }
                 }
+                spielfeld = new Bitmap(spielfelder[0,0].iwidth*iSpielfeldwidth, spielfelder[0, 0].iheight * iSpielfeldheight);
+
+
             }
 
         }
@@ -155,45 +164,47 @@ namespace VierGewinnt
             Y = 100;
         }
 
+        bool tileerstellt = false;
         private void spielfeldtilezeichnen(int x, int y, int iwidth, int iheight)
         {
+
             //int x = 50, y = 50, iwidth = 100, iheight = 100;
             Task FeldZeichnen = new Task(() =>
             {
-                GraphicsContainer graphicsContainer;
-                graphicsContainer = spielfeldgraphic.BeginContainer();
-                double dDreieckkprozent = 0.3;
-                PointF[,] Dreieckspunkte = new PointF[4, 3];
-                Dreieckspunkte[0, 0] = new PointF(x, y);
-                Dreieckspunkte[0, 1] = new PointF((float)(x + (iwidth * dDreieckkprozent)), y);
-                Dreieckspunkte[0, 2] = new PointF((x), (float)(y + (iheight * dDreieckkprozent)));
+                    GraphicsContainer graphicsContainer;
+                    graphicsContainer = spielfeldgraphic.BeginContainer();
+                    double dDreieckkprozent = 0.3;
+                    PointF[,] Dreieckspunkte = new PointF[4, 3];
+                    Dreieckspunkte[0, 0] = new PointF(x, y);
+                    Dreieckspunkte[0, 1] = new PointF((float)(x + (iwidth * dDreieckkprozent)), y);
+                    Dreieckspunkte[0, 2] = new PointF((x), (float)(y + (iheight * dDreieckkprozent)));
 
-                Dreieckspunkte[1, 0] = new PointF(x + iwidth, y);
-                Dreieckspunkte[1, 1] = new PointF((float)(x + iwidth - (iwidth * dDreieckkprozent)), y);
-                Dreieckspunkte[1, 2] = new PointF((x + iwidth), (float)(y + (iheight * dDreieckkprozent)));
+                    Dreieckspunkte[1, 0] = new PointF(x + iwidth, y);
+                    Dreieckspunkte[1, 1] = new PointF((float)(x + iwidth - (iwidth * dDreieckkprozent)), y);
+                    Dreieckspunkte[1, 2] = new PointF((x + iwidth), (float)(y + (iheight * dDreieckkprozent)));
 
-                Dreieckspunkte[2, 0] = new PointF(x, y + iheight);
-                Dreieckspunkte[2, 1] = new PointF((float)(x + (iwidth * dDreieckkprozent)), y + iheight);
-                Dreieckspunkte[2, 2] = new PointF((x), (float)(y + iheight - (iheight * dDreieckkprozent)));
+                    Dreieckspunkte[2, 0] = new PointF(x, y + iheight);
+                    Dreieckspunkte[2, 1] = new PointF((float)(x + (iwidth * dDreieckkprozent)), y + iheight);
+                    Dreieckspunkte[2, 2] = new PointF((x), (float)(y + iheight - (iheight * dDreieckkprozent)));
 
-                Dreieckspunkte[3, 0] = new PointF(x + iwidth, y + iheight);
-                Dreieckspunkte[3, 1] = new PointF((float)(x + iwidth - (iwidth * dDreieckkprozent)), y + iheight);
-                Dreieckspunkte[3, 2] = new PointF((x + iwidth), (float)(y + iheight - (iheight * dDreieckkprozent)));
+                    Dreieckspunkte[3, 0] = new PointF(x + iwidth, y + iheight);
+                    Dreieckspunkte[3, 1] = new PointF((float)(x + iwidth - (iwidth * dDreieckkprozent)), y + iheight);
+                    Dreieckspunkte[3, 2] = new PointF((x + iwidth), (float)(y + iheight - (iheight * dDreieckkprozent)));
 
-                spielfeldgraphic.DrawRectangle(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
-                spielfeldgraphic.DrawEllipse(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
+                    spielfeldgraphic.DrawRectangle(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
+                    spielfeldgraphic.DrawEllipse(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
 
-                PointF[] hilfsarray = new PointF[3];
+                    PointF[] hilfsarray = new PointF[3];
 
-                for (int j = 0; j < 4; j++)
-                {
-                    for (int i = 0; i < 3; i++)
+                    for (int j = 0; j < 4; j++)
                     {
-                        hilfsarray[i] = Dreieckspunkte[j, i];
+                        for (int i = 0; i < 3; i++)
+                        {
+                            hilfsarray[i] = Dreieckspunkte[j, i];
+                        }
+                        spielfeldgraphic.FillPolygon(new SolidBrush(Color.Blue), hilfsarray);
                     }
-                    spielfeldgraphic.FillPolygon(new SolidBrush(Color.Blue), hilfsarray);
-                }
-                spielfeldgraphic.EndContainer(graphicsContainer);
+                    spielfeldgraphic.EndContainer(graphicsContainer);
             }
             );
             FeldZeichnen.RunSynchronously();
