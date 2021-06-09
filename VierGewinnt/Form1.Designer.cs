@@ -113,6 +113,7 @@ namespace VierGewinnt
             this.Controls.Add(this.lab1);
             this.Controls.Add(this.btn_Play);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(810, 490);
             this.Name = "Form1";
             this.Text = "                      ";

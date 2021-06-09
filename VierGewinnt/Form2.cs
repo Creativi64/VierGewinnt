@@ -35,7 +35,6 @@ namespace VierGewinnt
         private Graphics spielfeldgraphic;
 
         private Graphics punkte;
-        private Graphics spielfeldbitmapgraphic;
 
         private bool AimationFlag = false;
 
@@ -59,11 +58,14 @@ namespace VierGewinnt
             {
                 this.FormBorderStyle = FormBorderStyle.None;
                 this.WindowState = FormWindowState.Maximized;
+
+                this.MaximizeBox = false;
             }
             else
             {
                 this.FormBorderStyle = FormBorderStyle.FixedSingle;
                 this.WindowState = FormWindowState.Normal;
+                this.MaximizeBox = false;
             }
             iSpielfeldheightpx = this.Height - 100;
             iSpielfeldwidthpx = this.Width - 100;
@@ -87,15 +89,15 @@ namespace VierGewinnt
                 if ((new Random()).Next(0, 2) == 0)
                 {
                     currentcolor = "red";
+                    lab_Player.Text = "Player Red";
                 }
                 else
                 {
                     currentcolor = "yellow";
+                    lab_Player.Text = "Player Yellow";
                 }
             });
         }
-
-        private Bitmap spielfeld;
 
         private void SpielfeldZeichnen()
         {
@@ -227,10 +229,12 @@ namespace VierGewinnt
                     if (currentcolor == "red")
                     {
                         currentcolor = "yellow";
+                        lab_Player.Text = "Player Yellow";
                     }
                     else
                     {
                         currentcolor = "red";
+                        lab_Player.Text = "Player Red";
                     }
                 }
             }
@@ -240,26 +244,54 @@ namespace VierGewinnt
 
         private void KreiszeichnenAnimation(int X, int Y, string farbe)
         {
+            int multiplyer = 2;
             Task animation1 = new Task(() =>
             {
                 AimationFlag = true;
-                for (int i = 0; i < Y; i += 1)
+                for (int i = 0; i < Y * multiplyer; i += 1)
                 {
-                    punkte.FillEllipse(new SolidBrush(this.BackColor),
-                     spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + 2,
-                     spielfelder[0, 0].y + (i - 1) * spielfelder[0, 0].iheight + 2,
-                     spielfelder[0, 0].iwidth - 4, spielfelder[0, 0].iheight - 4);
+                    if (i == 0 || i + 1 == Y * multiplyer)
+                    {
+                        punkte.FillEllipse(new SolidBrush(Color.FromName(farbe)),
+                         spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + 2,
+                         spielfelder[0, 0].y + (i / 2) * spielfelder[0, 0].iheight + 2,
+                         spielfelder[0, 0].iwidth - 4,
+                         spielfelder[0, 0].iheight - 4);
+                    }
+                    else
+                    {
+                        punkte.FillEllipse(new SolidBrush(this.BackColor),
+                          spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + 2,
+                          spielfelder[0, 0].y + ((i - 1) / 2) * spielfelder[0, 0].iheight + 2,
+                          spielfelder[0, 0].iwidth - 4, spielfelder[0, 0].iheight - 4);
 
-                    punkte.FillEllipse(new SolidBrush(Color.FromName(farbe)),
-                     spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + 2,
-                     spielfelder[0, 0].y + i * spielfelder[0, 0].iheight + 2,
-                     spielfelder[0, 0].iwidth - 4, spielfelder[0, 0].iheight - 4);
+                        punkte.FillEllipse(new SolidBrush(Color.FromName(farbe)),
+                          spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + 2,
+                          spielfelder[0, 0].y + ((i * spielfelder[0, 0].iheight) / 2) + 2,
+                          spielfelder[0, 0].iwidth - 4,
+                          spielfelder[0, 0].iheight - 4);
 
+                        spielfeldtilezeichnen(
+                            spielfelder[X, i / 2].x,
+                            spielfelder[X, i / 2].y,
+                            spielfelder[X, i / 2].iwidth,
+                            spielfelder[X, i / 2].iheight);
+
+                        if (i + 1 < iSpielfeldheight)
+                        {
+                            spielfeldtilezeichnen(
+                                spielfelder[X, (i + 1) / 2].x,
+                                spielfelder[X, (i + 1) / 2].y,
+                                spielfelder[X, (i + 1) / 2].iwidth,
+                                spielfelder[X, (i + 1) / 2].iheight);
+                        }
+                    }
                     Thread.Sleep(100);
                 }
             }
             );
             animation1.RunSynchronously();
+            AimationFlag = false;
         }
 
         private void Kreiszeichnen(int X, int Y, string farbe)

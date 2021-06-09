@@ -33,6 +33,7 @@ namespace VierGewinnt
             this.button1 = new System.Windows.Forms.Button();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.btn_Test = new System.Windows.Forms.Button();
+            this.lab_Player = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -59,20 +60,31 @@ namespace VierGewinnt
             this.btn_Test.UseVisualStyleBackColor = true;
             this.btn_Test.Click += new System.EventHandler(this.btn_Test_Click);
             // 
+            // lab_Player
+            // 
+            this.lab_Player.AutoSize = true;
+            this.lab_Player.Location = new System.Drawing.Point(13, 85);
+            this.lab_Player.Name = "lab_Player";
+            this.lab_Player.Size = new System.Drawing.Size(0, 15);
+            this.lab_Player.TabIndex = 2;
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(794, 451);
+            this.Controls.Add(this.lab_Player);
             this.Controls.Add(this.btn_Test);
             this.Controls.Add(this.button1);
+            this.MaximizeBox = false;
             this.Name = "Form2";
             this.Text = "Menue";
             this.Click += new System.EventHandler(this.Form2_Click);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form2_Paint);
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -81,5 +93,6 @@ namespace VierGewinnt
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.BindingSource bindingSource1;
         private System.Windows.Forms.Button btn_Test;
+        private System.Windows.Forms.Label lab_Player;
     }
 }
