@@ -32,15 +32,12 @@ namespace VierGewinnt
 
         //private int X, Y;
 
-        private GraphicsContainer SpielfeldContainer;
         private Graphics spielfeldgraphic;
 
         private Graphics punkte;
         private Graphics spielfeldbitmapgraphic;
 
-
         private bool AimationFlag = false;
-
 
         public Spielfeldtile[,] spielfelder;
 
@@ -90,7 +87,6 @@ namespace VierGewinnt
                 if ((new Random()).Next(0, 2) == 0)
                 {
                     currentcolor = "red";
-                    Console.WriteLine("easgtfvsgb");
                 }
                 else
                 {
@@ -99,45 +95,38 @@ namespace VierGewinnt
             });
         }
 
-        Bitmap spielfeld;
+        private Bitmap spielfeld;
+
         private void SpielfeldZeichnen()
         {
             //erstellung des Spielfeldes
-            if (spielfeld == null)
+
+            int ispielfeldformat;
+            if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)
             {
-                int ispielfeldformat;
-                if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)
-                {
-                    ispielfeldformat = iSpielfeldheightpx / iSpielfeldheight;
-                }
-                else
-                {
-                    ispielfeldformat = iSpielfeldwidthpx / iSpielfeldwidth;
-                }
-
-                for (int x = 0; x < iSpielfeldwidth; x++)
-                {
-                    for (int y = 0; y < iSpielfeldheight; y++)
-                    {
-                        spielfelder[x, y].x = (this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2) + x * ispielfeldformat;
-                        spielfelder[x, y].y = (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2) + y * ispielfeldformat;
-                        spielfelder[x, y].iwidth = ispielfeldformat;
-                        spielfelder[x, y].iheight = ispielfeldformat;
-                        spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
-
-                        //if (spielfelder[x, y].farbe != "white" && spielfelder[x, y].farbe != null)
-                        //{
-                        //    Kreiszeichnen(x, y, spielfelder[x, y].farbe);
-
-                        //}
-
-                    }
-                }
-                spielfeld = new Bitmap(spielfelder[0,0].iwidth*iSpielfeldwidth, spielfelder[0, 0].iheight * iSpielfeldheight);
-
-
+                ispielfeldformat = iSpielfeldheightpx / iSpielfeldheight;
+            }
+            else
+            {
+                ispielfeldformat = iSpielfeldwidthpx / iSpielfeldwidth;
             }
 
+            for (int x = 0; x < iSpielfeldwidth; x++)
+            {
+                for (int y = 0; y < iSpielfeldheight; y++)
+                {
+                    spielfelder[x, y].x = (this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2) + x * ispielfeldformat;
+                    spielfelder[x, y].y = (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2) + y * ispielfeldformat;
+                    spielfelder[x, y].iwidth = ispielfeldformat;
+                    spielfelder[x, y].iheight = ispielfeldformat;
+                    spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
+
+                    if (spielfelder[x, y].farbe != "white" && spielfelder[x, y].farbe != null)
+                    {
+                        Kreiszeichnen(x, y, spielfelder[x, y].farbe);
+                    }
+                }
+            }
         }
 
         protected override void OnClosed(EventArgs e)
@@ -162,18 +151,8 @@ namespace VierGewinnt
             this.Hide();
         }
 
-        
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            X = 100;
-            Y = 100;
-        }
-
-        bool tileerstellt = false;
         private void spielfeldtilezeichnen(int x, int y, int iwidth, int iheight)
         {
-
             //int x = 50, y = 50, iwidth = 100, iheight = 100;
 
             double dDreieckkprozent = 0.3;
@@ -215,10 +194,7 @@ namespace VierGewinnt
             {
                 SpielfeldZeichnen();
             }
-        
         }
-
-        
 
         private void Form2_Click(object sender, EventArgs e)
         {
@@ -300,7 +276,7 @@ namespace VierGewinnt
             var Result = MessageBox.Show($"{Gewinner} Hat gewonnen",
                 $"{Gewinner} Hat Gewonnen", MessageBoxButtons.RetryCancel, MessageBoxIcon.Information);
 
-            if (Result == DialogResult.Retry )
+            if (Result == DialogResult.Retry)
             {
                 Form2 frm = new Form2(Fullscreen);
 
@@ -318,7 +294,6 @@ namespace VierGewinnt
 
         private void btn_Test_Click(object sender, EventArgs e)
         {
-           
         }
     }
 }
