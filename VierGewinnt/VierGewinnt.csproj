@@ -6,6 +6,7 @@
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon />
     <StartupObject />
+    <NeutralLanguage />
   </PropertyGroup>
 
   <ItemGroup>
