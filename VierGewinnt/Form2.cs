@@ -27,8 +27,8 @@ namespace VierGewinnt
         private int iSpielfeldheightpx;
         private int iSpielfeldwidthpx;
 
-        private int iSpielfeldheight = 6;
-        private int iSpielfeldwidth = 7;
+        private int iSpielfeldheight = 3;
+        private int iSpielfeldwidth = 2;
 
         //private int X, Y;
 
@@ -286,18 +286,21 @@ namespace VierGewinnt
 
                     int xabstand;
                     int maxformat;
+                    int widthheightdif;
                     xabstand = spalte - reihe;
+                    widthheightdif = iSpielfeldwidth - iSpielfeldheight;
                     if (iSpielfeldheight > iSpielfeldwidth)
                     {
-                        maxformat = iSpielfeldwidth;
+                        maxformat = iSpielfeldheight;
+
                     }
                     else
                     {
-                        maxformat = iSpielfeldheight;
+                        maxformat = iSpielfeldwidth;
                     }
                     for (int xy = 0; xy < maxformat; xy++)
                     {
-                        if (xy + xabstand < maxformat && xy + xabstand >= 0 && spielfelder[xy + xabstand, xy].farbe == currentcolor)
+                        if (xy+xabstand<iSpielfeldwidth&&xy+xabstand>=0&& xy < iSpielfeldheight && xy >= 0   && spielfelder[xy + xabstand, xy].farbe == currentcolor)
                         {
                             infolge++;
                         }
@@ -310,10 +313,12 @@ namespace VierGewinnt
                             gewonnen = true;
                         }
                     }
+                    xabstand =  -1 + (spalte - reihe + (iSpielfeldheight - (spalte*2)));
 
-                    for (int xy = 0; xy < maxformat; xy++)
+
+                    for (int xy = 0; xy < maxformat+1; xy++)
                     {
-                        if (iSpielfeldwidth - xy + xabstand < maxformat && iSpielfeldwidth - xy + xabstand >= 0 && spielfelder[iSpielfeldwidth - xy + xabstand, xy].farbe == currentcolor)
+                        if (iSpielfeldwidth - xy - xabstand - widthheightdif < iSpielfeldwidth && iSpielfeldwidth - xy - xabstand - widthheightdif >= 0 && xy - 1 < iSpielfeldheight && xy - 1 >= 0 && spielfelder[iSpielfeldwidth - xy - xabstand - widthheightdif, xy - 1].farbe == currentcolor)
                         {
                             infolge++;
                         }
@@ -342,9 +347,23 @@ namespace VierGewinnt
                         currentcolor = "red";
                         lab_Player.Text = "Player Red";
                     }
+                    bool zugmöglich = false;
+                    for (int x = 0; x < iSpielfeldwidth; x++)
+                    {
+                        for (int y = 0; y < iSpielfeldheight; y++)
+                        {
+                            if(spielfelder[x,y].farbe == "white")
+                            {
+                                zugmöglich = true;
+                            }
+                        }
+                    }
+                    if (!zugmöglich)
+                    {
+                        Console.WriteLine("Ende");
+                    }
                 }
             }
-
             Console.WriteLine(this.PointToClient(new Point((Cursor.Position).X, (Cursor.Position).Y)));
         }
 
