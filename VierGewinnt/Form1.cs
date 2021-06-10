@@ -14,7 +14,7 @@ namespace VierGewinnt
     public partial class Form1 : Form
     {
         public bool Fullscreen { get; private set; }
-
+        
         #region Console
 
         [DllImport("kernel32.dll", SetLastError = true)]
@@ -26,6 +26,7 @@ namespace VierGewinnt
         {
             InitializeComponent();
             AllocConsole();
+            
         }
 
 
@@ -48,10 +49,10 @@ namespace VierGewinnt
 
         private void btn_Network_Click(object sender, EventArgs e)
         {
-            ////Form3 frm = new Form3(Fullscreen);
+            Form3 frm = new Form3(Fullscreen);
 
-            //frm.Show();
-            //this.Hide();
+            frm.Show();
+            this.Hide();
         }
 
         private void btn_Quit_Click(object sender, EventArgs e)

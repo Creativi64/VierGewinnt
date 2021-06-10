@@ -160,6 +160,11 @@ namespace VierGewinnt
                     spielfelder[x, y].iwidth = ispielfeldformat;
                     spielfelder[x, y].iheight = ispielfeldformat;
                     spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
+                    
+                    if (spielfelder[x, y].farbe != "white" && spielfelder[x, y].farbe != null)
+                    {
+                        Kreiszeichnen(x, y, spielfelder[x, y].farbe);
+                    }
                 }
             }
         }
@@ -230,7 +235,7 @@ namespace VierGewinnt
 
         private void Form2_Paint(object sender, PaintEventArgs e)
         {
-            if (AimationFlag == true)
+            if (AimationFlag == false)
             {
                 SpielfeldZeichnen();
             }
@@ -415,7 +420,8 @@ namespace VierGewinnt
                             punkte.FillEllipse(new SolidBrush(this.BackColor),
                              spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + 2,
                              spielfelder[0, 0].y + ((i - 1) / multiplyer) * spielfelder[0, 0].iheight + 2,
-                             spielfelder[0, 0].iwidth - 4, spielfelder[0, 0].iheight - 4);
+                             spielfelder[0, 0].iwidth - 3,
+                             spielfelder[0, 0].iheight - 3);
 
                             punkte.FillEllipse(new SolidBrush(Color.FromName(farbe)),
                              spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + 2,
