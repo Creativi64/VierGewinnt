@@ -27,8 +27,8 @@ namespace VierGewinnt
         private int iSpielfeldheightpx;
         private int iSpielfeldwidthpx;
 
-        private int iSpielfeldheight = 8;
-        private int iSpielfeldwidth =8;
+        private int iSpielfeldheight = 6;
+        private int iSpielfeldwidth =7;
 
         //private int X, Y;
 
