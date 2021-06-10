@@ -27,8 +27,8 @@ namespace VierGewinnt
         private int iSpielfeldheightpx;
         private int iSpielfeldwidthpx;
 
-        private int iSpielfeldheight = 6;
-        private int iSpielfeldwidth = 7;
+        private int iSpielfeldheight = 7;
+        private int iSpielfeldwidth = 9;
 
         //private int X, Y;
 
@@ -106,36 +106,33 @@ namespace VierGewinnt
         private void SpielfeldZeichnen()
         {
             //erstellung des Spielfeldes
-            if (!tileerzeugt)
+
+            int ispielfeldformat;
+            if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)
             {
-                int ispielfeldformat;
-                if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)
-                {
-                    ispielfeldformat = iSpielfeldheightpx / iSpielfeldheight;
-                }
-                else
-                {
-                    ispielfeldformat = iSpielfeldwidthpx / iSpielfeldwidth;
-                }
+                ispielfeldformat = iSpielfeldheightpx / iSpielfeldheight;
+            }
+            else
+            {
+                ispielfeldformat = iSpielfeldwidthpx / iSpielfeldwidth;
+            }
 
-                for (int x = 0; x < iSpielfeldwidth; x++)
+            for (int x = 0; x < iSpielfeldwidth; x++)
+            {
+                for (int y = 0; y < iSpielfeldheight; y++)
                 {
-                    for (int y = 0; y < iSpielfeldheight; y++)
+                    spielfelder[x, y].x = (this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2) + x * ispielfeldformat;
+                    spielfelder[x, y].y = (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2) + y * ispielfeldformat;
+                    spielfelder[x, y].iwidth = ispielfeldformat;
+                    spielfelder[x, y].iheight = ispielfeldformat;
+                    spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
+
+                    if (spielfelder[x, y].farbe != "white" && spielfelder[x, y].farbe != null)
                     {
-                        spielfelder[x, y].x = (this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2) + x * ispielfeldformat;
-                        spielfelder[x, y].y = (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2) + y * ispielfeldformat;
-                        spielfelder[x, y].iwidth = ispielfeldformat;
-                        spielfelder[x, y].iheight = ispielfeldformat;
-                        spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
-
-                        if (spielfelder[x, y].farbe != "white" && spielfelder[x, y].farbe != null)
-                        {
-                            Kreiszeichnen(x, y, spielfelder[x, y].farbe);
-                        }
+                        Kreiszeichnen(x, y, spielfelder[x, y].farbe);
                     }
                 }
             }
-
         }
 
         protected override void OnClosed(EventArgs e)
@@ -265,18 +262,21 @@ namespace VierGewinnt
 
                     int xabstand;
                     int maxformat;
+                    int widthheightdif;
                     xabstand = spalte - reihe;
-                    if(iSpielfeldheight > iSpielfeldwidth)
+                    widthheightdif = iSpielfeldwidth - iSpielfeldheight;
+                    if (iSpielfeldheight > iSpielfeldwidth)
                     {
-                        maxformat = iSpielfeldwidth;
+                        maxformat = iSpielfeldheight;
+
                     }
                     else
                     {
-                        maxformat = iSpielfeldheight;
+                        maxformat = iSpielfeldwidth;
                     }
                     for (int xy = 0; xy < maxformat; xy++)
                     {
-                        if (xy+xabstand<maxformat&&xy+xabstand>=0&&spielfelder[xy + xabstand, xy].farbe == currentcolor)
+                        if (xy+xabstand<iSpielfeldwidth&&xy+xabstand>=0&& xy < iSpielfeldheight && xy >= 0   && spielfelder[xy + xabstand, xy].farbe == currentcolor)
                         {
                             infolge++;
                         }
@@ -289,10 +289,16 @@ namespace VierGewinnt
                             gewonnen = true;
                         }
                     }
+                    xabstand =  -1 + (spalte - reihe + (iSpielfeldheight - (spalte*2)));
+                    Console.WriteLine("abstand:" + xabstand);
+                    Console.WriteLine("widthheightdif:" + widthheightdif);
 
-                    for (int xy = 0; xy < maxformat; xy++)
+                    for (int xy = 0; xy < maxformat+1; xy++)
                     {
-                        if (iSpielfeldwidth - xy + xabstand < maxformat && iSpielfeldwidth - xy + xabstand >= 0 && spielfelder[iSpielfeldwidth - xy + xabstand, xy].farbe == currentcolor)
+                        Console.WriteLine((iSpielfeldwidth - xy - xabstand - widthheightdif) + "|" + (xy - 1));
+                        if (iSpielfeldwidth - xy - xabstand - widthheightdif < iSpielfeldwidth && iSpielfeldwidth - xy - xabstand - widthheightdif >= 0 && xy - 1 < iSpielfeldheight && xy - 1 >= 0 && spielfelder[iSpielfeldwidth - xy - xabstand - widthheightdif, xy - 1].farbe == currentcolor)
+
+                        //if (iSpielfeldwidth - xy + xabstand - widthheightdif < iSpielfeldwidth && iSpielfeldwidth - xy + xabstand - widthheightdif >= 0    && xy - widthheightdif < iSpielfeldheight && xy - widthheightdif >= 0 &&   spielfelder[iSpielfeldwidth - xy + xabstand - widthheightdif, xy - widthheightdif].farbe == currentcolor)
                         {
                             infolge++;
                         }
