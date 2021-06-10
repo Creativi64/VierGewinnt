@@ -157,6 +157,8 @@ namespace VierGewinnt
         {
             //int x = 50, y = 50, iwidth = 100, iheight = 100;
 
+            
+
             double dDreieckkprozent = 0.3;
             PointF[,] Dreieckspunkte = new PointF[4, 3];
             Dreieckspunkte[0, 0] = new PointF(x, y);
@@ -271,7 +273,7 @@ namespace VierGewinnt
                           spielfelder[0, 0].iwidth - 4,
                           spielfelder[0, 0].iheight - 4);
 
-                        spielfeldtilezeichnen(
+                      spielfeldtilezeichnen(
                             spielfelder[X, i / 2].x,
                             spielfelder[X, i / 2].y,
                             spielfelder[X, i / 2].iwidth,
