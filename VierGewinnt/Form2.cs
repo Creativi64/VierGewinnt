@@ -27,8 +27,8 @@ namespace VierGewinnt
         private int iSpielfeldheightpx;
         private int iSpielfeldwidthpx;
 
-        private int iSpielfeldheight = 7;
-        private int iSpielfeldwidth = 9;
+        private int iSpielfeldheight = 3;
+        private int iSpielfeldwidth = 2;
 
         //private int X, Y;
 
@@ -290,15 +290,11 @@ namespace VierGewinnt
                         }
                     }
                     xabstand =  -1 + (spalte - reihe + (iSpielfeldheight - (spalte*2)));
-                    Console.WriteLine("abstand:" + xabstand);
-                    Console.WriteLine("widthheightdif:" + widthheightdif);
+
 
                     for (int xy = 0; xy < maxformat+1; xy++)
                     {
-                        Console.WriteLine((iSpielfeldwidth - xy - xabstand - widthheightdif) + "|" + (xy - 1));
                         if (iSpielfeldwidth - xy - xabstand - widthheightdif < iSpielfeldwidth && iSpielfeldwidth - xy - xabstand - widthheightdif >= 0 && xy - 1 < iSpielfeldheight && xy - 1 >= 0 && spielfelder[iSpielfeldwidth - xy - xabstand - widthheightdif, xy - 1].farbe == currentcolor)
-
-                        //if (iSpielfeldwidth - xy + xabstand - widthheightdif < iSpielfeldwidth && iSpielfeldwidth - xy + xabstand - widthheightdif >= 0    && xy - widthheightdif < iSpielfeldheight && xy - widthheightdif >= 0 &&   spielfelder[iSpielfeldwidth - xy + xabstand - widthheightdif, xy - widthheightdif].farbe == currentcolor)
                         {
                             infolge++;
                         }
@@ -327,9 +323,23 @@ namespace VierGewinnt
                         currentcolor = "red";
                         lab_Player.Text = "Player Red";
                     }
+                    bool zugmöglich = false;
+                    for (int x = 0; x < iSpielfeldwidth; x++)
+                    {
+                        for (int y = 0; y < iSpielfeldheight; y++)
+                        {
+                            if(spielfelder[x,y].farbe == "white")
+                            {
+                                zugmöglich = true;
+                            }
+                        }
+                    }
+                    if (!zugmöglich)
+                    {
+                        Console.WriteLine("Ende");
+                    }
                 }
             }
-
             Console.WriteLine(this.PointToClient(new Point((Cursor.Position).X, (Cursor.Position).Y)));
         }
 
