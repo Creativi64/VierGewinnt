@@ -31,10 +31,10 @@ namespace VierGewinnt
         {
             this.components = new System.ComponentModel.Container();
             this.button1 = new System.Windows.Forms.Button();
-            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.btn_Test = new System.Windows.Forms.Button();
             this.lab_Player = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
+            this.timer = new System.Windows.Forms.Timer(this.components);
+            this.lab_Timer = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // button1
@@ -68,21 +68,34 @@ namespace VierGewinnt
             this.lab_Player.Size = new System.Drawing.Size(0, 15);
             this.lab_Player.TabIndex = 2;
             // 
+            // timer
+            // 
+            this.timer.Enabled = true;
+            this.timer.Interval = 1000;
+            // 
+            // lab_Timer
+            // 
+            this.lab_Timer.AutoSize = true;
+            this.lab_Timer.Location = new System.Drawing.Point(13, 104);
+            this.lab_Timer.Name = "lab_Timer";
+            this.lab_Timer.Size = new System.Drawing.Size(0, 15);
+            this.lab_Timer.TabIndex = 3;
+            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(794, 451);
+            this.Controls.Add(this.lab_Timer);
             this.Controls.Add(this.lab_Player);
             this.Controls.Add(this.btn_Test);
             this.Controls.Add(this.button1);
             this.MaximizeBox = false;
             this.Name = "Form2";
-            this.Text = "Menue";
+            this.Text = "Da Game";
             this.Click += new System.EventHandler(this.Form2_Click);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form2_Paint);
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -91,8 +104,9 @@ namespace VierGewinnt
         #endregion
 
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.BindingSource bindingSource1;
         private System.Windows.Forms.Button btn_Test;
         private System.Windows.Forms.Label lab_Player;
+        private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.Label lab_Timer;
     }
 }

@@ -24,11 +24,13 @@ namespace VierGewinnt
             public string farbe;
         }
 
+        private DateTime VergangeneSekunden;
+
         private int iSpielfeldheightpx;
         private int iSpielfeldwidthpx;
 
-        private int iSpielfeldheight = 3;
-        private int iSpielfeldwidth = 2;
+        private int iSpielfeldheight = 6;
+        private int iSpielfeldwidth = 7;
 
         //private int X, Y;
 
@@ -121,7 +123,20 @@ namespace VierGewinnt
                     currentcolor = "yellow";
                     lab_Player.Text = "Player Yellow";
                 }
+                timer.Interval = 100;
+                VergangeneSekunden.AddSeconds(0);
+                Thread t = new Thread(new ThreadStart(UhrStarten));
+                t.Start();
+                
             });
+        }
+
+        private void UhrStarten()
+        {
+            
+            timer.Tick += new EventHandler(UhrUpdate);
+
+            timer.Start();
         }
 
         private void SpielfeldZeichnen()
@@ -292,7 +307,6 @@ namespace VierGewinnt
                     if (iSpielfeldheight > iSpielfeldwidth)
                     {
                         maxformat = iSpielfeldheight;
-
                     }
                     else
                     {
@@ -300,7 +314,7 @@ namespace VierGewinnt
                     }
                     for (int xy = 0; xy < maxformat; xy++)
                     {
-                        if (xy+xabstand<iSpielfeldwidth&&xy+xabstand>=0&& xy < iSpielfeldheight && xy >= 0   && spielfelder[xy + xabstand, xy].farbe == currentcolor)
+                        if (xy + xabstand < iSpielfeldwidth && xy + xabstand >= 0 && xy < iSpielfeldheight && xy >= 0 && spielfelder[xy + xabstand, xy].farbe == currentcolor)
                         {
                             infolge++;
                         }
@@ -313,10 +327,9 @@ namespace VierGewinnt
                             gewonnen = true;
                         }
                     }
-                    xabstand =  -1 + (spalte - reihe + (iSpielfeldheight - (spalte*2)));
+                    xabstand = -1 + (spalte - reihe + (iSpielfeldheight - (spalte * 2)));
 
-
-                    for (int xy = 0; xy < maxformat+1; xy++)
+                    for (int xy = 0; xy < maxformat + 1; xy++)
                     {
                         if (iSpielfeldwidth - xy - xabstand - widthheightdif < iSpielfeldwidth && iSpielfeldwidth - xy - xabstand - widthheightdif >= 0 && xy - 1 < iSpielfeldheight && xy - 1 >= 0 && spielfelder[iSpielfeldwidth - xy - xabstand - widthheightdif, xy - 1].farbe == currentcolor)
                         {
@@ -352,7 +365,7 @@ namespace VierGewinnt
                     {
                         for (int y = 0; y < iSpielfeldheight; y++)
                         {
-                            if(spielfelder[x,y].farbe == "white")
+                            if (spielfelder[x, y].farbe == "white")
                             {
                                 zugmöglich = true;
                             }
@@ -369,16 +382,16 @@ namespace VierGewinnt
 
         private void KreiszeichnenAnimation(int X, int Y, string farbe)
         {
-            int iHilfszahl =0;
-            int iHilfszahl1 =0;
-            int multiplyer =4; // durch 2 teil bare Zahlen funktionieren am besten da Dann Weniger Komma stellen Entstehen die Ignoriert werden
+            int iHilfszahl = 0;
+            int iHilfszahl1 = 0;
+            int multiplyer = 4; // durch 2 teil bare Zahlen funktionieren am besten da Dann Weniger Komma stellen Entstehen die Ignoriert werden
             Task animation1 = new Task(() =>
             {
                 AimationFlag = true;
 
                 for (int i = 0; i < Y * multiplyer; i += 1)
                 {
-                    if (i == 0 || i + 1 == Y * multiplyer || Convert.ToInt32((i / multiplyer)+1) >= Y)
+                    if (i == 0 || i + 1 == Y * multiplyer || Convert.ToInt32((i / multiplyer) + 1) >= Y)
                     {
                         punkte.FillEllipse(new SolidBrush(this.BackColor),
                              spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + 2,
@@ -405,7 +418,7 @@ namespace VierGewinnt
                             {
                                 iHilfszahl1 = i / multiplyer;
                             }
-                        
+
                             punkte.FillEllipse(new SolidBrush(this.BackColor),
                              spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + 2,
                              spielfelder[0, 0].y + ((i - 1) / multiplyer) * spielfelder[0, 0].iheight + 2,
@@ -428,12 +441,10 @@ namespace VierGewinnt
                              spielfelder[X, iHilfszahl1].y,
                              spielfelder[X, iHilfszahl1].iwidth,
                              spielfelder[X, iHilfszahl1].iheight);
-
-                            
                         });
                         draw.RunSynchronously();
                     }
-                    Thread.Sleep(200);
+                    Thread.Sleep(50);
                 }
             }
             );
@@ -474,6 +485,12 @@ namespace VierGewinnt
 
         private void btn_Test_Click(object sender, EventArgs e)
         {
+        }
+
+        private void UhrUpdate(Object Obj, EventArgs e)
+        {
+            VergangeneSekunden.AddSeconds(timer.Interval);
+            lab_Timer.Text = VergangeneSekunden.ToShortTimeString();
         }
     }
 }

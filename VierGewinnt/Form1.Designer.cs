@@ -116,7 +116,7 @@ namespace VierGewinnt
             this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(810, 490);
             this.Name = "Form1";
-            this.Text = "                      ";
+            this.Text = "Main Menu             ";
             this.ResumeLayout(false);
             this.PerformLayout();
 
