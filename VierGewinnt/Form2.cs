@@ -286,7 +286,7 @@ namespace VierGewinnt
 
                     for (int xy = 0; xy < maxformat; xy++)
                     {
-                        if (xy + xabstand < maxformat && xy + xabstand >= 0 && spielfelder[xy + xabstand, iSpielfeldheight - xy].farbe == currentcolor)
+                        if (iSpielfeldwidth - xy + xabstand < maxformat && iSpielfeldwidth - xy + xabstand >= 0 && spielfelder[iSpielfeldwidth - xy + xabstand, xy].farbe == currentcolor)
                         {
                             infolge++;
                         }
@@ -336,7 +336,7 @@ namespace VierGewinnt
                      spielfelder[0, 0].y + i * spielfelder[0, 0].iheight + 2,
                      spielfelder[0, 0].iwidth - 4, spielfelder[0, 0].iheight - 4);
 
-                    Thread.Sleep(10);
+                    Thread.Sleep(50);
                 }
             }
             );
@@ -354,7 +354,7 @@ namespace VierGewinnt
 
         private void Gewonnen(string Gewinner)
         {
-            this.Hide();
+            //this.Hide();
             var Result = MessageBox.Show($"{Gewinner} Hat gewonnen",
                 $"{Gewinner} Hat Gewonnen", MessageBoxButtons.RetryCancel, MessageBoxIcon.Information);
 
