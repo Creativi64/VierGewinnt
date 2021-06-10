@@ -104,7 +104,6 @@ namespace VierGewinnt
                 EckenBerechnen(0, 0, spielfelder[0, 0].iwidth, spielfelder[0, 0].iheight);
                 //Spielfeldzeichen
                 SpielfeldZeichnen();
-
                 // Im array alle Farben Auf Weiß zu setzen
                 for (int x = 0; x < iSpielfeldwidth; x++)
                 {
@@ -160,7 +159,6 @@ namespace VierGewinnt
                     spielfelder[x, y].iwidth = ispielfeldformat;
                     spielfelder[x, y].iheight = ispielfeldformat;
                     spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
-                    
                     if (spielfelder[x, y].farbe != "white" && spielfelder[x, y].farbe != null)
                     {
                         Kreiszeichnen(x, y, spielfelder[x, y].farbe);
@@ -233,10 +231,41 @@ namespace VierGewinnt
             Feld.RunSynchronously();
         }
 
+        private void doublespielfeldtilezeichnen(int x, int y, int iwidth, int iheight)
+        {
+            PointF[] hilfsarray = new PointF[3];
+
+            Task Feld = new Task(() =>
+            {
+                for (int j = 0; j < 2; j++)
+                {
+                    hilfsarray[0] = new PointF(Dreieckspunkte[2, 1].X - 1 + x, Dreieckspunkte[2, 1].Y + y);
+                    hilfsarray[1] = new PointF(Dreieckspunkte[2, 2].X + x, Dreieckspunkte[2, 2].Y + y);
+                    hilfsarray[2] = new PointF(Dreieckspunkte[0, 2].X + x, Dreieckspunkte[0, 2].Y + y + iheight);
+                    spielfeldgraphic.FillPolygon(new SolidBrush(Color.Blue), hilfsarray);
+
+                    hilfsarray[0] = new PointF(Dreieckspunkte[3, 1].X + x, Dreieckspunkte[3, 1].Y + y);
+                    hilfsarray[1] = new PointF(Dreieckspunkte[3, 2].X + x, Dreieckspunkte[3, 2].Y + y);
+                    hilfsarray[2] = new PointF(Dreieckspunkte[1, 2].X + x, Dreieckspunkte[1, 2].Y + y + iheight);
+                    spielfeldgraphic.FillPolygon(new SolidBrush(Color.Blue), hilfsarray);
+                }
+
+                spielfeldgraphic.DrawEllipse(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
+                spielfeldgraphic.DrawRectangle(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
+                spielfeldgraphic.DrawEllipse(new Pen(Color.Blue, 5), x, y + iheight, iwidth, iheight);
+                spielfeldgraphic.DrawRectangle(new Pen(Color.Blue, 5), x, y + iheight, iwidth, iheight);
+
+
+
+            });
+            Feld.RunSynchronously();
+        }
+
         private void Form2_Paint(object sender, PaintEventArgs e)
         {
             if (AimationFlag == false)
             {
+                Console.WriteLine("redraw");
                 SpielfeldZeichnen();
             }
         }
@@ -386,64 +415,70 @@ namespace VierGewinnt
             Task animation1 = new Task(() =>
             {
                 AimationFlag = true;
+                float kreisausgleich = 2.48f;
 
                 for (int i = 0; i < Y * multiplyer; i += 1)
                 {
                     if (i == 0 || i + 1 == Y * multiplyer || Convert.ToInt32((i / multiplyer) + 1) >= Y)
                     {
                         punkte.FillEllipse(new SolidBrush(this.BackColor),
-                             spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + 2,
-                             spielfelder[0, 0].y + ((i - 1) / multiplyer) * spielfelder[0, 0].iheight + 2,
-                             spielfelder[0, 0].iwidth - 4, spielfelder[0, 0].iheight - 4);
+                             spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
+                             spielfelder[0, 0].y + ((i - 1) / multiplyer) * spielfelder[0, 0].iheight + kreisausgleich,
+                             spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich*2);
 
                         punkte.FillEllipse(new SolidBrush(Color.FromName(farbe)),
-                         spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + 2,
-                         spielfelder[0, 0].y + (i / multiplyer) * spielfelder[0, 0].iheight + 2,
-                         spielfelder[0, 0].iwidth - 4,
-                         spielfelder[0, 0].iheight - 4);
+                         spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
+                         spielfelder[0, 0].y + (i / multiplyer) * spielfelder[0, 0].iheight + kreisausgleich,
+                         spielfelder[0, 0].iwidth - kreisausgleich*2,
+                         spielfelder[0, 0].iheight - kreisausgleich * 2);
                     }
                     else
                     {
                         Task draw = new Task(() =>
                         {
-                            iHilfszahl = i / multiplyer;
+                        iHilfszahl = i / multiplyer;
 
-                            if (i / multiplyer + 1 < Y)
-                            {
-                                iHilfszahl1 = i / multiplyer + 1;
-                            }
-                            else
-                            {
-                                iHilfszahl1 = i / multiplyer;
-                            }
+                        if (i / multiplyer + 1 < Y)
+                        {
+                            iHilfszahl1 = i / multiplyer + 1;
+                        }
+                        else
+                        {
+                            iHilfszahl1 = i / multiplyer;
+                        }
 
-                            punkte.FillEllipse(new SolidBrush(this.BackColor),
-                             spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + 2,
-                             spielfelder[0, 0].y + ((i - 1) / multiplyer) * spielfelder[0, 0].iheight + 2,
-                             spielfelder[0, 0].iwidth - 3,
-                             spielfelder[0, 0].iheight - 3);
+                        punkte.FillEllipse(new SolidBrush(this.BackColor),
+                         spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
+                         spielfelder[0, 0].y + ((i - 1) / multiplyer) * spielfelder[0, 0].iheight + kreisausgleich,
+                         spielfelder[0, 0].iwidth - kreisausgleich*2, spielfelder[0, 0].iheight - kreisausgleich*2);
 
-                            punkte.FillEllipse(new SolidBrush(Color.FromName(farbe)),
-                             spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + 2,
-                             spielfelder[0, 0].y + ((i * spielfelder[0, 0].iheight) / multiplyer) + 2,
-                             spielfelder[0, 0].iwidth - 4,
-                             spielfelder[0, 0].iheight - 4);
+                        punkte.FillEllipse(new SolidBrush(Color.FromName(farbe)),
+                         spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
+                         spielfelder[0, 0].y + ((i * spielfelder[0, 0].iheight) / multiplyer) + kreisausgleich,
+                         spielfelder[0, 0].iwidth - kreisausgleich*2,
+                         spielfelder[0, 0].iheight - kreisausgleich*2);
 
-                            spielfeldtilezeichnen(
-                             spielfelder[X, iHilfszahl].x,
-                             spielfelder[X, iHilfszahl].y,
-                             spielfelder[X, iHilfszahl].iwidth,
-                             spielfelder[X, iHilfszahl].iheight);
+                        //spielfeldtilezeichnen(
+                        // spielfelder[X, iHilfszahl].x,
+                        // spielfelder[X, iHilfszahl].y,
+                        // spielfelder[X, iHilfszahl].iwidth,
+                        // spielfelder[X, iHilfszahl].iheight);
 
-                            spielfeldtilezeichnen(
-                             spielfelder[X, iHilfszahl1].x,
-                             spielfelder[X, iHilfszahl1].y,
-                             spielfelder[X, iHilfszahl1].iwidth,
-                             spielfelder[X, iHilfszahl1].iheight);
+                        //spielfeldtilezeichnen(
+                        // spielfelder[X, iHilfszahl1].x,
+                        // spielfelder[X, iHilfszahl1].y,
+                        // spielfelder[X, iHilfszahl1].iwidth,
+                        // spielfelder[X, iHilfszahl1].iheight);
+
+                        doublespielfeldtilezeichnen(
+                          spielfelder[X, iHilfszahl].x,
+                          spielfelder[X, iHilfszahl].y,
+                          spielfelder[X, iHilfszahl].iwidth,
+                          spielfelder[X, iHilfszahl].iheight);
                         });
                         draw.RunSynchronously();
                     }
-                    Thread.Sleep(50);
+                    Thread.Sleep(15);
                 }
             }
             );
@@ -454,10 +489,11 @@ namespace VierGewinnt
 
         private void Kreiszeichnen(int X, int Y, string farbe)
         {
+            float kreisausgleich = 2.48f;
             punkte.FillEllipse(new SolidBrush(Color.FromName(farbe)),
-             spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + 2,
-             spielfelder[0, 0].y + Y * spielfelder[0, 0].iheight + 2,
-             spielfelder[0, 0].iwidth - 4, spielfelder[0, 0].iheight - 4);
+             spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
+             spielfelder[0, 0].y + Y * spielfelder[0, 0].iheight + kreisausgleich,
+             spielfelder[0, 0].iwidth - kreisausgleich*2, spielfelder[0, 0].iheight - kreisausgleich*2);
         }
 
         private void Gewonnen(string Gewinner)
