@@ -35,8 +35,6 @@ namespace VierGewinnt
             this.lab_Player = new System.Windows.Forms.Label();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.lab_Timer = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // button1
@@ -82,22 +80,6 @@ namespace VierGewinnt
             this.lab_Timer.Size = new System.Drawing.Size(0, 15);
             this.lab_Timer.TabIndex = 3;
             // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.Transparent;
-            this.panel1.Location = new System.Drawing.Point(707, 324);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(75, 100);
-            this.panel1.TabIndex = 10;
-            // 
-            // panel2
-            // 
-            this.panel2.BackColor = System.Drawing.Color.Transparent;
-            this.panel2.Location = new System.Drawing.Point(659, 265);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(75, 100);
-            this.panel2.TabIndex = 4;
-            // 
             // Form2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -108,8 +90,6 @@ namespace VierGewinnt
             this.Controls.Add(this.lab_Player);
             this.Controls.Add(this.btn_Test);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.panel2);
-            this.Controls.Add(this.panel1);
             this.MaximizeBox = false;
             this.Name = "Form2";
             this.Text = "Da Game";
@@ -127,7 +107,5 @@ namespace VierGewinnt
         private System.Windows.Forms.Label lab_Player;
         private System.Windows.Forms.Timer timer;
         private System.Windows.Forms.Label lab_Timer;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Panel panel2;
     }
 }

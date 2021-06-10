@@ -32,15 +32,11 @@ namespace VierGewinnt
         private int iSpielfeldheight = 6;
         private int iSpielfeldwidth = 7;
 
-        //private int X, Y;
 
         private Graphics spielfeldgraphic;
         private PointF[,] Dreieckspunkte;
         private Graphics punkte;
-        private Graphics fullspielfeldgraphic;
-
-        //private Graphics label1Graphic;
-        //private Graphics label2Graphic;
+ 
 
         private bool AimationFlag = false;
 
@@ -79,13 +75,10 @@ namespace VierGewinnt
             iSpielfeldwidthpx = this.Width - 100;
 
             spielfeldgraphic = this.CreateGraphics();
-            fullspielfeldgraphic = this.CreateGraphics();
-            //label1Graphic = panel1.CreateGraphics();
 
             punkte = this.CreateGraphics();
 
-            panel1.Paint += new PaintEventHandler(panel1_Paint);
-            panel2.Paint += new PaintEventHandler(panel2_Paint);
+            
 
             this.BeginInvoke((MethodInvoker)delegate
             {
@@ -108,7 +101,7 @@ namespace VierGewinnt
                 spielfelder[0, 0].iwidth = ispielfeldformat;
                 spielfelder[0, 0].iheight = ispielfeldformat;
 
-                EckenBerechnen(/*spielfelder[0, 0].x, spielfelder[0, 0].y*/0, 0, spielfelder[0, 0].iwidth, spielfelder[0, 0].iheight);
+                EckenBerechnen(0, 0, spielfelder[0, 0].iwidth, spielfelder[0, 0].iheight);
                 //Spielfeldzeichen
                 SpielfeldZeichnen();
 
@@ -162,38 +155,14 @@ namespace VierGewinnt
             {
                 for (int y = 0; y < iSpielfeldheight; y++)
                 {
-                    spielfelder[x, y].x = x * ispielfeldformat;
-                    spielfelder[x, y].y = y * ispielfeldformat;
+                    spielfelder[x, y].x = (this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2) + x * ispielfeldformat;
+                    spielfelder[x, y].y = (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2) + y * ispielfeldformat;
                     spielfelder[x, y].iwidth = ispielfeldformat;
                     spielfelder[x, y].iheight = ispielfeldformat;
                     spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
                 }
             }
-
-            //panel1.Location = new Point((this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2), (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2));
-            //panel1.Width = iSpielfeldwidth * ispielfeldformat + 2;
-            //panel1.Height = iSpielfeldheight * ispielfeldformat + 2;
-
-            //panel2.Location = new Point((this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2), (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2));
-            //panel2.Width = iSpielfeldwidth * ispielfeldformat + 2;
-            //panel2.Height = iSpielfeldheight * ispielfeldformat + 2;
         }
-
-        //private void SpielfeldZeichnen()
-        //{
-        //    for (int x = 0; x < iSpielfeldwidth; x++)
-        //    {
-        //        for (int y = 0; y < iSpielfeldheight; y++)
-        //        {
-        //            spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
-
-        //            if (spielfelder[x, y].farbe != "white" && spielfelder[x, y].farbe != null)
-        //            {
-        //                Kreiszeichnen(x, y, spielfelder[x, y].farbe);
-        //            }
-        //        }
-        //    }
-        //}
 
         protected override void OnClosed(EventArgs e)
         {
@@ -237,12 +206,6 @@ namespace VierGewinnt
             Dreieckspunkte[3, 1] = new PointF((float)(x + iwidth - (iwidth * dDreieckkprozent)), y + iheight);
             Dreieckspunkte[3, 2] = new PointF((x + iwidth), (float)(y + iheight - (iheight * dDreieckkprozent)));
         }
-
-        //private void spielfeldtilezeichnen(int x, int y, int iwidth, int iheight, Graphics g)
-        //{
-        //    g.DrawRectangle(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
-        //    g.DrawEllipse(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
-        //}
 
         private void spielfeldtilezeichnen(int x, int y, int iwidth, int iheight)
         {
@@ -512,36 +475,6 @@ namespace VierGewinnt
                 this.Hide();
             }
         }
-
-        //private bool Wait = false;
-
-        private void panel1_Paint(object sender, PaintEventArgs e)
-        {
-            panel1.BringToFront();
-            var p = sender as Panel;
-            //label1Graphic = e.Graphics;
-            SpielfeldZeichnen();
-
-            //if (!Wait)
-            //{
-            //    panel1.BringToFront();
-            //    var p = sender as Panel;
-            //    var g = e.Graphics;
-
-            //    spielfeldtilezeichnen(0, 0, panel1.Width, panel1.Height, g);
-            //}
-            //Wait = true;
-        }
-
-        private void panel2_Paint(object sender, PaintEventArgs e)
-        {
-            //panel2.BringToFront();
-            //var p = sender as Panel;
-            //var g = e.Graphics;
-
-            //spielfeldtilezeichnen(0, 0, panel1.Width, panel1.Height, g);
-        }
-
         private void UhrUpdate(Object Obj, EventArgs e)
         {
             VergangeneSekunden = VergangeneSekunden.AddSeconds(1);
