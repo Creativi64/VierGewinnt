@@ -59,6 +59,9 @@ namespace VierGewinnt
             InitializeComponent();
             Fullscreen = _Fullscreen;
             AllocConsole();
+
+            VergangeneSekunden = new DateTime(1,1,1,0,0,0);
+
             if (_Fullscreen == true)
             {
                 this.FormBorderStyle = FormBorderStyle.None;
@@ -108,7 +111,7 @@ namespace VierGewinnt
                 EckenBerechnen(/*spielfelder[0, 0].x, spielfelder[0, 0].y*/0, 0, spielfelder[0, 0].iwidth, spielfelder[0, 0].iheight);
                 //Spielfeldzeichen
                 SpielfeldZeichnen();
-              
+
                 // Im array alle Farben Auf Weiß zu setzen
                 for (int x = 0; x < iSpielfeldwidth; x++)
                 {
@@ -129,18 +132,19 @@ namespace VierGewinnt
                     currentcolor = "yellow";
                     lab_Player.Text = "Player Yellow";
                 }
-                timer.Interval = 100;
-                VergangeneSekunden.AddSeconds(0);
-                Thread t = new Thread(new ThreadStart(UhrStarten));
-                t.Start();
+
+
+                UhrStarten();
+             
             });
         }
 
-        private void UhrStarten()
+        private async Task UhrStarten()
         {
             timer.Tick += new EventHandler(UhrUpdate);
-
+            timer.Interval = 1000;
             timer.Start();
+            timer.Enabled = true;
         }
 
         private void SpielfeldZeichnen()
@@ -163,7 +167,6 @@ namespace VierGewinnt
                     spielfelder[x, y].iwidth = ispielfeldformat;
                     spielfelder[x, y].iheight = ispielfeldformat;
                     spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
-
                 }
             }
 
@@ -245,7 +248,6 @@ namespace VierGewinnt
         {
             PointF[] hilfsarray = new PointF[3];
 
-            
             //int x = 50, y = 50, iwidth = 100, iheight = 100;
             Task Feld = new Task(() =>
             {
@@ -511,7 +513,7 @@ namespace VierGewinnt
             }
         }
 
-        private bool Wait = false;
+        //private bool Wait = false;
 
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
@@ -542,8 +544,9 @@ namespace VierGewinnt
 
         private void UhrUpdate(Object Obj, EventArgs e)
         {
-            VergangeneSekunden.AddSeconds(timer.Interval);
-            lab_Timer.Text = VergangeneSekunden.ToShortTimeString();
+            VergangeneSekunden = VergangeneSekunden.AddSeconds(1);
+             lab_Timer.Text = VergangeneSekunden.ToLongTimeString();
+            //lab_Timer.Text = DateTime.Now.ToLongTimeString();
         }
     }
 }
