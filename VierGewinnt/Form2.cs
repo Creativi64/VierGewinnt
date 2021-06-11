@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Runtime.InteropServices;
 
 namespace VierGewinnt
 {
@@ -17,6 +11,8 @@ namespace VierGewinnt
     {
         private bool Fullscreen;
         private string currentcolor;
+        private float kreisausgleich = 2.530f;
+        private float dropspeed = 10; //geschwindigkeit beim runterfallen
 
         public struct Spielfeldtile
         {
@@ -24,19 +20,18 @@ namespace VierGewinnt
             public string farbe;
         }
 
+
         private DateTime VergangeneSekunden;
 
         private int iSpielfeldheightpx;
         private int iSpielfeldwidthpx;
 
-        private int iSpielfeldheight = 6;
-        private int iSpielfeldwidth = 7;
-
+        private int iSpielfeldheight = 20;
+        private int iSpielfeldwidth = 20;
 
         private Graphics spielfeldgraphic;
         private PointF[,] Dreieckspunkte;
         private Graphics punkte;
- 
 
         private bool AimationFlag = false;
 
@@ -53,10 +48,13 @@ namespace VierGewinnt
         public Form2(bool _Fullscreen)
         {
             InitializeComponent();
+            DoubleBuffered = true;
             Fullscreen = _Fullscreen;
             AllocConsole();
 
-            VergangeneSekunden = new DateTime(1,1,1,0,0,0);
+            dropspeed = dropspeed * iSpielfeldheight;
+
+            VergangeneSekunden = new DateTime(1, 1, 1, 0, 0, 0);
 
             if (_Fullscreen == true)
             {
@@ -71,14 +69,12 @@ namespace VierGewinnt
                 this.WindowState = FormWindowState.Normal;
                 this.MaximizeBox = false;
             }
-            iSpielfeldheightpx = this.Height - 100;
-            iSpielfeldwidthpx = this.Width - 100;
+            iSpielfeldheightpx = this.Height - 150;
+            iSpielfeldwidthpx = this.Width - 150;
 
             spielfeldgraphic = this.CreateGraphics();
 
             punkte = this.CreateGraphics();
-
-            
 
             this.BeginInvoke((MethodInvoker)delegate
             {
@@ -125,9 +121,7 @@ namespace VierGewinnt
                     lab_Player.Text = "Player Yellow";
                 }
 
-
                 UhrStarten();
-             
             });
         }
 
@@ -254,9 +248,6 @@ namespace VierGewinnt
                 spielfeldgraphic.DrawRectangle(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
                 spielfeldgraphic.DrawEllipse(new Pen(Color.Blue, 5), x, y + iheight, iwidth, iheight);
                 spielfeldgraphic.DrawRectangle(new Pen(Color.Blue, 5), x, y + iheight, iwidth, iheight);
-
-
-
             });
             Feld.RunSynchronously();
         }
@@ -285,6 +276,7 @@ namespace VierGewinnt
                     {
                         gesetzt = true;
                         spielfelder[spalte, i].farbe = currentcolor;
+                        Hovereffekt(-1);
                         KreiszeichnenAnimation(spalte, i + 1, currentcolor);
                         reihe = i;
                         i = 0;
@@ -411,74 +403,81 @@ namespace VierGewinnt
         {
             int iHilfszahl = 0;
             int iHilfszahl1 = 0;
-            int multiplyer = 4; // durch 2 teil bare Zahlen funktionieren am besten da Dann Weniger Komma stellen Entstehen die Ignoriert werden
+            int multiplyer = 8; // durch 2 teil bare Zahlen funktionieren am besten da Dann Weniger Komma stellen Entstehen die Ignoriert werden
             Task animation1 = new Task(() =>
             {
                 AimationFlag = true;
-                float kreisausgleich = 2.48f;
 
-                for (int i = 0; i < Y * multiplyer; i += 1)
+                for (int i = -multiplyer; i < Y * multiplyer; i += 1)
                 {
-                    if (i == 0 || i + 1 == Y * multiplyer || Convert.ToInt32((i / multiplyer) + 1) >= Y)
+                    if (i == -multiplyer || i + 1 == Y * multiplyer || Convert.ToInt32((i / multiplyer) + 1) >= Y)
                     {
                         punkte.FillEllipse(new SolidBrush(this.BackColor),
-                             spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
-                             spielfelder[0, 0].y + ((i - 1) / multiplyer) * spielfelder[0, 0].iheight + kreisausgleich,
-                             spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich*2);
+                        spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
+                        spielfelder[0, 0].y + ((i - 1) / multiplyer) * spielfelder[0, 0].iheight + kreisausgleich,
+                        spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
 
                         punkte.FillEllipse(new SolidBrush(Color.FromName(farbe)),
                          spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
                          spielfelder[0, 0].y + (i / multiplyer) * spielfelder[0, 0].iheight + kreisausgleich,
-                         spielfelder[0, 0].iwidth - kreisausgleich*2,
+                         spielfelder[0, 0].iwidth - kreisausgleich * 2,
                          spielfelder[0, 0].iheight - kreisausgleich * 2);
                     }
                     else
                     {
                         Task draw = new Task(() =>
                         {
-                        iHilfszahl = i / multiplyer;
+                            iHilfszahl = i / multiplyer;
 
-                        if (i / multiplyer + 1 < Y)
-                        {
-                            iHilfszahl1 = i / multiplyer + 1;
-                        }
-                        else
-                        {
-                            iHilfszahl1 = i / multiplyer;
-                        }
+                            if (i / multiplyer + 1 < Y)
+                            {
+                                iHilfszahl1 = i / multiplyer + 1;
+                            }
+                            else
+                            {
+                                iHilfszahl1 = i / multiplyer;
+                            }
 
-                        punkte.FillEllipse(new SolidBrush(this.BackColor),
-                         spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
-                         spielfelder[0, 0].y + ((i - 1) / multiplyer) * spielfelder[0, 0].iheight + kreisausgleich,
-                         spielfelder[0, 0].iwidth - kreisausgleich*2, spielfelder[0, 0].iheight - kreisausgleich*2);
+                            if (i <= 0)
+                            {
+                                punkte.FillEllipse(new SolidBrush(this.BackColor),
+                                 spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
+                                 spielfelder[0, 0].y + (((i - 1) * spielfelder[0, 0].iheight) / multiplyer) + kreisausgleich,
+                                 spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
+                            }
+                            else
+                            {
+                                punkte.FillEllipse(new SolidBrush(this.BackColor),
+                                 spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
+                                 spielfelder[0, 0].y + ((i - 1) / multiplyer) * spielfelder[0, 0].iheight + kreisausgleich,
+                                 spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
+                            }
 
-                        punkte.FillEllipse(new SolidBrush(Color.FromName(farbe)),
+                            punkte.FillEllipse(new SolidBrush(Color.FromName(farbe)),
                          spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
                          spielfelder[0, 0].y + ((i * spielfelder[0, 0].iheight) / multiplyer) + kreisausgleich,
-                         spielfelder[0, 0].iwidth - kreisausgleich*2,
-                         spielfelder[0, 0].iheight - kreisausgleich*2);
-
-                        //spielfeldtilezeichnen(
-                        // spielfelder[X, iHilfszahl].x,
-                        // spielfelder[X, iHilfszahl].y,
-                        // spielfelder[X, iHilfszahl].iwidth,
-                        // spielfelder[X, iHilfszahl].iheight);
-
-                        //spielfeldtilezeichnen(
-                        // spielfelder[X, iHilfszahl1].x,
-                        // spielfelder[X, iHilfszahl1].y,
-                        // spielfelder[X, iHilfszahl1].iwidth,
-                        // spielfelder[X, iHilfszahl1].iheight);
-
-                        doublespielfeldtilezeichnen(
-                          spielfelder[X, iHilfszahl].x,
-                          spielfelder[X, iHilfszahl].y,
-                          spielfelder[X, iHilfszahl].iwidth,
-                          spielfelder[X, iHilfszahl].iheight);
+                         spielfelder[0, 0].iwidth - kreisausgleich * 2,
+                         spielfelder[0, 0].iheight - kreisausgleich * 2);
+                            if (iHilfszahl >= 0)
+                            {
+                                doublespielfeldtilezeichnen(
+                                  spielfelder[X, iHilfszahl].x,
+                                  spielfelder[X, iHilfszahl].y,
+                                  spielfelder[X, iHilfszahl].iwidth,
+                                  spielfelder[X, iHilfszahl].iheight);
+                            }
+                            if(i<=0)
+                            {
+                                spielfeldtilezeichnen(
+                                  spielfelder[X, iHilfszahl].x,
+                                  spielfelder[X, iHilfszahl].y,
+                                  spielfelder[X, iHilfszahl].iwidth,
+                                  spielfelder[X, iHilfszahl].iheight);
+                            }
                         });
                         draw.RunSynchronously();
                     }
-                    Thread.Sleep(15);
+                    Thread.Sleep((int)(100 / dropspeed));
                 }
             }
             );
@@ -489,11 +488,10 @@ namespace VierGewinnt
 
         private void Kreiszeichnen(int X, int Y, string farbe)
         {
-            float kreisausgleich = 2.48f;
             punkte.FillEllipse(new SolidBrush(Color.FromName(farbe)),
              spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
              spielfelder[0, 0].y + Y * spielfelder[0, 0].iheight + kreisausgleich,
-             spielfelder[0, 0].iwidth - kreisausgleich*2, spielfelder[0, 0].iheight - kreisausgleich*2);
+             spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
         }
 
         private void Gewonnen(string Gewinner)
@@ -517,11 +515,53 @@ namespace VierGewinnt
                 this.Hide();
             }
         }
+
         private void UhrUpdate(Object Obj, EventArgs e)
         {
             VergangeneSekunden = VergangeneSekunden.AddSeconds(1);
-             lab_Timer.Text = VergangeneSekunden.ToLongTimeString();
+            lab_Timer.Text = VergangeneSekunden.ToLongTimeString();
             //lab_Timer.Text = DateTime.Now.ToLongTimeString();
+        }
+
+        private void Form2_MouseMove(object sender, MouseEventArgs e)
+        {
+            int spalte = -1;
+            if (this.PointToClient(Cursor.Position).X > spielfelder[0, 0].x && this.PointToClient(Cursor.Position).X < spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].x + spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].iwidth && this.PointToClient(Cursor.Position).Y > spielfelder[0, 0].y && this.PointToClient(Cursor.Position).Y < spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].y + spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].iheight)
+            {
+                if (oldspalte != (this.PointToClient(Cursor.Position).X - spielfelder[0, 0].x) / spielfelder[0, 0].iwidth)
+                {
+                    spalte = (this.PointToClient(Cursor.Position).X - spielfelder[0, 0].x) / spielfelder[0, 0].iwidth;
+                    Hovereffekt(spalte);
+                }
+            }
+            else
+            {
+                Hovereffekt(-1);
+            }
+        }
+
+        private int oldspalte = 0;
+
+        private void Hovereffekt(int spalte)
+        {
+
+            if (spalte >= 0)
+            {
+                if (oldspalte >= 0)
+                {
+                    punkte.FillEllipse(new SolidBrush(Color.FromName("white")), spielfelder[oldspalte, 0].x + kreisausgleich, spielfelder[oldspalte, 0].y - spielfelder[0, 0].iheight + kreisausgleich, spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
+                }
+                punkte.FillEllipse(new SolidBrush(Color.FromName(currentcolor)), spielfelder[spalte, 0].x + kreisausgleich, spielfelder[spalte, 0].y - spielfelder[0, 0].iheight + kreisausgleich, spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
+                oldspalte = spalte;
+            }
+            else
+            {
+                if (oldspalte >= 0)
+                {
+                    punkte.FillEllipse(new SolidBrush(Color.FromName("white")), spielfelder[oldspalte, 0].x + kreisausgleich, spielfelder[oldspalte, 0].y - spielfelder[0, 0].iheight + kreisausgleich, spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
+                }
+                oldspalte = spalte;
+            }
         }
     }
 }

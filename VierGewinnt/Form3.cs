@@ -53,7 +53,6 @@ namespace VierGewinnt
         protected override void OnClosed(EventArgs e)
         {
             //wenn man mit X das Programm Schließet Schliest es sich Komlett mit einer Meldung
-            AimationFlag = true;
             this.Hide();
 
             MessageBox.Show("Spiel Beendet",
@@ -61,7 +60,6 @@ namespace VierGewinnt
 
             base.OnClosed(e);
             Application.Exit();
-            AimationFlag = false;
         }
         private void btn_Test_Click(object sender, EventArgs e)
         {
