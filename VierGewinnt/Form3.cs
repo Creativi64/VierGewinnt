@@ -126,8 +126,6 @@ namespace VierGewinnt
 
             while (this.backgroundWorker1.IsBusy)
             {
-           
-
                 // Keep UI messages moving, so the form remains
                 // responsive during the asynchronous operation.
                 Application.DoEvents();
