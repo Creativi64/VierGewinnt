@@ -16,7 +16,6 @@ using System.Threading;
 using System.Collections.Specialized;
 using System.Collections;
 
-
 namespace VierGewinnt
 {
     public partial class Form3 : Form
@@ -30,7 +29,8 @@ namespace VierGewinnt
         #endregion Console
 
         private bool Fullscreen;
-
+        private object[] GefundenEndpoints;
+        private int iLezztesGefundene = 0;
         public Form3(bool _Fullscreen)
         {
             InitializeComponent();
@@ -50,10 +50,11 @@ namespace VierGewinnt
                 this.MaximizeBox = false;
             }
         }
+
         protected override void OnClosed(EventArgs e)
         {
             //wenn man mit X das Programm Schließet Schliest es sich Komlett mit einer Meldung
-            AimationFlag = true;
+
             this.Hide();
 
             MessageBox.Show("Spiel Beendet",
@@ -61,15 +62,16 @@ namespace VierGewinnt
 
             base.OnClosed(e);
             Application.Exit();
-            AimationFlag = false;
         }
+
         private void btn_Test_Click(object sender, EventArgs e)
         {
             // Daten, die gesendet werden
             string textToSend = txB_1.Text;
+
             // Endpunkt, zu dem verbunden wird
             const string localhost = "127.0.0.1";
-            const int port = 13000;
+            const int port = 42069;
 
             var data = Encoding.UTF8.GetBytes(textToSend);
             var ip = IPAddress.Parse(localhost);
@@ -84,11 +86,14 @@ namespace VierGewinnt
                 {
                     // Es wird zum Endpunkt verbunden
                     socket.Connect(ipEndPoint);
+
                     // Daten werden gesendet
                     var byteCount = socket.Send(data, SocketFlags.None);
                     WriteLine("Es wurden {0} bytes gesendet", byteCount);
+
                     // Puffer für die zu empfangenen Daten
                     var buffer = new byte[256];
+
                     // Daten werden empfangen
                     byteCount = socket.Receive(buffer, SocketFlags.None);
 
@@ -108,66 +113,159 @@ namespace VierGewinnt
                 Console.WriteLine("Error");
             }
         }
-        #region Empänger
-        public static ManualResetEvent allDone = new ManualResetEvent(false);
 
-        
+        private void btn_Suchen_Click(object sender, EventArgs e)
+        {
+           
+            Console.WriteLine("Suchen");
 
-        //private void btn_Test2_Click(object sender, EventArgs e)
+            this.backgroundWorker1.RunWorkerAsync(1);
+            //GefundenEndpoints = await ConnectionSuchen();
+
+            while (this.backgroundWorker1.IsBusy)
+            {
+                progressBar1.Increment(1);
+                // Keep UI messages moving, so the form remains 
+                // responsive during the asynchronous operation.
+                //Application.DoEvents();
+            }
+
+        }
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            // Do not access the form's BackgroundWorker reference directly.
+            // Instead, use the reference provided by the sender parameter.
+            BackgroundWorker bw = sender as BackgroundWorker;
+
+            // Extract the argument.
+           int arg = (int)e.Argument;
+
+            // Start the time-consuming operation.
+            e.Result = ConnectionSuchen(bw, arg);
+           
+            // If the operation was canceled by the user,
+            // set the DoWorkEventArgs.Cancel property to true.
+            //if (bw.CancellationPending)
+            //{
+            //    e.Cancel = true;
+            //}
+        }
+
+        private void backgroundWorker1_RunWorkerCompleted(
+            object sender,
+            RunWorkerCompletedEventArgs e)
+        {
+            if (e.Cancelled)
+            {
+                // The user canceled the operation.
+
+                Console.WriteLine("Canceled");
+                //MessageBox.Show("Operation was canceled");
+            }
+            else if (e.Error != null)
+            {
+                // There was an error during the operation.
+                //string msg = String.Format("An error occurred: {0}", e.Error.Message);
+                Console.WriteLine("An error occurred: {0}", e.Error.Message);
+                //MessageBox.Show(msg);
+            }
+            else
+            {
+                Console.WriteLine("Suche Abgeschlossen");
+                // The operation completed normally.
+                GefundenEndpoints[iLezztesGefundene] = e.Result;
+                iLezztesGefundene++;
+                string msg = String.Format("Result = {0}", e.Result);
+                Console.WriteLine("ergebnis");
+                MessageBox.Show(msg);
+            }
+        }
+
+        //private static async Task<IPEndPoint[]> ConnectionSuchen(BackgroundWorker bw, int sleepPeriod)
         //{
-
-        //    const string localhost2 = "127.0.0.1";
-        //    var ip2 = IPAddress.Parse(localhost2);
-        //    const int port2 = 13000;
-
-        //    IPEndPoint lep = new IPEndPoint(ip2, port2);
-
-        //    Socket s = new Socket(lep.AddressFamily,
-        //                       SocketType.Stream,
-        //                             ProtocolType.Tcp);
-        //    try
+        //   IPEndPoint[] GefundeneEndPoints = new IPEndPoint[10];
+        //    int iZaeler = 0;
+        //    for (int i = 0; i < 255; i++)
         //    {
-        //        s.Bind(lep);
-        //        s.Listen(1000);
-
-        //        while (true)
+        //        for (int a = 0; a < 255; a++)
         //        {
-        //            allDone.Reset();
+        //            Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        //            IPAddress Ip = IPAddress.Parse($"192.168.{i}.{a}");
+        //            IPEndPoint hostep = new IPEndPoint(Ip, 42069);
 
-        //            Console.WriteLine("Waiting for a connection...");
-        //            int receivedDataSize = 10;
-        //            s.BeginAccept(null, receivedDataSize, new AsyncCallback(AcceptReceiveDataCallback), s);
+        //            IAsyncResult result = s.BeginConnect(Ip, 42069, null, null);
 
-        //            allDone.WaitOne();
+        //            bool success = result.AsyncWaitHandle.WaitOne(1, true);
+
+        //            if (s.Connected)
+        //            {
+
+        //                Console.WriteLine($"gefunden auf {hostep}");
+        //                Console.ReadLine();
+        //                GefundeneEndPoints[iZaeler] = hostep;
+        //                s.EndConnect(result);
+        //                iZaeler++;
+        //            }
+        //            else
+        //            {
+        //                // NOTE, MUST CLOSE THE SOCKET
+
+        //                s.Close();
+        //                Console.WriteLine($"Nix Gefunden Bei auf {hostep}");
+
+        //                //throw new ApplicationException("Failed to connect server.");
+        //            }
         //        }
         //    }
-        //    catch (Exception)
-        //    {
-        //        Console.WriteLine(e.ToString());
-        //    }
+        //    return GefundeneEndPoints;
         //}
-        //public static void AcceptReceiveDataCallback(IAsyncResult ar)
-        //{
-        //    // Get the socket that handles the client request.
-        //    Socket listener = (Socket)ar.AsyncState;
+        private IPEndPoint[] ConnectionSuchen(BackgroundWorker bw, int sleepPeriod)
+        {
+            IPEndPoint[] GefundeneEndPoints = new IPEndPoint[10];
+            int iZaeler = 0;
+            for (int i = 0; i < 255; i++)
+            {
+                for (int a = 0; a < 255; a++)
+                {
+                    Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                    IPAddress Ip = IPAddress.Parse($"192.168.{i}.{a}");
+                    IPEndPoint hostep = new IPEndPoint(Ip, 42069);
 
-        //    // End the operation and display the received data on the console.
-        //    byte[] Buffer;
-        //    int bytesTransferred;
-        //    Socket handler = listener.EndAccept(out Buffer, out bytesTransferred, ar);
-        //    string stringTransferred = Encoding.ASCII.GetString(Buffer, 0, bytesTransferred);
+                    IAsyncResult result = s.BeginConnect(Ip, 42069, null, null);
 
-        //    Console.WriteLine(stringTransferred);
-        //    Console.WriteLine("Size of data transferred is {0}", bytesTransferred);
+                    bool success = result.AsyncWaitHandle.WaitOne(0, true);
 
-        //    // Create the state object for the asynchronous receive.
-        //    //StateObject state = new StateObject();
-        //    //state.workSocket = handler;
-        //    //handler.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
-        //    //new AsyncCallback(ReadCallback), state);
-        //}
-        #endregion
+                    if (s.Connected)
+                    {
+
+                        Console.WriteLine($"gefunden auf {hostep}");
+                       
+                        GefundeneEndPoints[iZaeler] = hostep;
+                        s.EndConnect(result);
+                        iZaeler++;
+                    }
+                    else
+                    {
+                        // NOTE, MUST CLOSE THE SOCKET
+
+                        s.Close();
+                        Console.WriteLine($"Nix Gefunden Bei auf {hostep}");
+
+                        //throw new ApplicationException("Failed to connect server.");
+                    }
+                }
+            }
+            return GefundeneEndPoints;
+        }
+
+        private void btn_cancel_Click(object sender, EventArgs e)
+        {
+            this.backgroundWorker1.CancelAsync();
+        }
     }
+
+    //https://stackoverflow.com/questions/28601678/calling-async-method-on-button-click
+    //https://docs.microsoft.com/de-de/dotnet/desktop/winforms/controls/how-to-run-an-operation-in-the-background?view=netframeworkdesktop-4.8
     //https://docs.microsoft.com/de-de/dotnet/api/system.threading.manualresetevent?view=net-5.0
     //https://docs.microsoft.com/de-de/dotnet/framework/network-programming/asynchronous-client-socket-example
 }

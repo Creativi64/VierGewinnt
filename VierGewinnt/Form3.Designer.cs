@@ -32,6 +32,10 @@ namespace VierGewinnt
             this.btn_Test = new System.Windows.Forms.Button();
             this.btn_Test2 = new System.Windows.Forms.Button();
             this.txB_1 = new System.Windows.Forms.TextBox();
+            this.btn_Suchen = new System.Windows.Forms.Button();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.btn_cancel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // btn_Test
@@ -60,11 +64,42 @@ namespace VierGewinnt
             this.txB_1.Size = new System.Drawing.Size(100, 23);
             this.txB_1.TabIndex = 2;
             // 
+            // btn_Suchen
+            // 
+            this.btn_Suchen.Location = new System.Drawing.Point(51, 138);
+            this.btn_Suchen.Name = "btn_Suchen";
+            this.btn_Suchen.Size = new System.Drawing.Size(75, 23);
+            this.btn_Suchen.TabIndex = 3;
+            this.btn_Suchen.Text = "Serach";
+            this.btn_Suchen.UseVisualStyleBackColor = true;
+            this.btn_Suchen.Click += new System.EventHandler(this.btn_Suchen_Click);
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(120, 397);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(389, 23);
+            this.progressBar1.Step = 1;
+            this.progressBar1.TabIndex = 4;
+            // 
+            // btn_cancel
+            // 
+            this.btn_cancel.Location = new System.Drawing.Point(80, 183);
+            this.btn_cancel.Name = "btn_cancel";
+            this.btn_cancel.Size = new System.Drawing.Size(75, 23);
+            this.btn_cancel.TabIndex = 5;
+            this.btn_cancel.Text = "Cancel";
+            this.btn_cancel.UseVisualStyleBackColor = true;
+            this.btn_cancel.Click += new System.EventHandler(this.btn_cancel_Click);
+            // 
             // Form3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.btn_cancel);
+            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.btn_Suchen);
             this.Controls.Add(this.txB_1);
             this.Controls.Add(this.btn_Test2);
             this.Controls.Add(this.btn_Test);
@@ -80,5 +115,9 @@ namespace VierGewinnt
         private System.Windows.Forms.Button btn_Test;
         private System.Windows.Forms.Button btn_Test2;
         private System.Windows.Forms.TextBox txB_1;
+        private System.Windows.Forms.Button btn_Suchen;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Button btn_cancel;
     }
 }
