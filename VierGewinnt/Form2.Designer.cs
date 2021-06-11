@@ -95,6 +95,7 @@ namespace VierGewinnt
             this.Text = "Da Game";
             this.Click += new System.EventHandler(this.Form2_Click);
             this.Paint += new System.Windows.Forms.PaintEventHandler(this.Form2_Paint);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Form2_MouseMove);
             this.ResumeLayout(false);
             this.PerformLayout();
 

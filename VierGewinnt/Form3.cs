@@ -54,7 +54,6 @@ namespace VierGewinnt
         protected override void OnClosed(EventArgs e)
         {
             //wenn man mit X das Programm Schließet Schliest es sich Komlett mit einer Meldung
-
             this.Hide();
 
             MessageBox.Show("Spiel Beendet",
