@@ -29,8 +29,11 @@ namespace VierGewinnt
         #endregion Console
 
         private bool Fullscreen;
+
         private object[] GefundenEndpoints;
+
         private int iLezztesGefundene = 0;
+
         public Form3(bool _Fullscreen)
         {
             InitializeComponent();
@@ -115,21 +118,22 @@ namespace VierGewinnt
 
         private void btn_Suchen_Click(object sender, EventArgs e)
         {
-           
             Console.WriteLine("Suchen");
 
             this.backgroundWorker1.RunWorkerAsync(1);
+
             //GefundenEndpoints = await ConnectionSuchen();
 
             while (this.backgroundWorker1.IsBusy)
             {
-                progressBar1.Increment(1);
-                // Keep UI messages moving, so the form remains 
+           
+
+                // Keep UI messages moving, so the form remains
                 // responsive during the asynchronous operation.
                 Application.DoEvents();
             }
-
         }
+
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             // Do not access the form's BackgroundWorker reference directly.
@@ -137,7 +141,7 @@ namespace VierGewinnt
             BackgroundWorker bw = sender as BackgroundWorker;
 
             // Extract the argument.
-           int arg = (int)e.Argument;
+            int arg = (int)e.Argument;
 
             // Start the time-consuming operation.
             e.Result = ConnectionSuchen(bw, arg);
@@ -159,6 +163,7 @@ namespace VierGewinnt
                 // The user canceled the operation.
 
                 Console.WriteLine("Canceled");
+
                 //MessageBox.Show("Operation was canceled");
             }
             else if (e.Error != null)
@@ -166,11 +171,13 @@ namespace VierGewinnt
                 // There was an error during the operation.
                 //string msg = String.Format("An error occurred: {0}", e.Error.Message);
                 Console.WriteLine("An error occurred: {0}", e.Error.Message);
+
                 //MessageBox.Show(msg);
             }
             else
             {
                 Console.WriteLine("Suche Abgeschlossen");
+
                 // The operation completed normally.
                 GefundenEndpoints[iLezztesGefundene] = e.Result;
                 iLezztesGefundene++;
@@ -198,7 +205,6 @@ namespace VierGewinnt
 
         //            if (s.Connected)
         //            {
-
         //                Console.WriteLine($"gefunden auf {hostep}");
         //                Console.ReadLine();
         //                GefundeneEndPoints[iZaeler] = hostep;
@@ -222,11 +228,13 @@ namespace VierGewinnt
         {
             IPEndPoint[] GefundeneEndPoints = new IPEndPoint[10];
             int iZaeler = 0;
-            while (!bw.CancellationPending)
+            int iHöchsteProzent = 0;
+            double iProgress;
+            for (int i = 0; i <= 255; i++)
             {
-                for (int i = 0; i < 255; i++)
+                for (int a = 0; a <= 255; a++)
                 {
-                    for (int a = 0; a < 255; a++)
+                    if (!bw.CancellationPending)
                     {
                         Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                         IPAddress Ip = IPAddress.Parse($"192.168.{i}.{a}");
@@ -238,7 +246,6 @@ namespace VierGewinnt
 
                         if (s.Connected)
                         {
-
                             Console.WriteLine($"gefunden auf {hostep}");
 
                             GefundeneEndPoints[iZaeler] = hostep;
@@ -254,7 +261,25 @@ namespace VierGewinnt
 
                             //throw new ApplicationException("Failed to connect server.");
                         }
+                        iProgress = (a * i);
+                        iProgress /= (255 * 255);
+                        iProgress *= 100;
+                        Console.WriteLine($"Progress {iProgress} - {Convert.ToInt32(iProgress)} %");
+
+                        if (Convert.ToInt32(iProgress) > iHöchsteProzent)
+                        {
+                            iHöchsteProzent = Convert.ToInt32(iProgress);
+                            bw.ReportProgress(iHöchsteProzent);
+                        }
                     }
+                    else
+                    {
+                        break;
+                    }
+                }
+                if (bw.CancellationPending)
+                {
+                    break;
                 }
             }
             return GefundeneEndPoints;
@@ -263,6 +288,12 @@ namespace VierGewinnt
         private void btn_cancel_Click(object sender, EventArgs e)
         {
             this.backgroundWorker1.CancelAsync();
+        }
+
+        private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            this.progressBar1.Increment(1);
+            Application.DoEvents();
         }
     }
 

@@ -78,14 +78,19 @@ namespace VierGewinnt
             // 
             this.backgroundWorker1.WorkerReportsProgress = true;
             this.backgroundWorker1.WorkerSupportsCancellation = true;
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
+            this.backgroundWorker1.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker1_ProgressChanged);
+            this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(120, 397);
+            this.progressBar1.Location = new System.Drawing.Point(2, 426);
+            this.progressBar1.Maximum = 100;
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(389, 23);
+            this.progressBar1.Size = new System.Drawing.Size(798, 23);
             this.progressBar1.Step = 1;
             this.progressBar1.TabIndex = 4;
+            this.progressBar1.UseWaitCursor = true;
             // 
             // btn_cancel
             // 
