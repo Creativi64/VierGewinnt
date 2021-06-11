@@ -74,6 +74,11 @@ namespace VierGewinnt
             this.btn_Suchen.UseVisualStyleBackColor = true;
             this.btn_Suchen.Click += new System.EventHandler(this.btn_Suchen_Click);
             // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.WorkerReportsProgress = true;
+            this.backgroundWorker1.WorkerSupportsCancellation = true;
+            // 
             // progressBar1
             // 
             this.progressBar1.Location = new System.Drawing.Point(120, 397);

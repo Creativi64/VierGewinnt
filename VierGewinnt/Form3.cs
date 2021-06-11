@@ -54,7 +54,6 @@ namespace VierGewinnt
         protected override void OnClosed(EventArgs e)
         {
             //wenn man mit X das Programm Schließet Schliest es sich Komlett mit einer Meldung
-
             this.Hide();
 
             MessageBox.Show("Spiel Beendet",
@@ -127,7 +126,7 @@ namespace VierGewinnt
                 progressBar1.Increment(1);
                 // Keep UI messages moving, so the form remains 
                 // responsive during the asynchronous operation.
-                //Application.DoEvents();
+                Application.DoEvents();
             }
 
         }
@@ -142,13 +141,13 @@ namespace VierGewinnt
 
             // Start the time-consuming operation.
             e.Result = ConnectionSuchen(bw, arg);
-           
+
             // If the operation was canceled by the user,
             // set the DoWorkEventArgs.Cancel property to true.
-            //if (bw.CancellationPending)
-            //{
-            //    e.Cancel = true;
-            //}
+            if (bw.CancellationPending)
+            {
+                e.Cancel = true;
+            }
         }
 
         private void backgroundWorker1_RunWorkerCompleted(
@@ -223,35 +222,38 @@ namespace VierGewinnt
         {
             IPEndPoint[] GefundeneEndPoints = new IPEndPoint[10];
             int iZaeler = 0;
-            for (int i = 0; i < 255; i++)
+            while (!bw.CancellationPending)
             {
-                for (int a = 0; a < 255; a++)
+                for (int i = 0; i < 255; i++)
                 {
-                    Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                    IPAddress Ip = IPAddress.Parse($"192.168.{i}.{a}");
-                    IPEndPoint hostep = new IPEndPoint(Ip, 42069);
-
-                    IAsyncResult result = s.BeginConnect(Ip, 42069, null, null);
-
-                    bool success = result.AsyncWaitHandle.WaitOne(0, true);
-
-                    if (s.Connected)
+                    for (int a = 0; a < 255; a++)
                     {
+                        Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                        IPAddress Ip = IPAddress.Parse($"192.168.{i}.{a}");
+                        IPEndPoint hostep = new IPEndPoint(Ip, 42069);
 
-                        Console.WriteLine($"gefunden auf {hostep}");
-                       
-                        GefundeneEndPoints[iZaeler] = hostep;
-                        s.EndConnect(result);
-                        iZaeler++;
-                    }
-                    else
-                    {
-                        // NOTE, MUST CLOSE THE SOCKET
+                        IAsyncResult result = s.BeginConnect(Ip, 42069, null, null);
 
-                        s.Close();
-                        Console.WriteLine($"Nix Gefunden Bei auf {hostep}");
+                        bool success = result.AsyncWaitHandle.WaitOne(0, true);
 
-                        //throw new ApplicationException("Failed to connect server.");
+                        if (s.Connected)
+                        {
+
+                            Console.WriteLine($"gefunden auf {hostep}");
+
+                            GefundeneEndPoints[iZaeler] = hostep;
+                            s.EndConnect(result);
+                            iZaeler++;
+                        }
+                        else
+                        {
+                            // NOTE, MUST CLOSE THE SOCKET
+
+                            s.Close();
+                            Console.WriteLine($"Nix Gefunden Bei auf {hostep}");
+
+                            //throw new ApplicationException("Failed to connect server.");
+                        }
                     }
                 }
             }
