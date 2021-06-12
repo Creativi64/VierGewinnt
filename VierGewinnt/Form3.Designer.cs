@@ -37,6 +37,10 @@ namespace VierGewinnt
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.btn_cancel = new System.Windows.Forms.Button();
             this.LiB_GefundenenEndPoints = new System.Windows.Forms.ListBox();
+            this.ServerHosten = new System.Windows.Forms.Button();
+            this.btn_ConnectTo = new System.Windows.Forms.Button();
+            this.txB_VerbindenIP = new System.Windows.Forms.TextBox();
+            this.BcWork_Server = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // btn_Test
@@ -101,7 +105,7 @@ namespace VierGewinnt
             // 
             // btn_cancel
             // 
-            this.btn_cancel.Location = new System.Drawing.Point(171, 451);
+            this.btn_cancel.Location = new System.Drawing.Point(282, 340);
             this.btn_cancel.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
             this.btn_cancel.Name = "btn_cancel";
             this.btn_cancel.Size = new System.Drawing.Size(161, 57);
@@ -119,11 +123,47 @@ namespace VierGewinnt
             this.LiB_GefundenenEndPoints.Size = new System.Drawing.Size(270, 189);
             this.LiB_GefundenenEndPoints.TabIndex = 6;
             // 
+            // ServerHosten
+            // 
+            this.ServerHosten.Location = new System.Drawing.Point(109, 461);
+            this.ServerHosten.Name = "ServerHosten";
+            this.ServerHosten.Size = new System.Drawing.Size(208, 52);
+            this.ServerHosten.TabIndex = 7;
+            this.ServerHosten.Text = "ServerHosten";
+            this.ServerHosten.UseVisualStyleBackColor = true;
+            this.ServerHosten.Click += new System.EventHandler(this.ServerHosten_Click);
+            // 
+            // btn_ConnectTo
+            // 
+            this.btn_ConnectTo.Location = new System.Drawing.Point(109, 561);
+            this.btn_ConnectTo.Name = "btn_ConnectTo";
+            this.btn_ConnectTo.Size = new System.Drawing.Size(169, 52);
+            this.btn_ConnectTo.TabIndex = 8;
+            this.btn_ConnectTo.Text = "ConnectTo:";
+            this.btn_ConnectTo.UseVisualStyleBackColor = true;
+            this.btn_ConnectTo.Click += new System.EventHandler(this.btn_ConnectTo_Click);
+            // 
+            // txB_VerbindenIP
+            // 
+            this.txB_VerbindenIP.Location = new System.Drawing.Point(302, 570);
+            this.txB_VerbindenIP.Name = "txB_VerbindenIP";
+            this.txB_VerbindenIP.Size = new System.Drawing.Size(225, 43);
+            this.txB_VerbindenIP.TabIndex = 9;
+            // 
+            // BcWork_Server
+            // 
+            this.BcWork_Server.WorkerSupportsCancellation = true;
+            this.BcWork_Server.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker2_DoWork);
+            this.BcWork_Server.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker2_RunWorkerCompleted);
+            // 
             // Form3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(15F, 37F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1714, 1110);
+            this.Controls.Add(this.txB_VerbindenIP);
+            this.Controls.Add(this.btn_ConnectTo);
+            this.Controls.Add(this.ServerHosten);
             this.Controls.Add(this.LiB_GefundenenEndPoints);
             this.Controls.Add(this.btn_cancel);
             this.Controls.Add(this.progressBar1);
@@ -150,5 +190,9 @@ namespace VierGewinnt
         private System.Windows.Forms.Button btn_cancel;
  
         private System.Windows.Forms.ListBox LiB_GefundenenEndPoints;
+        private System.Windows.Forms.Button ServerHosten;
+        private System.Windows.Forms.Button btn_ConnectTo;
+        private System.Windows.Forms.TextBox txB_VerbindenIP;
+        private System.ComponentModel.BackgroundWorker BcWork_Server;
     }
 }

@@ -109,7 +109,7 @@ namespace VierGewinnt
                 Console.WriteLine("Error");
             }
         }
-
+        
         private void btn_Suchen_Click(object sender, EventArgs e)
         {
             Console.WriteLine("Suchen");
@@ -127,6 +127,32 @@ namespace VierGewinnt
             }
         }
 
+        private void ServerHosten_Click(object sender, EventArgs e)
+        {
+            this.BcWork_Server.RunWorkerAsync();
+            while (this.BcWork_Server.IsBusy)
+            {
+                // Keep UI messages moving, so the form remains
+                // responsive during the asynchronous operation.
+                Application.DoEvents();
+            }
+        }
+
+        private void btn_ConnectTo_Click(object sender, EventArgs e)
+        {
+            if (IPAddress.TryParse(txB_VerbindenIP.Text, out IPAddress _IP))
+            {
+                StartClientVerbindung(_IP);
+            }
+            else
+            {
+                Console.WriteLine("Keine Gültige IP Adresse");
+            }
+        }
+
+        #region NachConnectionsSuchen
+
+
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             // Do not access the form's BackgroundWorker reference directly.
@@ -134,10 +160,10 @@ namespace VierGewinnt
             BackgroundWorker bw = sender as BackgroundWorker;
 
             // Extract the argument.
-            int arg = (int)e.Argument;
+            //int arg = (int)e.Argument;
 
             // Start the time-consuming operation.
-            ConnectionSuchen(bw, arg);
+            ConnectionSuchen(bw);
 
             // If the operation was canceled by the user,
             // set the DoWorkEventArgs.Cancel property to true.
@@ -147,7 +173,7 @@ namespace VierGewinnt
             }
         }
 
-        private void backgroundWorker1_RunWorkerCompleted(object sender,RunWorkerCompletedEventArgs e)
+        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             if (e.Cancelled)
             {
@@ -196,13 +222,13 @@ namespace VierGewinnt
             }
         }
 
-        private void ConnectionSuchen(BackgroundWorker bw, int sleepPeriod)
+        private void ConnectionSuchen(BackgroundWorker bw)
         {
             //IPEndPoint[] GefundeneEndPoints = new IPEndPoint[10];
             //int iZaeler = 0;
             for (int i = 0; i < GefundenEndpoints.Length; i++)
             {
-                GefundenEndpoints[i]= null;
+                GefundenEndpoints[i] = null;
             }
             int iHöchsteProzent = 0;
 
@@ -233,8 +259,6 @@ namespace VierGewinnt
                             Console.WriteLine($"gefunden auf {hostep}");
 
                             GefundenEndpoints[iLezztesGefundene] = hostep;
-
-                            
                         }
                         else
                         {
@@ -246,7 +270,7 @@ namespace VierGewinnt
                             //throw new ApplicationException("Failed to connect server.");
                         }
                         iProgress = (a * i);
-                        iProgress /= (NetzverkBereich1 *NetzverkBereich2 );
+                        iProgress /= (NetzverkBereich1 * NetzverkBereich2);
                         iProgress *= 100;
                         Console.WriteLine($"Progress {iProgress} - {Convert.ToInt32(iProgress)} %");
 
@@ -278,6 +302,434 @@ namespace VierGewinnt
             this.progressBar1.Increment(1);
             Application.DoEvents();
         }
+
+        #endregion NachConnectionsSuchen
+
+        #region Client_VerbindingMitServerHerstellen
+
+        public static ManualResetEvent allDone = new ManualResetEvent(false);
+
+        private static ManualResetEvent connectDone = new ManualResetEvent(false);
+
+        private static ManualResetEvent sendDone = new ManualResetEvent(false);
+
+        private static ManualResetEvent receiveDone = new ManualResetEvent(false);
+
+        public static bool bConectet = false;
+
+        private static void StartClientVerbindung(IPAddress Ip)
+        {
+            Console.WriteLine("Start");
+
+            //const string localhost2 = "127.0.0.1";
+            //var ip2 = IPAddress.Parse(Ip);
+
+            const int port = 42069;
+
+            string strrinf = "TestTestTes23";
+
+            var data = Encoding.UTF8.GetBytes(strrinf);
+
+            IPEndPoint lep = new IPEndPoint(Ip, port);
+
+            // Create a TCP/IP socket.
+            Socket s = new Socket(Ip.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+
+            // Connect to the remote endpoint.
+            do
+            {
+                //try
+                //{
+                s.BeginConnect(lep, new AsyncCallback(ConnectCallback), s);
+
+                //}
+                //catch (Exception e)
+                //{
+                //    bConectet = false;
+                //    Console.WriteLine($"Failed {e}");
+                //    Thread.Sleep(2000);
+                //}
+            } while (bConectet == false);
+            connectDone.WaitOne();
+
+            // Send test data to the remote device.
+            s.BeginSend(data, 0, data.Length, 0, new AsyncCallback(SendCallback), s);
+
+            sendDone.WaitOne();
+
+            // Receive the response from the remote device.
+            Receive(s);
+            receiveDone.WaitOne();
+
+            Console.WriteLine("Response received : {0}", response);
+
+            s.Shutdown(SocketShutdown.Both);
+            s.Close();
+
+            #region re
+
+            //s.Bind(lep);
+
+            //s.Listen(1000);
+
+            //while (true)
+            //{
+            //    allDone.Reset();
+
+            //    Console.WriteLine($"{iZaeler} Waiting for a connection...");
+            //    int receivedDataSize = 265;
+
+            //    s.BeginAccept(null, receivedDataSize, new AsyncCallback(AcceptReceiveDataCallback), s);
+
+            //    Thread.Sleep(1000);
+
+            //    iZaeler++;
+            //}
+
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine(e.ToString());
+            //}
+
+            #endregion re
+        }
+
+        private static String response = String.Empty;
+
+        private static void Receive(Socket client)
+        {
+            try
+            {
+                // Create the state object.
+                StateObject state = new StateObject();
+                state.workSocket = client;
+
+                // Begin receiving the data from the remote device.
+                client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+                    new AsyncCallback(ReceiveCallback), state);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+
+        private static void ConnectCallback(IAsyncResult ar)
+        {
+            try
+            {
+                Console.WriteLine("Try Connecting");
+
+                // Retrieve the socket from the state object.
+                Socket client = (Socket)ar.AsyncState;
+
+                // Complete the connection.
+                client.EndConnect(ar);
+
+                Console.WriteLine("Socket connected to {0}",
+                    client.RemoteEndPoint.ToString());
+
+                // Signal that the connection has been made.
+                connectDone.Set();
+                Console.WriteLine("Connectet");
+
+                bConectet = false;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Conection Failed");
+                Console.WriteLine(e.ToString());
+                Thread.Sleep(1000);
+            }
+        }
+
+        private static void SendCallback(IAsyncResult ar)
+        {
+            try
+            {
+                // Retrieve the socket from the state object.
+                Socket client = (Socket)ar.AsyncState;
+
+                // Complete sending the data to the remote device.
+                int bytesSent = client.EndSend(ar);
+                Console.WriteLine("Sent {0} bytes to server.", bytesSent);
+
+                // Signal that all bytes have been sent.
+                sendDone.Set();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+
+        public class StateObject
+        {
+            // Client socket.
+            public Socket workSocket = null;
+
+            // Size of receive buffer.
+            public const int BufferSize = 256;
+
+            // Receive buffer.
+            public byte[] buffer = new byte[BufferSize];
+
+            // Received data string.
+            public StringBuilder sb = new StringBuilder();
+        }
+
+        private static void ReceiveCallback(IAsyncResult ar)
+        {
+            try
+            {
+                // Retrieve the state object and the client socket
+                // from the asynchronous state object.
+                StateObject state = (StateObject)ar.AsyncState;
+                Socket workSocket = null;
+                Socket client = workSocket;
+
+                // Read data from the remote device.
+                int bytesRead = client.EndReceive(ar);
+
+                if (bytesRead > 0)
+                {
+                    // There might be more data, so store the data received so far.
+                    state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
+
+                    // Get the rest of the data.
+                    client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
+                        new AsyncCallback(ReceiveCallback), state);
+                }
+                else
+                {
+                    // All the data has arrived; put it in response.
+                    if (state.sb.Length > 1)
+                    {
+                        response = state.sb.ToString();
+                    }
+
+                    // Signal that all bytes have been received.
+                    receiveDone.Set();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+
+        #endregion Client_VerbindingMitServerHerstellen
+
+        #region ServerHosten
+
+        private void backgroundWorker2_DoWork(object sender, DoWorkEventArgs e)
+        {
+            // Do not access the form's BackgroundWorker reference directly.
+            // Instead, use the reference provided by the sender parameter.
+            BackgroundWorker bw = sender as BackgroundWorker;
+
+            // Extract the argument.
+            //int arg = (int)e.Argument;
+
+            // Start the time-consuming operation.
+            StartListening(bw);
+
+            // If the operation was canceled by the user,
+            // set the DoWorkEventArgs.Cancel property to true.
+            if (bw.CancellationPending)
+            {
+                e.Cancel = true;
+            }
+        }
+
+        private void backgroundWorker2_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            if (e.Cancelled)
+            {
+                // The user/programm canceled the operation.
+                Console.WriteLine("Canceled");
+          
+            }
+            else if (e.Error != null)
+            {
+                // There was an error during the operation.
+                Console.WriteLine("An error occurred: {0}", e.Error.Message);
+             
+            }
+            else
+            {
+                // The operation completed normally.
+                Console.WriteLine("Server Beendet");
+            }
+        }
+
+        public class StateObjectServer
+        {
+            // Size of receive buffer.
+            public const int BufferSize = 1024;
+
+            // Receive buffer.
+            public byte[] buffer = new byte[BufferSize];
+
+            // Received data string.
+            public StringBuilder sb = new StringBuilder();
+
+            // Client socket.
+            public Socket workSocket = null;
+        }
+
+        // Thread signal.
+        public static ManualResetEvent allDoneServer = new ManualResetEvent(false);
+
+        //public AsynchronousSocketListener()
+        //{
+        //}
+
+        public static void StartListening(BackgroundWorker bw)
+        {
+            // Establish the local endpoint for the socket.
+            // The DNS name of the computer
+            const int port = 42069;
+            //IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
+            //IPAddress ipAddress = ipHostInfo.AddressList[0];
+            //const string localhost2 = "127.0.0.1";
+            //Console.WriteLine("IP einggabe '127.0.X.X' ");
+            //var ip = IPAddress.Parse(localhost2);
+
+            if (!bw.CancellationPending)
+            {
+
+                //IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
+                //IPAddress ipAddress = ipHostInfo.AddressList[0];
+                IPAddress[] ipv4Addresses = Array.FindAll(Dns.GetHostEntry(string.Empty).AddressList, a => a.AddressFamily == AddressFamily.InterNetwork);
+
+                IPEndPoint localEndPoint = new IPEndPoint(ipv4Addresses[0], port);
+                Console.WriteLine($"Running On {localEndPoint}");
+
+                // Create a TCP/IP socket.
+                Socket listener = new Socket(ipv4Addresses[0].AddressFamily,
+                    SocketType.Stream, ProtocolType.Tcp);
+
+                // Bind the socket to the local endpoint and listen for incoming connections.
+                try
+                {
+                    listener.Bind(localEndPoint);
+                    listener.Listen(100);
+
+                    while (true)
+                    {
+                        // Set the event to nonsignaled state.
+                        allDoneServer.Reset();
+
+                        // Start an asynchronous socket to listen for connections.
+                        Console.WriteLine("Waiting for a connection...");
+                        listener.BeginAccept(
+                            new AsyncCallback(AcceptCallback),
+                            listener);
+
+                        // Wait until a connection is made before continuing.
+                        allDoneServer.WaitOne();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
+            }
+            //Console.WriteLine("\nPress ENTER to continue...");
+            //Console.Read();
+        }
+
+        public static void AcceptCallback(IAsyncResult ar)
+        {
+            // Signal the main thread to continue.
+            allDoneServer.Set();
+
+            // Get the socket that handles the client request.
+            Socket listener = (Socket)ar.AsyncState;
+            Socket handler = listener.EndAccept(ar);
+
+            // Create the state object.
+            StateObjectServer state = new StateObjectServer();
+            state.workSocket = handler;
+            handler.BeginReceive(state.buffer, 0, StateObjectServer.BufferSize, 0,
+                new AsyncCallback(ReadCallback), state);
+        }
+
+        public static void ReadCallback(IAsyncResult ar)
+        {
+            String content = String.Empty;
+
+            // Retrieve the state object and the handler socket
+            // from the asynchronous state object.
+            StateObjectServer state = (StateObjectServer)ar.AsyncState;
+            Socket handler = state.workSocket;
+
+            // Read data from the client socket.
+            int bytesRead = handler.EndReceive(ar); // CHrasht wenn die verbindung gescannt wurde ohne das sie Wieder Ge schlossen wurde // Gefixt
+
+            if (bytesRead > 0)
+            {
+                // There  might be more data, so store the data received so far.
+                state.sb.Append(Encoding.ASCII.GetString(
+                    state.buffer, 0, bytesRead));
+
+                // Check for end-of-file tag. If it is not there, read
+                // more data.
+                content = state.sb.ToString();
+                if (content.IndexOf("<EOF>") > -1)
+                {
+                    // All the data has been read from the
+                    // client. Display it on the console.
+                    Console.WriteLine("Read {0} bytes from socket. \n Data : {1}",
+                        content.Length, content);
+
+                    // Echo the data back to the client.
+                    Send(handler, content);
+                }
+                else
+                {
+                    // Not all data received. Get more.
+                    handler.BeginReceive(state.buffer, 0, StateObjectServer.BufferSize, 0,
+                    new AsyncCallback(ReadCallback), state);
+                }
+            }
+        }
+
+        private static void Send(Socket handler, String data)
+        {
+            data = "Sendback " + data;
+
+            // Convert the string data to byte data using ASCII encoding.
+            byte[] byteData = Encoding.ASCII.GetBytes(data);
+
+            // Begin sending the data to the remote device.
+            handler.BeginSend(byteData, 0, byteData.Length, 0,
+                new AsyncCallback(SendCallbackServer), handler);
+        }
+
+        private static void SendCallbackServer(IAsyncResult ar)
+        {
+            try
+            {
+                // Retrieve the socket from the state object.
+                Socket handler = (Socket)ar.AsyncState;
+
+                // Complete sending the data to the remote device.
+                int bytesSent = handler.EndSend(ar);
+                Console.WriteLine("Sent {0} bytes to client.", bytesSent);
+
+                handler.Shutdown(SocketShutdown.Both);
+                handler.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+
+        #endregion ServerHosten
     }
 
     //https://stackoverflow.com/questions/28601678/calling-async-method-on-button-click
