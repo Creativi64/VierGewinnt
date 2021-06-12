@@ -1,20 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Net;
-using System.Net.WebSockets;
 using System.Net.Sockets;
-using static System.Console;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading;
-using System.Collections.Specialized;
-using System.Collections;
+using System.Windows.Forms;
+using static System.Console;
 
 namespace VierGewinnt
 {
@@ -30,13 +22,15 @@ namespace VierGewinnt
 
         private bool Fullscreen;
 
-        private object[] GefundenEndpoints;
+        private IPEndPoint[] GefundenEndpoints;
 
         private int iLezztesGefundene = 0;
 
         public Form3(bool _Fullscreen)
         {
             InitializeComponent();
+
+            GefundenEndpoints = new IPEndPoint[10];
 
             Fullscreen = _Fullscreen;
             if (_Fullscreen == true)
@@ -58,7 +52,7 @@ namespace VierGewinnt
         {
             //wenn man mit X das Programm Schließet Schliest es sich Komlett mit einer Meldung
             this.Hide();
-
+            this.backgroundWorker1.CancelAsync();
             MessageBox.Show("Spiel Beendet",
                 "Close Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
@@ -121,7 +115,8 @@ namespace VierGewinnt
             Console.WriteLine("Suchen");
 
             this.backgroundWorker1.RunWorkerAsync(1);
-
+            progressBar1.Value = 0;
+            progressBar1.Visible = true;
             //GefundenEndpoints = await ConnectionSuchen();
 
             while (this.backgroundWorker1.IsBusy)
@@ -142,7 +137,7 @@ namespace VierGewinnt
             int arg = (int)e.Argument;
 
             // Start the time-consuming operation.
-            e.Result = ConnectionSuchen(bw, arg);
+            ConnectionSuchen(bw, arg);
 
             // If the operation was canceled by the user,
             // set the DoWorkEventArgs.Cancel property to true.
@@ -152,16 +147,15 @@ namespace VierGewinnt
             }
         }
 
-        private void backgroundWorker1_RunWorkerCompleted(
-            object sender,
-            RunWorkerCompletedEventArgs e)
+        private void backgroundWorker1_RunWorkerCompleted(object sender,RunWorkerCompletedEventArgs e)
         {
             if (e.Cancelled)
             {
                 // The user canceled the operation.
 
                 Console.WriteLine("Canceled");
-
+                progressBar1.Value = 0;
+                progressBar1.Visible = false;
                 //MessageBox.Show("Operation was canceled");
             }
             else if (e.Error != null)
@@ -169,7 +163,8 @@ namespace VierGewinnt
                 // There was an error during the operation.
                 //string msg = String.Format("An error occurred: {0}", e.Error.Message);
                 Console.WriteLine("An error occurred: {0}", e.Error.Message);
-
+                progressBar1.Value = 0;
+                progressBar1.Visible = false;
                 //MessageBox.Show(msg);
             }
             else
@@ -177,78 +172,69 @@ namespace VierGewinnt
                 Console.WriteLine("Suche Abgeschlossen");
 
                 // The operation completed normally.
-                GefundenEndpoints[iLezztesGefundene] = e.Result;
-                iLezztesGefundene++;
-                string msg = String.Format("Result = {0}", e.Result);
+                //GefundenEndpoints[iLezztesGefundene] = e.Result;
+                //iLezztesGefundene++;
+                progressBar1.Value = 0;
+                progressBar1.Visible = false;
+                //string msg = String.Format("Result = {0}", e.Result);
                 Console.WriteLine("ergebnis");
-                MessageBox.Show(msg);
+
+                LiB_GefundenenEndPoints.Items.Clear();
+                LiB_GefundenenEndPoints.Items.Add("Gefundene Spiele");
+                LiB_GefundenenEndPoints.Items.Add("--------------------------------------");
+
+                for (int i = 0; i < GefundenEndpoints.Length; i++)
+                {
+                    if (GefundenEndpoints[i] != null)
+                    {
+                        LiB_GefundenenEndPoints.Items.Add(GefundenEndpoints[i]);
+                        LiB_GefundenenEndPoints.Items.Add("###");
+                    }
+                }
+
+                //MessageBox.Show(msg);
             }
         }
 
-        //private static async Task<IPEndPoint[]> ConnectionSuchen(BackgroundWorker bw, int sleepPeriod)
-        //{
-        //   IPEndPoint[] GefundeneEndPoints = new IPEndPoint[10];
-        //    int iZaeler = 0;
-        //    for (int i = 0; i < 255; i++)
-        //    {
-        //        for (int a = 0; a < 255; a++)
-        //        {
-        //            Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        //            IPAddress Ip = IPAddress.Parse($"192.168.{i}.{a}");
-        //            IPEndPoint hostep = new IPEndPoint(Ip, 42069);
-
-        //            IAsyncResult result = s.BeginConnect(Ip, 42069, null, null);
-
-        //            bool success = result.AsyncWaitHandle.WaitOne(1, true);
-
-        //            if (s.Connected)
-        //            {
-        //                Console.WriteLine($"gefunden auf {hostep}");
-        //                Console.ReadLine();
-        //                GefundeneEndPoints[iZaeler] = hostep;
-        //                s.EndConnect(result);
-        //                iZaeler++;
-        //            }
-        //            else
-        //            {
-        //                // NOTE, MUST CLOSE THE SOCKET
-
-        //                s.Close();
-        //                Console.WriteLine($"Nix Gefunden Bei auf {hostep}");
-
-        //                //throw new ApplicationException("Failed to connect server.");
-        //            }
-        //        }
-        //    }
-        //    return GefundeneEndPoints;
-        //}
-        private IPEndPoint[] ConnectionSuchen(BackgroundWorker bw, int sleepPeriod)
+        private void ConnectionSuchen(BackgroundWorker bw, int sleepPeriod)
         {
-            IPEndPoint[] GefundeneEndPoints = new IPEndPoint[10];
-            int iZaeler = 0;
-            int iHöchsteProzent = 0;
-            double iProgress;
-            for (int i = 0; i <= 255; i++)
+            //IPEndPoint[] GefundeneEndPoints = new IPEndPoint[10];
+            //int iZaeler = 0;
+            for (int i = 0; i < GefundenEndpoints.Length; i++)
             {
-                for (int a = 0; a <= 255; a++)
+                GefundenEndpoints[i]= null;
+            }
+            int iHöchsteProzent = 0;
+
+            int NetzverkBereich1 = 5, NetzverkBereich2 = 255;
+
+            double iProgress;
+            string NetzBereich = "127.0.";
+            string NetzBereich1 = "192.168.";
+
+            for (int i = 0; i <= NetzverkBereich1; i++)
+            {
+                for (int a = 0; a <= NetzverkBereich2; a++)
                 {
                     if (!bw.CancellationPending)
                     {
                         Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                        IPAddress Ip = IPAddress.Parse($"192.168.{i}.{a}");
+                        IPAddress Ip = IPAddress.Parse($"{NetzBereich}{i}.{a}");
                         IPEndPoint hostep = new IPEndPoint(Ip, 42069);
 
                         IAsyncResult result = s.BeginConnect(Ip, 42069, null, null);
 
-                        bool success = result.AsyncWaitHandle.WaitOne(0, true);
+                        bool success = result.AsyncWaitHandle.WaitOne(1, true);
 
                         if (s.Connected)
                         {
+                            s.EndConnect(result);
+                            s.Close();
                             Console.WriteLine($"gefunden auf {hostep}");
 
-                            GefundeneEndPoints[iZaeler] = hostep;
-                            s.EndConnect(result);
-                            iZaeler++;
+                            GefundenEndpoints[iLezztesGefundene] = hostep;
+
+                            
                         }
                         else
                         {
@@ -260,7 +246,7 @@ namespace VierGewinnt
                             //throw new ApplicationException("Failed to connect server.");
                         }
                         iProgress = (a * i);
-                        iProgress /= (255 * 255);
+                        iProgress /= (NetzverkBereich1 *NetzverkBereich2 );
                         iProgress *= 100;
                         Console.WriteLine($"Progress {iProgress} - {Convert.ToInt32(iProgress)} %");
 
@@ -280,7 +266,6 @@ namespace VierGewinnt
                     break;
                 }
             }
-            return GefundeneEndPoints;
         }
 
         private void btn_cancel_Click(object sender, EventArgs e)
