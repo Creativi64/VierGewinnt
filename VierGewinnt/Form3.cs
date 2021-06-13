@@ -235,7 +235,8 @@ namespace VierGewinnt
             int NetzverkBereich1 = 255, NetzverkBereich2 = 255;
 
             double iProgress;
-            string NetzBereich = "127.0.";
+
+            //string NetzBereich = "127.0.";
             string NetzBereich1 = "192.168.";
 
             for (int i = 0; i <= NetzverkBereich1; i++)
@@ -245,7 +246,7 @@ namespace VierGewinnt
                     if (!bw.CancellationPending)
                     {
                         Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                        IPAddress Ip = IPAddress.Parse($"{NetzBereich}{i}.{a}");
+                        IPAddress Ip = IPAddress.Parse($"{NetzBereich1}{i}.{a}");
                         IPEndPoint hostep = new IPEndPoint(Ip, 42069);
 
                         IAsyncResult result = s.BeginConnect(Ip, 42069, null, null);
@@ -269,6 +270,7 @@ namespace VierGewinnt
 
                             //throw new ApplicationException("Failed to connect server.");
                         }
+                   
                         iProgress = (i * a);
                         iProgress /= (NetzverkBereich1 * NetzverkBereich2);
                         iProgress *= 100;
@@ -330,30 +332,18 @@ namespace VierGewinnt
 
             var data = Encoding.UTF8.GetBytes(strrinf);
 
-            IPEndPoint lep = new IPEndPoint(Ip, port);
+            IPEndPoint RemoteEp = new IPEndPoint(Ip, port);
 
             // Create a TCP/IP socket.
             Socket s = new Socket(Ip.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
             // Connect to the remote endpoint.
-            do
-            {
-                //try
-                //{
-                s.BeginConnect(lep, new AsyncCallback(ConnectCallback), s);
+            s.BeginConnect(RemoteEp, new AsyncCallback(ConnectCallback), s);
 
-                //}
-                //catch (Exception e)
-                //{
-                //    bConectet = false;
-                //    Console.WriteLine($"Failed {e}");
-                //    Thread.Sleep(2000);
-                //}
-            } while (bConectet == false);
             connectDone.WaitOne();
 
             // Send test data to the remote device.
-            s.BeginSend(data, 0, data.Length, 0, new AsyncCallback(SendCallback), s);
+            SendServer(s,"TEST<EOF>");
 
             sendDone.WaitOne();
 
@@ -365,6 +355,7 @@ namespace VierGewinnt
 
             s.Shutdown(SocketShutdown.Both);
             s.Close();
+          
 
             #region re
 
@@ -394,7 +385,15 @@ namespace VierGewinnt
 
             #endregion re
         }
+        private static void SendServer(Socket client, String data)
+        {
+            // Convert the string data to byte data using ASCII encoding.  
+            byte[] byteData = Encoding.UTF8.GetBytes(data);
 
+            // Begin sending the data to the remote device.  
+            client.BeginSend(byteData, 0, byteData.Length, 0,
+                new AsyncCallback(SendCallback), client);
+        }
         private static String response = String.Empty;
 
         private static void Receive(Socket client)
@@ -406,8 +405,7 @@ namespace VierGewinnt
                 state.workSocket = client;
 
                 // Begin receiving the data from the remote device.
-                client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
-                    new AsyncCallback(ReceiveCallback), state);
+                client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,new AsyncCallback(ReceiveCallback), state);
             }
             catch (Exception e)
             {
@@ -486,11 +484,11 @@ namespace VierGewinnt
                 // Retrieve the state object and the client socket
                 // from the asynchronous state object.
                 StateObject state = (StateObject)ar.AsyncState;
-                Socket workSocket = null;
-                Socket client = workSocket;
+               
+                Socket client = state.workSocket;
 
                 // Read data from the remote device.
-                int bytesRead = client.EndReceive(ar);
+                int bytesRead = client.EndReceive(ar); //instance not set to  a ref wenn es daten empfngen soll
 
                 if (bytesRead > 0)
                 {
