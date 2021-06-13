@@ -41,8 +41,6 @@ name: VierGewinnt
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
 
 jobs:
 
@@ -108,8 +106,8 @@ jobs:
       run: Remove-Item -path $env:Wap_Project_Directory\$env:Signing_Certificate
 
     # Upload the MSIX package: https://github.com/marketplace/actions/upload-artifact
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: MSIX Package
-        path: ${{ env.Wap_Project_Directory }}\AppPackages
+#     - name: Upload build artifacts
+#       uses: actions/upload-artifact@v2
+#       with:
+#         name: MSIX Package
+#         path: ${{ env.Wap_Project_Directory }}\AppPackages
