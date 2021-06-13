@@ -345,8 +345,6 @@ namespace VierGewinnt
 
         private static String response = String.Empty;
 
-        
-
         private void StartClientVerbindung(IPAddress Ip)
         {
             Console.WriteLine("Start");
