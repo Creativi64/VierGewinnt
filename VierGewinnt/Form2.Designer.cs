@@ -30,6 +30,7 @@ namespace VierGewinnt
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
             this.button1 = new System.Windows.Forms.Button();
             this.btn_Test = new System.Windows.Forms.Button();
             this.lab_Player = new System.Windows.Forms.Label();
@@ -42,9 +43,10 @@ namespace VierGewinnt
             this.button1.BackColor = System.Drawing.Color.Transparent;
             this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.button1.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.button1.Location = new System.Drawing.Point(3, 12);
+            this.button1.Location = new System.Drawing.Point(6, 30);
+            this.button1.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(161, 57);
             this.button1.TabIndex = 0;
             this.button1.Text = "ZumMenue";
             this.button1.UseVisualStyleBackColor = false;
@@ -52,9 +54,10 @@ namespace VierGewinnt
             // 
             // btn_Test
             // 
-            this.btn_Test.Location = new System.Drawing.Point(3, 41);
+            this.btn_Test.Location = new System.Drawing.Point(6, 101);
+            this.btn_Test.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
             this.btn_Test.Name = "btn_Test";
-            this.btn_Test.Size = new System.Drawing.Size(75, 23);
+            this.btn_Test.Size = new System.Drawing.Size(161, 57);
             this.btn_Test.TabIndex = 1;
             this.btn_Test.Text = "TestButton";
             this.btn_Test.UseVisualStyleBackColor = true;
@@ -62,9 +65,10 @@ namespace VierGewinnt
             // lab_Player
             // 
             this.lab_Player.AutoSize = true;
-            this.lab_Player.Location = new System.Drawing.Point(13, 85);
+            this.lab_Player.Location = new System.Drawing.Point(28, 210);
+            this.lab_Player.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lab_Player.Name = "lab_Player";
-            this.lab_Player.Size = new System.Drawing.Size(0, 15);
+            this.lab_Player.Size = new System.Drawing.Size(0, 37);
             this.lab_Player.TabIndex = 2;
             // 
             // timer
@@ -75,21 +79,24 @@ namespace VierGewinnt
             // lab_Timer
             // 
             this.lab_Timer.AutoSize = true;
-            this.lab_Timer.Location = new System.Drawing.Point(13, 104);
+            this.lab_Timer.Location = new System.Drawing.Point(28, 257);
+            this.lab_Timer.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
             this.lab_Timer.Name = "lab_Timer";
-            this.lab_Timer.Size = new System.Drawing.Size(0, 15);
+            this.lab_Timer.Size = new System.Drawing.Size(0, 37);
             this.lab_Timer.TabIndex = 3;
             // 
             // Form2
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(15F, 37F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(794, 451);
+            this.ClientSize = new System.Drawing.Size(1701, 1112);
             this.Controls.Add(this.lab_Timer);
             this.Controls.Add(this.lab_Player);
             this.Controls.Add(this.btn_Test);
             this.Controls.Add(this.button1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
             this.MaximizeBox = false;
             this.Name = "Form2";
             this.Text = "Da Game";

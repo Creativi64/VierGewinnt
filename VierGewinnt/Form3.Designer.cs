@@ -29,6 +29,7 @@ namespace VierGewinnt
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form3));
             this.btn_Test = new System.Windows.Forms.Button();
             this.btn_Test2 = new System.Windows.Forms.Button();
             this.txB_1 = new System.Windows.Forms.TextBox();
@@ -171,6 +172,7 @@ namespace VierGewinnt
             this.Controls.Add(this.txB_1);
             this.Controls.Add(this.btn_Test2);
             this.Controls.Add(this.btn_Test);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(6, 7, 6, 7);
             this.Name = "Form3";
             this.Text = "Play Over Network";
