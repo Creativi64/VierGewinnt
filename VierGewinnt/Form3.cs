@@ -232,7 +232,7 @@ namespace VierGewinnt
             }
             int iHöchsteProzent = 0;
 
-            int NetzverkBereich1 = 5, NetzverkBereich2 = 255;
+            int NetzverkBereich1 = 255, NetzverkBereich2 = 255;
 
             double iProgress;
             string NetzBereich = "127.0.";
@@ -269,7 +269,7 @@ namespace VierGewinnt
 
                             //throw new ApplicationException("Failed to connect server.");
                         }
-                        iProgress = (a * i);
+                        iProgress = (i * a);
                         iProgress /= (NetzverkBereich1 * NetzverkBereich2);
                         iProgress *= 100;
                         Console.WriteLine($"Progress {iProgress} - {Convert.ToInt32(iProgress)} %");
