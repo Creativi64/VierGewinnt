@@ -26,8 +26,8 @@ namespace VierGewinnt
         private int iSpielfeldheightpx;
         private int iSpielfeldwidthpx;
 
-        private int iSpielfeldheight = 20;
-        private int iSpielfeldwidth = 20;
+        private int iSpielfeldheight = 6;
+        private int iSpielfeldwidth = 7;
 
         private Graphics spielfeldgraphic;
         private PointF[,] Dreieckspunkte;
@@ -483,7 +483,7 @@ namespace VierGewinnt
                         });
                         draw.RunSynchronously();
                     }
-                    Thread.Sleep((int)(100 / dropspeed));
+                    Thread.Sleep((int)(1000 / dropspeed));
                 }
             }
             );

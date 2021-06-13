@@ -109,7 +109,7 @@ namespace VierGewinnt
                 Console.WriteLine("Error");
             }
         }
-        
+
         private void btn_Suchen_Click(object sender, EventArgs e)
         {
             Console.WriteLine("Suchen");
@@ -117,6 +117,7 @@ namespace VierGewinnt
             this.backgroundWorker1.RunWorkerAsync(1);
             progressBar1.Value = 0;
             progressBar1.Visible = true;
+
             //GefundenEndpoints = await ConnectionSuchen();
 
             while (this.backgroundWorker1.IsBusy)
@@ -140,6 +141,7 @@ namespace VierGewinnt
 
         private void btn_ConnectTo_Click(object sender, EventArgs e)
         {
+            lab_Info.Text = ("");
             if (IPAddress.TryParse(txB_VerbindenIP.Text, out IPAddress _IP))
             {
                 StartClientVerbindung(_IP);
@@ -147,11 +149,15 @@ namespace VierGewinnt
             else
             {
                 Console.WriteLine("Keine Gültige IP Adresse");
+                lab_Info.Text = ("Keine Gültige IP");
             }
         }
 
-        #region NachConnectionsSuchen
+        private void btn_Senden_Click(object sender, EventArgs e)
+        {
+        }
 
+        #region NachConnectionsSuchen
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -182,6 +188,7 @@ namespace VierGewinnt
                 Console.WriteLine("Canceled");
                 progressBar1.Value = 0;
                 progressBar1.Visible = false;
+
                 //MessageBox.Show("Operation was canceled");
             }
             else if (e.Error != null)
@@ -191,6 +198,7 @@ namespace VierGewinnt
                 Console.WriteLine("An error occurred: {0}", e.Error.Message);
                 progressBar1.Value = 0;
                 progressBar1.Visible = false;
+
                 //MessageBox.Show(msg);
             }
             else
@@ -202,6 +210,7 @@ namespace VierGewinnt
                 //iLezztesGefundene++;
                 progressBar1.Value = 0;
                 progressBar1.Visible = false;
+
                 //string msg = String.Format("Result = {0}", e.Result);
                 Console.WriteLine("ergebnis");
 
@@ -270,7 +279,7 @@ namespace VierGewinnt
 
                             //throw new ApplicationException("Failed to connect server.");
                         }
-                   
+
                         iProgress = (i * a);
                         iProgress /= (NetzverkBereich1 * NetzverkBereich2);
                         iProgress *= 100;
@@ -319,18 +328,38 @@ namespace VierGewinnt
 
         public static bool bConectet = false;
 
-        private static void StartClientVerbindung(IPAddress Ip)
+        public class StateObject
+        {
+            // Client socket.
+            public Socket workSocket = null;
+
+            // Size of receive buffer.
+            public const int BufferSize = 256;
+
+            // Receive buffer.
+            public byte[] buffer = new byte[BufferSize];
+
+            // Received data string.
+            public StringBuilder sb = new StringBuilder();
+        }
+
+        private static String response = String.Empty;
+
+        
+
+        private void StartClientVerbindung(IPAddress Ip)
         {
             Console.WriteLine("Start");
+            lab_Info.Text = ("Connect...");
 
             //const string localhost2 = "127.0.0.1";
             //var ip2 = IPAddress.Parse(Ip);
 
             const int port = 42069;
 
-            string strrinf = "TestTestTes23";
+            //string strrinf = "TestTestTes23";
 
-            var data = Encoding.UTF8.GetBytes(strrinf);
+            //var data = Encoding.UTF8.GetBytes(strrinf);
 
             IPEndPoint RemoteEp = new IPEndPoint(Ip, port);
 
@@ -343,7 +372,7 @@ namespace VierGewinnt
             connectDone.WaitOne();
 
             // Send test data to the remote device.
-            SendServer(s,"TEST<EOF>");
+            SendServer(s, txB_Senden.Text);
 
             sendDone.WaitOne();
 
@@ -352,10 +381,9 @@ namespace VierGewinnt
             receiveDone.WaitOne();
 
             Console.WriteLine("Response received : {0}", response);
-
+            txB_Empfangen.Text = response;
             s.Shutdown(SocketShutdown.Both);
             s.Close();
-          
 
             #region re
 
@@ -385,16 +413,16 @@ namespace VierGewinnt
 
             #endregion re
         }
+
         private static void SendServer(Socket client, String data)
         {
-            // Convert the string data to byte data using ASCII encoding.  
+            // Convert the string data to byte data using ASCII encoding.
             byte[] byteData = Encoding.UTF8.GetBytes(data);
 
-            // Begin sending the data to the remote device.  
+            // Begin sending the data to the remote device.
             client.BeginSend(byteData, 0, byteData.Length, 0,
                 new AsyncCallback(SendCallback), client);
         }
-        private static String response = String.Empty;
 
         private static void Receive(Socket client)
         {
@@ -405,7 +433,7 @@ namespace VierGewinnt
                 state.workSocket = client;
 
                 // Begin receiving the data from the remote device.
-                client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,new AsyncCallback(ReceiveCallback), state);
+                client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReceiveCallback), state);
             }
             catch (Exception e)
             {
@@ -462,21 +490,6 @@ namespace VierGewinnt
             }
         }
 
-        public class StateObject
-        {
-            // Client socket.
-            public Socket workSocket = null;
-
-            // Size of receive buffer.
-            public const int BufferSize = 256;
-
-            // Receive buffer.
-            public byte[] buffer = new byte[BufferSize];
-
-            // Received data string.
-            public StringBuilder sb = new StringBuilder();
-        }
-
         private static void ReceiveCallback(IAsyncResult ar)
         {
             try
@@ -484,11 +497,11 @@ namespace VierGewinnt
                 // Retrieve the state object and the client socket
                 // from the asynchronous state object.
                 StateObject state = (StateObject)ar.AsyncState;
-               
+
                 Socket client = state.workSocket;
 
                 // Read data from the remote device.
-                int bytesRead = client.EndReceive(ar); //instance not set to  a ref wenn es daten empfngen soll
+                int bytesRead = client.EndReceive(ar);
 
                 if (bytesRead > 0)
                 {
@@ -547,13 +560,11 @@ namespace VierGewinnt
             {
                 // The user/programm canceled the operation.
                 Console.WriteLine("Canceled");
-          
             }
             else if (e.Error != null)
             {
                 // There was an error during the operation.
                 Console.WriteLine("An error occurred: {0}", e.Error.Message);
-             
             }
             else
             {
@@ -589,6 +600,7 @@ namespace VierGewinnt
             // Establish the local endpoint for the socket.
             // The DNS name of the computer
             const int port = 42069;
+
             //IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
             //IPAddress ipAddress = ipHostInfo.AddressList[0];
             //const string localhost2 = "127.0.0.1";
@@ -597,7 +609,6 @@ namespace VierGewinnt
 
             if (!bw.CancellationPending)
             {
-
                 //IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
                 //IPAddress ipAddress = ipHostInfo.AddressList[0];
                 IPAddress[] ipv4Addresses = Array.FindAll(Dns.GetHostEntry(string.Empty).AddressList, a => a.AddressFamily == AddressFamily.InterNetwork);
@@ -635,6 +646,7 @@ namespace VierGewinnt
                     Console.WriteLine(e.ToString());
                 }
             }
+
             //Console.WriteLine("\nPress ENTER to continue...");
             //Console.Read();
         }
