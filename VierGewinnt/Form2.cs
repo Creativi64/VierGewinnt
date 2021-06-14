@@ -9,20 +9,17 @@ namespace VierGewinnt
 {
     public partial class Form2 : Form
     {
-
         private bool Fullscreen;
         private string currentcolor;
-        private float kreisausgleich = 2.501f;
-        private float dropspeed = 60; //geschwindigkeit beim runterfallen
+        private float kreisausgleich;
+        private float dropspeed = 100; //geschwindigkeit beim runterfallen
         private int gewinnnummer;
-
 
         public struct Spielfeldtile
         {
             public int x, y, iwidth, iheight;
             public string farbe;
         }
-
 
         private DateTime VergangeneSekunden;
 
@@ -83,30 +80,39 @@ namespace VierGewinnt
                 case ("Zwei"):
                     gewinnnummer = 2;
                     break;
+
                 case ("Drei"):
                     gewinnnummer = 3;
                     break;
+
                 case ("Vier"):
                     gewinnnummer = 4;
                     break;
+
                 case ("Fünf"):
                     gewinnnummer = 5;
                     break;
+
                 case ("Sechs"):
                     gewinnnummer = 6;
                     break;
+
                 case ("Sieben"):
                     gewinnnummer = 7;
                     break;
+
                 case ("Acht"):
                     gewinnnummer = 8;
                     break;
+
                 case ("Neun"):
                     gewinnnummer = 9;
                     break;
+
                 case ("Zehn"):
                     gewinnnummer = 10;
                     break;
+
                 default:
                     gewinnnummer = 4;
                     break;
@@ -135,6 +141,7 @@ namespace VierGewinnt
 
                 EckenBerechnen(0, 0, spielfelder[0, 0].iwidth, spielfelder[0, 0].iheight);
                 //Spielfeldzeichen
+                SpielfeldErstellen();
                 SpielfeldZeichnen();
                 // Im array alle Farben Auf Weiß zu setzen
                 for (int x = 0; x < iSpielfeldwidth; x++)
@@ -157,15 +164,14 @@ namespace VierGewinnt
                     lab_Player.Text = "Player Yellow";
                 }
 
-
 #pragma warning disable CS4014 // Da auf diesen Aufruf nicht gewartet wird, wird die Ausführung der aktuellen Methode vor Abschluss des Aufrufs fortgesetzt.
                 UhrStarten();
 #pragma warning restore CS4014 // Da auf diesen Aufruf nicht gewartet wird, wird die Ausführung der aktuellen Methode vor Abschluss des Aufrufs fortgesetzt.
-             
             });
         }
 
 #pragma warning disable CS1998 // Bei der asynchronen Methode fehlen "await"-Operatoren. Die Methode wird synchron ausgeführt.
+
         private async Task UhrStarten()
 #pragma warning restore CS1998 // Bei der asynchronen Methode fehlen "await"-Operatoren. Die Methode wird synchron ausgeführt.
         {
@@ -175,7 +181,7 @@ namespace VierGewinnt
             timer.Enabled = true;
         }
 
-        private void SpielfeldZeichnen()
+        private void SpielfeldErstellen()
         {
             int ispielfeldformat;
             if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)
@@ -194,6 +200,16 @@ namespace VierGewinnt
                     spielfelder[x, y].y = (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2) + y * ispielfeldformat;
                     spielfelder[x, y].iwidth = ispielfeldformat;
                     spielfelder[x, y].iheight = ispielfeldformat;
+                }
+            }
+        }
+
+        private void SpielfeldZeichnen()
+        {
+            for (int x = 0; x < iSpielfeldwidth; x++)
+            {
+                for (int y = 0; y < iSpielfeldheight; y++)
+                {
                     spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
                     if (spielfelder[x, y].farbe != "white" && spielfelder[x, y].farbe != null)
                     {
@@ -261,8 +277,9 @@ namespace VierGewinnt
                     }
                     spielfeldgraphic.FillPolygon(new SolidBrush(Color.Blue), hilfsarray);
                 }
-                spielfeldgraphic.DrawEllipse(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
-                spielfeldgraphic.DrawRectangle(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
+                spielfeldgraphic.DrawEllipse(new Pen(Color.Blue, spielfelder[0,0].iwidth / 22 + 1.8f), x, y, iwidth, iheight);
+                spielfeldgraphic.DrawRectangle(new Pen(Color.Blue, spielfelder[0, 0].iwidth / 22 + 1.8f), x, y, iwidth, iheight);
+                kreisausgleich = Convert.ToSingle(Math.Pow(spielfelder[0, 0].iwidth / 32f, 0.88f));
             });
             Feld.RunSynchronously();
         }
@@ -286,23 +303,24 @@ namespace VierGewinnt
                     spielfeldgraphic.FillPolygon(new SolidBrush(Color.Blue), hilfsarray);
                 }
 
-                spielfeldgraphic.DrawEllipse(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
-                spielfeldgraphic.DrawRectangle(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
-                spielfeldgraphic.DrawEllipse(new Pen(Color.Blue, 5), x, y + iheight, iwidth, iheight);
-                spielfeldgraphic.DrawRectangle(new Pen(Color.Blue, 5), x, y + iheight, iwidth, iheight);
+                spielfeldgraphic.DrawEllipse(new Pen(Color.Blue, spielfelder[0, 0].iwidth / 20 + 1.5f), x, y, iwidth, iheight);
+                spielfeldgraphic.DrawRectangle(new Pen(Color.Blue, spielfelder[0, 0].iwidth / 20 + 1.5f), x, y, iwidth, iheight);
+                spielfeldgraphic.DrawEllipse(new Pen(Color.Blue, spielfelder[0, 0].iwidth / 20 + 1.5f), x, y + iheight, iwidth, iheight);
+                spielfeldgraphic.DrawRectangle(new Pen(Color.Blue, spielfelder[0, 0].iwidth / 20 + 1.5f), x, y + iheight, iwidth, iheight);
+                kreisausgleich = Convert.ToSingle(Math.Pow(spielfelder[0, 0].iwidth / 32f, 0.88f));
+
             });
             Feld.RunSynchronously();
         }
 
         private void Form2_Paint(object sender, PaintEventArgs e)
         {
-            if (AimationFlag == false)
+            if (!AimationFlag&&!resizing)
             {
                 Console.WriteLine("redraw");
                 SpielfeldZeichnen();
             }
         }
-
 
         private void Form2_Click(object sender, EventArgs e)
         {
@@ -507,7 +525,7 @@ namespace VierGewinnt
                                   spielfelder[X, iHilfszahl].iwidth,
                                   spielfelder[X, iHilfszahl].iheight);
                             }
-                            if(i<=0)
+                            if (i <= 0)
                             {
                                 spielfeldtilezeichnen(
                                   spielfelder[X, iHilfszahl].x,
@@ -585,25 +603,56 @@ namespace VierGewinnt
 
         private void Hovereffekt(int spalte)
         {
-
             if (spalte >= 0)
             {
                 if (oldspalte >= 0)
                 {
-                    punkte.FillEllipse(new SolidBrush(Color.FromName("white")), spielfelder[oldspalte, 0].x + kreisausgleich, spielfelder[oldspalte, 0].y - spielfelder[0, 0].iheight + kreisausgleich, spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
+                    punkte.FillEllipse(new SolidBrush(Color.FromName("white")), spielfelder[oldspalte, 0].x + kreisausgleich, spielfelder[oldspalte, 0].y - spielfelder[0, 0].iheight + kreisausgleich - 2, spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
                 }
-                punkte.FillEllipse(new SolidBrush(Color.FromName(currentcolor)), spielfelder[spalte, 0].x + kreisausgleich, spielfelder[spalte, 0].y - spielfelder[0, 0].iheight + kreisausgleich, spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
+                punkte.FillEllipse(new SolidBrush(Color.FromName(currentcolor)), spielfelder[spalte, 0].x + kreisausgleich, spielfelder[spalte, 0].y - spielfelder[0, 0].iheight + kreisausgleich - 2, spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
                 oldspalte = spalte;
             }
             else
             {
                 if (oldspalte >= 0)
                 {
-                    punkte.FillEllipse(new SolidBrush(Color.FromName("white")), spielfelder[oldspalte, 0].x + kreisausgleich, spielfelder[oldspalte, 0].y - spielfelder[0, 0].iheight + kreisausgleich, spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
+                    punkte.FillEllipse(new SolidBrush(Color.FromName("white")), spielfelder[oldspalte, 0].x + kreisausgleich, spielfelder[oldspalte, 0].y - spielfelder[0, 0].iheight + kreisausgleich - 2, spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
                 }
                 oldspalte = spalte;
             }
         }
+
+        private bool resizing = false;
+        private void Form2_Resize(object sender, EventArgs e)
+        {
+            Console.WriteLine("resize");
+            if (spielfeldgraphic != null)
+            {
+                spielfeldgraphic.FillRectangle(new SolidBrush(this.BackColor), 0, 0, this.Width, this.Height);
+            }
+            resizing = true;
+        }
+
+        private void Form2_ResizeEnd(object sender, EventArgs e)
+        {
+            if(resizing)
+            {
+                Console.WriteLine("resizeend");
+
+                resizing = false;
+                iSpielfeldheightpx = this.Height - 150;
+                iSpielfeldwidthpx = this.Width - 50;
+                SpielfeldErstellen();
+                EckenBerechnen(0, 0, spielfelder[0, 0].iwidth, spielfelder[0, 0].iheight);
+
+                spielfeldgraphic = this.CreateGraphics();
+                punkte = this.CreateGraphics();
+                Console.WriteLine("redraw");
+                spielfeldgraphic.FillRectangle(new SolidBrush(this.BackColor), 0, 0, this.Width, this.Height);
+                SpielfeldZeichnen();
+            }
+        }
+
     }
 }
 

@@ -34,11 +34,9 @@ namespace VierGewinnt
             textBox1.Text = "Vier";
         }
 
-
         private void btn_Play_Click(object sender, EventArgs e)
         {
             Form2 frm = new Form2(Fullscreen);
-
             frm.Show();
             this.Hide();
 
