@@ -134,13 +134,10 @@ namespace VierGewinnt
                 Console.WriteLine("Canceled");
                 progressBar1.Value = 0;
                 progressBar1.Visible = false;
-
-                //MessageBox.Show("Operation was canceled");
             }
             else if (e.Error != null)
             {
                 // There was an error during the operation.
-                //string msg = String.Format("An error occurred: {0}", e.Error.Message);
                 Console.WriteLine("An error occurred: {0}", e.Error.Message);
                 progressBar1.Value = 0;
                 progressBar1.Visible = false;
@@ -152,12 +149,9 @@ namespace VierGewinnt
                 Console.WriteLine("Suche Abgeschlossen");
 
                 // The operation completed normally.
-                //GefundenEndpoints[iLezztesGefundene] = e.Result;
-                //iLezztesGefundene++;
                 progressBar1.Value = 0;
                 progressBar1.Visible = false;
 
-                //string msg = String.Format("Result = {0}", e.Result);
                 Console.WriteLine("ergebnis");
 
                 LiB_GefundenenEndPoints.Items.Clear();
@@ -172,15 +166,12 @@ namespace VierGewinnt
                         LiB_GefundenenEndPoints.Items.Add("###");
                     }
                 }
-
-                //MessageBox.Show(msg);
             }
         }
 
         private void ConnectionSuchen(BackgroundWorker bw)
         {
-            //IPEndPoint[] GefundeneEndPoints = new IPEndPoint[10];
-            //int iZaeler = 0;
+
             for (int i = 0; i < GefundenEndpoints.Length; i++)
             {
                 GefundenEndpoints[i] = null;
@@ -222,8 +213,6 @@ namespace VierGewinnt
 
                             s.Close();
                             Console.WriteLine($"Nix Gefunden Bei auf {hostep}");
-
-                            //throw new ApplicationException("Failed to connect server.");
                         }
 
                         iProgress = (i * a);
@@ -264,8 +253,6 @@ namespace VierGewinnt
 
         #region Client_VerbindingMitServerHerstellen
 
-        //public static ManualResetEvent allDone = new ManualResetEvent(false);
-
         private static ManualResetEvent connectDone = new ManualResetEvent(false);
 
         private static ManualResetEvent sendDone = new ManualResetEvent(false);
@@ -305,9 +292,6 @@ namespace VierGewinnt
             connectDone.Reset();
             receiveDone.Reset();
             disconnectDone.Reset();
-
-            //const string localhost2 = "127.0.0.1";
-            //var ip2 = IPAddress.Parse(Ip);
 
             const int port = 42069;
 
@@ -365,7 +349,6 @@ namespace VierGewinnt
                 // Create the state object.
                 StateObject state = new StateObject();
                 state.workSocket = client;
-                //state.sb.Clear();
 
                 // Begin receiving the data from the remote device.
                 client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReceiveCallback), state);
@@ -523,9 +506,6 @@ namespace VierGewinnt
         // Thread signal.
         public static ManualResetEvent allDoneServer = new ManualResetEvent(false);
 
-        //public AsynchronousSocketListener()
-        //{
-        //}
 
         public static void StartListening(BackgroundWorker bw)
         {
@@ -533,16 +513,8 @@ namespace VierGewinnt
             // The DNS name of the computer
             const int port = 42069;
 
-            //IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-            //IPAddress ipAddress = ipHostInfo.AddressList[0];
-            //const string localhost2 = "127.0.0.1";
-            //Console.WriteLine("IP einggabe '127.0.X.X' ");
-            //var ip = IPAddress.Parse(localhost2);
-
             if (!bw.CancellationPending)
             {
-                //IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-                //IPAddress ipAddress = ipHostInfo.AddressList[0];
                 IPAddress[] ipv4Addresses = Array.FindAll(Dns.GetHostEntry(string.Empty).AddressList, a => a.AddressFamily == AddressFamily.InterNetwork);
 
                 IPEndPoint localEndPoint = new IPEndPoint(ipv4Addresses[0], port);
@@ -575,9 +547,6 @@ namespace VierGewinnt
                     Console.WriteLine(e.ToString());
                 }
             }
-
-            //Console.WriteLine("\nPress ENTER to continue...");
-            //Console.Read();
         }
 
         public static void AcceptCallback(IAsyncResult ar)
@@ -593,53 +562,31 @@ namespace VierGewinnt
             StateObjectServer state = new StateObjectServer();
             state.workSocket = handler;
 
-            handler.BeginReceive(state.buffer, 0, StateObjectServer.BufferSize,0, new AsyncCallback(ReadCallback), state);
+            handler.BeginReceive(state.buffer, 0, StateObjectServer.BufferSize, 0, new AsyncCallback(ReadCallback), state);
         }
 
         public static void ReadCallback(IAsyncResult ar)
         {
-            //try
-            //{
-                String content = String.Empty;
+            String content = String.Empty;
 
-                // Retrieve the state object and the handler socket
-                // from the asynchronous state object.
-                StateObjectServer state = (StateObjectServer)ar.AsyncState;
-                Socket handler = state.workSocket;
+            // Retrieve the state object and the handler socket
+            // from the asynchronous state object.
+            StateObjectServer state = (StateObjectServer)ar.AsyncState;
+            Socket handler = state.workSocket;
 
-                // Read data from the client socket.
-                int bytesRead = handler.EndReceive(ar); // CHrasht wenn die verbindung gescannt wurde ohne das sie Wieder Ge schlossen wurde // Gefixt
+            // Read data from the client socket.
+            int bytesRead = handler.EndReceive(ar); // CHrasht wenn die verbindung plötzlich getrennt wird
 
-                //if (bytesRead > 0)
-                //{
-                // There  might be more data, so store the data received so far.
-                state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
+            //store the data
+            state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
 
-                // Check for end-of-file tag. If it is not there, read
-                // more data.
-                content = state.sb.ToString();
-                //if (content.IndexOf("<EOF>") > -1)
-                //{
-                // All the data has been read from the
-                // client. Display it on the console.
-                Console.WriteLine("Read {0} bytes from socket. \n Data : {1}", content.Length, content);
+            content = state.sb.ToString();
 
-                // Echo the data back to the client.
-                Send(handler, content);
-                //}
-                //else
-                //{
-                //    // Not all data received. Get more.
-                //    handler.BeginReceive(state.buffer, 0, StateObjectServer.BufferSize, 0,
-                //    new AsyncCallback(ReadCallback), state);
-                //}
-                //}
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine("ConnectionError");
-            //    Console.WriteLine(e.ToString());
-            //}
+            // Display it on the console.
+            Console.WriteLine("Read {0} bytes from socket. \n Data : {1}", content.Length, content);
+
+            // Echo the data back to the client.
+            Send(handler, content);
         }
 
         private static void Send(Socket handler, String data)
