@@ -8,6 +8,14 @@ using System.Threading;
 using System.Windows.Forms;
 using static System.Console;
 
+using System.Drawing;
+using System.Threading.Tasks;
+
+#pragma warning disable CS4014 // Da auf diesen Aufruf nicht gewartet wird, wird die Ausführung der aktuellen Methode vor Abschluss des Aufrufs fortgesetzt.
+#pragma warning disable CS1998 // Bei der asynchronen Methode fehlen "await"-Operatoren. Die Methode wird synchron ausgeführt.
+#pragma warning restore CS1998 // Bei der asynchronen Methode fehlen "await"-Operatoren. Die Methode wird synchron ausgeführt.
+#pragma warning restore CS4014 // Da auf diesen Aufruf nicht gewartet wird, wird die Ausführung der aktuellen Methode vor Abschluss des Aufrufs fortgesetzt.
+
 namespace VierGewinnt
 {
     public partial class Form3 : Form
@@ -20,11 +28,46 @@ namespace VierGewinnt
 
         #endregion Console
 
-        private bool Fullscreen;
+        private string sEmpfangenerZug;
 
+        private string sMeinZug;
+
+        private bool Fullscreen;
+        private const int port = 42069;
         private IPEndPoint[] GefundenEndpoints;
 
         private int iLezztesGefundene = 0;
+
+        #region GameParams
+
+        private string currentcolor;
+        private float kreisausgleich;
+        private float dropspeed = 100; //geschwindigkeit beim runterfallen
+        private int gewinnnummer;
+
+        public struct Spielfeldtile
+        {
+            public int x, y, iwidth, iheight;
+            public string farbe;
+        }
+
+        private DateTime VergangeneSekunden;
+
+        private int iSpielfeldheightpx;
+        private int iSpielfeldwidthpx;
+
+        public static int iSpielfeldheight = 4;
+        public static int iSpielfeldwidth = 4;
+
+        private Graphics spielfeldgraphic;
+        private PointF[,] Dreieckspunkte;
+        private Graphics punkte;
+
+        private bool AimationFlag = false;
+
+        public Spielfeldtile[,] spielfelder;
+
+        #endregion GameParams
 
         public Form3(bool _Fullscreen)
         {
@@ -46,6 +89,110 @@ namespace VierGewinnt
                 this.WindowState = FormWindowState.Normal;
                 this.MaximizeBox = false;
             }
+
+            DoubleBuffered = true;
+            Fullscreen = _Fullscreen;
+            AllocConsole();
+
+            dropspeed = dropspeed * iSpielfeldheight;
+            VergangeneSekunden = new DateTime(1, 1, 1, 0, 0, 0);
+
+            iSpielfeldheightpx = this.Height - 150;
+            iSpielfeldwidthpx = this.Width - 150;
+
+            spielfeldgraphic = this.CreateGraphics();
+
+            punkte = this.CreateGraphics();
+
+            switch (Form1.sgewinnZahl)
+            {
+                case ("Zwei"):
+                    gewinnnummer = 2;
+                    break;
+
+                case ("Drei"):
+                    gewinnnummer = 3;
+                    break;
+
+                case ("Vier"):
+                    gewinnnummer = 4;
+                    break;
+
+                case ("Fünf"):
+                    gewinnnummer = 5;
+                    break;
+
+                case ("Sechs"):
+                    gewinnnummer = 6;
+                    break;
+
+                case ("Sieben"):
+                    gewinnnummer = 7;
+                    break;
+
+                case ("Acht"):
+                    gewinnnummer = 8;
+                    break;
+
+                case ("Neun"):
+                    gewinnnummer = 9;
+                    break;
+
+                case ("Zehn"):
+                    gewinnnummer = 10;
+                    break;
+
+                default:
+                    gewinnnummer = 4;
+                    break;
+            }
+
+            this.BeginInvoke((MethodInvoker)delegate
+            {
+                // wird Aufgerufen wenn Das From Geladen Wurde
+                spielfelder = new Spielfeldtile[iSpielfeldwidth, iSpielfeldheight];
+                Thread.Sleep(400);
+
+                //Erste Ecken Berechnen
+                int ispielfeldformat;
+                if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)
+                {
+                    ispielfeldformat = iSpielfeldheightpx / iSpielfeldheight;
+                }
+                else
+                {
+                    ispielfeldformat = iSpielfeldwidthpx / iSpielfeldwidth;
+                }
+                spielfelder[0, 0].x = (this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2) + 0 * ispielfeldformat;
+                spielfelder[0, 0].y = (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2) + 0 * ispielfeldformat;
+                spielfelder[0, 0].iwidth = ispielfeldformat;
+                spielfelder[0, 0].iheight = ispielfeldformat;
+
+                EckenBerechnen(0, 0, spielfelder[0, 0].iwidth, spielfelder[0, 0].iheight);
+                //Spielfeldzeichen
+                SpielfeldErstellen();
+                SpielfeldZeichnen();
+                // Im array alle Farben Auf Weiß zu setzen
+                for (int x = 0; x < iSpielfeldwidth; x++)
+                {
+                    for (int y = 0; y < iSpielfeldheight; y++)
+                    {
+                        spielfelder[x, y].farbe = "white";
+                    }
+                }
+
+                // zufällige start Fahrbe Wählen
+                if ((new Random()).Next(0, 2) == 0)
+                {
+                    currentcolor = "red";
+                    lab_Player.Text = "Player Red";
+                }
+                else
+                {
+                    currentcolor = "yellow";
+                    lab_Player.Text = "Player Yellow";
+                }
+            });
         }
 
         protected override void OnClosed(EventArgs e)
@@ -66,6 +213,7 @@ namespace VierGewinnt
 
             this.backgroundWorker1.RunWorkerAsync(1);
             progressBar1.Value = 0;
+            btn_Suchen.Enabled = false;
             progressBar1.Visible = true;
 
             //GefundenEndpoints = await ConnectionSuchen();
@@ -80,21 +228,47 @@ namespace VierGewinnt
 
         private void ServerHosten_Click(object sender, EventArgs e)
         {
-            this.BcWork_Server.RunWorkerAsync();
-            while (this.BcWork_Server.IsBusy)
-            {
-                // Keep UI messages moving, so the form remains
-                // responsive during the asynchronous operation.
-                Application.DoEvents();
-            }
+            btn_Suchen.Visible = false;
+            btn_cancel.Visible = false;
+            LiB_GefundenenEndPoints.Visible = false;
+
+            ServerHosten.Enabled = false;
+
+            StartListening();
+            //this.BcWork_Server.RunWorkerAsync();
+            //while (this.BcWork_Server.IsBusy)
+            //{
+            //    // Keep UI messages moving, so the form remains
+            //    // responsive during the asynchronous operation.
+            //    Application.DoEvents();
+            //}
         }
 
         private void btn_ConnectTo_Click(object sender, EventArgs e)
         {
             lab_Info.Text = ("");
+            //StartClientVerbindung(IPAddress.Parse(txB_VerbindenIP.Text));
+
+            StartClient();
+        }
+
+        private void btn_ZumMenue_Click(object sender, EventArgs e)
+        {
+            Form1 frm = new Form1();
+
+            frm.Show();
+            this.Hide();
+        }
+
+        private void btn_Bestätigen_Click(object sender, EventArgs e)
+        {
             if (IPAddress.TryParse(txB_VerbindenIP.Text, out IPAddress _IP))
             {
-                StartClientVerbindung(_IP);
+                btn_Suchen.Visible = false;
+                btn_cancel.Visible = false;
+                LiB_GefundenenEndPoints.Visible = false;
+                ServerHosten.Visible = false;
+                txB_VerbindenIP.ReadOnly = true;
             }
             else
             {
@@ -134,6 +308,7 @@ namespace VierGewinnt
                 Console.WriteLine("Canceled");
                 progressBar1.Value = 0;
                 progressBar1.Visible = false;
+                btn_Suchen.Enabled = true;
             }
             else if (e.Error != null)
             {
@@ -142,6 +317,7 @@ namespace VierGewinnt
                 progressBar1.Value = 0;
                 progressBar1.Visible = false;
 
+                btn_Suchen.Enabled = true;
                 //MessageBox.Show(msg);
             }
             else
@@ -151,7 +327,7 @@ namespace VierGewinnt
                 // The operation completed normally.
                 progressBar1.Value = 0;
                 progressBar1.Visible = false;
-
+                btn_Suchen.Enabled = true;
                 Console.WriteLine("ergebnis");
 
                 LiB_GefundenenEndPoints.Items.Clear();
@@ -171,7 +347,6 @@ namespace VierGewinnt
 
         private void ConnectionSuchen(BackgroundWorker bw)
         {
-
             for (int i = 0; i < GefundenEndpoints.Length; i++)
             {
                 GefundenEndpoints[i] = null;
@@ -310,8 +485,12 @@ namespace VierGewinnt
                 lab_Info.Text = ("Connected");
 
                 // Send test data to the remote device.
+
+                // Hier Werden Die Daten Eingegeben Die versedet werden
+                lab_Info.Text = ("Warte auf Zug");
+                //sZuSendenerZug = txB_Senden.Text;
                 lab_Info.Text = ("Sending");
-                SendClient(s, txB_Senden.Text);
+                SendClient(s, "ase");
 
                 sendDone.WaitOne();
 
@@ -320,19 +499,18 @@ namespace VierGewinnt
                 Receive(s);
                 receiveDone.WaitOne();
 
-                Console.WriteLine("Response received : {0}", response);
-                txB_Empfangen.Text = response;
+                Console.WriteLine("Response received : {0}", sEmpfangenerZug);
+                txB_Empfangen.Text = sEmpfangenerZug;
                 lab_Info.Text = ("Done");
             }
             else
             {
                 Console.WriteLine($"Nix Gefunden Bei auf {RemoteEp}");
                 lab_Info.Text = $"Konnte Zu {Ip} nicht Verbinden";
-                //throw new ApplicationException("Failed to connect server.");
             }
         }
 
-        private static void SendClient(Socket client, String data)
+        private static void SendClient(Socket client, string data)
         {
             // Convert the string data to byte data using ASCII encoding.
             Console.WriteLine($"Sending '{data}'");
@@ -359,7 +537,7 @@ namespace VierGewinnt
             }
         }
 
-        private static void ConnectCallback(IAsyncResult ar)
+        private void ConnectCallback(IAsyncResult ar)
         {
             try
             {
@@ -404,7 +582,7 @@ namespace VierGewinnt
             }
         }
 
-        private static void ReceiveCallback(IAsyncResult ar)
+        private void ReceiveCallback(IAsyncResult ar)
         {
             try
             {
@@ -432,6 +610,7 @@ namespace VierGewinnt
                     if (state.sb.Length > 1)
                     {
                         response = state.sb.ToString();
+                        sEmpfangenerZug = state.sb.ToString();
                     }
 
                     // Signal that all bytes have been received.
@@ -475,16 +654,19 @@ namespace VierGewinnt
             {
                 // The user/programm canceled the operation.
                 Console.WriteLine("Canceled");
+                ServerHosten.Enabled = true;
             }
             else if (e.Error != null)
             {
                 // There was an error during the operation.
                 Console.WriteLine("An error occurred: {0}", e.Error.Message);
+                ServerHosten.Enabled = true;
             }
             else
             {
                 // The operation completed normally.
                 Console.WriteLine("Server Beendet");
+                ServerHosten.Enabled = true;
             }
         }
 
@@ -506,8 +688,7 @@ namespace VierGewinnt
         // Thread signal.
         public static ManualResetEvent allDoneServer = new ManualResetEvent(false);
 
-
-        public static void StartListening(BackgroundWorker bw)
+        public void StartListening(BackgroundWorker bw)
         {
             // Establish the local endpoint for the socket.
             // The DNS name of the computer
@@ -549,7 +730,7 @@ namespace VierGewinnt
             }
         }
 
-        public static void AcceptCallback(IAsyncResult ar)
+        public void AcceptCallback(IAsyncResult ar)
         {
             // Signal the main thread to continue.
             allDoneServer.Set();
@@ -565,7 +746,7 @@ namespace VierGewinnt
             handler.BeginReceive(state.buffer, 0, StateObjectServer.BufferSize, 0, new AsyncCallback(ReadCallback), state);
         }
 
-        public static void ReadCallback(IAsyncResult ar)
+        public void ReadCallback(IAsyncResult ar)
         {
             String content = String.Empty;
 
@@ -580,20 +761,23 @@ namespace VierGewinnt
             //store the data
             state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
 
-            content = state.sb.ToString();
-
+            //Hier werden Die Daten Entgegen Genommen
+            sEmpfangenerZug = state.sb.ToString();
+            BcWork_Server.ReportProgress(1);
             // Display it on the console.
-            Console.WriteLine("Read {0} bytes from socket. \n Data : {1}", content.Length, content);
+            Console.WriteLine("Read {0} bytes from socket. \n Data : {1}", content.Length, sEmpfangenerZug);
 
             // Echo the data back to the client.
-            Send(handler, content);
+
+            // sZuSendenerZug Await (ZusenderZug)
+
+            // hier Spielzug Einfügen
+
+            Send(handler, "awe");
         }
 
         private static void Send(Socket handler, String data)
         {
-            // hier Spielzug Einfügen
-            data = "Sendback " + data;
-
             // Convert the string data to byte data using ASCII encoding.
             byte[] byteData = Encoding.ASCII.GetBytes(data);
 
@@ -622,11 +806,601 @@ namespace VierGewinnt
             }
         }
 
+        private void BcWork_Server_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            this.txB_Senden.Text = sEmpfangenerZug;
+        }
+
         #endregion ServerHosten
+
+        #region Einfacher Server
+
+        public static string data = null;
+
+        public static void StartListening()
+        {
+            // Data buffer for incoming data.
+            byte[] bytes = new Byte[1024];
+
+            // Establish the local endpoint for the socket.
+            // Dns.GetHostName returns the name of the
+            // host running the application
+
+            IPAddress[] ipv4Addresses = Array.FindAll(Dns.GetHostEntry(string.Empty).AddressList, a => a.AddressFamily == AddressFamily.InterNetwork);
+
+            IPEndPoint localEndPoint = new IPEndPoint(ipv4Addresses[0], port);
+
+            // Create a TCP/IP socket.
+            Socket listener = new Socket(ipv4Addresses[0].AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+
+            // Bind the socket to the local endpoint and
+            // listen for incoming connections.
+            try
+            {
+                listener.Bind(localEndPoint);
+                listener.Listen(10);
+
+                // Start listening for connections.
+                Console.WriteLine($"Running On {localEndPoint}");
+                while (true)
+                {
+                    Console.WriteLine("Waiting for a connection...");
+                    // Program is suspended while waiting for an incoming connection.
+                    Socket handler = listener.Accept();
+                    data = null;
+
+                    // An incoming connection needs to be processed.
+                    while (true)
+                    {
+                        int bytesRec = handler.Receive(bytes);
+                        data += Encoding.ASCII.GetString(bytes, 0, bytesRec);
+                        //if (data.IndexOf("<EOF>") > -1)
+                        //{
+                        break;
+                        //}
+                    }
+
+                    // Show the data on the console.
+                    Console.WriteLine("Text received : {0}", data);
+
+                    // Echo the data back to the client.
+                    byte[] msg = Encoding.ASCII.GetBytes(data);
+
+                    handler.Send(msg);
+                    handler.Shutdown(SocketShutdown.Both);
+                    handler.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+
+        #endregion Einfacher Server
+
+        #region EinfacherClient
+
+        public static void StartClient()
+        {
+            // Data buffer for incoming data.
+            byte[] bytes = new byte[1024];
+
+            // Connect to a remote device.
+            try
+            {
+                // Establish the remote endpoint for the socket.
+                // This example uses port 11000 on the local computer.
+                IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
+                IPAddress ipAddress = ipHostInfo.AddressList[0];
+                IPEndPoint remoteEP = new IPEndPoint(ipAddress, 11000);
+
+                // Create a TCP/IP  socket.
+                Socket sender = new Socket(ipAddress.AddressFamily,
+                    SocketType.Stream, ProtocolType.Tcp);
+
+                // Connect the socket to the remote endpoint. Catch any errors.
+                try
+                {
+                    sender.Connect(remoteEP);
+
+                    Console.WriteLine("Socket connected to {0}", sender.RemoteEndPoint.ToString());
+
+                    // Encode the data string into a byte array.
+                    byte[] msg = Encoding.ASCII.GetBytes("This is a test<EOF>");
+
+                    // Send the data through the socket.
+                    int bytesSent = sender.Send(msg);
+
+                    // Receive the response from the remote device.
+                    int bytesRec = sender.Receive(bytes);
+                    Console.WriteLine("Echoed test = {0}",
+                        Encoding.ASCII.GetString(bytes, 0, bytesRec));
+
+                    // Release the socket.
+                    sender.Shutdown(SocketShutdown.Both);
+                    sender.Close();
+                }
+                catch (ArgumentNullException ane)
+                {
+                    Console.WriteLine("ArgumentNullException : {0}", ane.ToString());
+                }
+                catch (SocketException se)
+                {
+                    Console.WriteLine("SocketException : {0}", se.ToString());
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("Unexpected exception : {0}", e.ToString());
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+
+        #endregion EinfacherClient
+
+        #region Game
+
+        private void SpielfeldErstellen()
+        {
+            int ispielfeldformat;
+            if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)
+            {
+                ispielfeldformat = iSpielfeldheightpx / iSpielfeldheight;
+            }
+            else
+            {
+                ispielfeldformat = iSpielfeldwidthpx / iSpielfeldwidth;
+            }
+            for (int x = 0; x < iSpielfeldwidth; x++)
+            {
+                for (int y = 0; y < iSpielfeldheight; y++)
+                {
+                    spielfelder[x, y].x = (this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2) + x * ispielfeldformat;
+                    spielfelder[x, y].y = (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2) + y * ispielfeldformat;
+                    spielfelder[x, y].iwidth = ispielfeldformat;
+                    spielfelder[x, y].iheight = ispielfeldformat;
+                }
+            }
+        }
+
+        private void SpielfeldZeichnen()
+        {
+            for (int x = 0; x < iSpielfeldwidth; x++)
+            {
+                for (int y = 0; y < iSpielfeldheight; y++)
+                {
+                    spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
+                    if (spielfelder[x, y].farbe != "white" && spielfelder[x, y].farbe != null)
+                    {
+                        Kreiszeichnen(x, y, spielfelder[x, y].farbe);
+                    }
+                }
+            }
+        }
+
+        private void EckenBerechnen(int x, int y, int iwidth, int iheight)
+        {
+            double dDreieckkprozent = 0.3;
+            Dreieckspunkte = new PointF[4, 3];
+            Dreieckspunkte[0, 0] = new PointF(x, y);
+            Dreieckspunkte[0, 1] = new PointF((float)(x + (iwidth * dDreieckkprozent)), y);
+            Dreieckspunkte[0, 2] = new PointF((x), (float)(y + (iheight * dDreieckkprozent)));
+
+            Dreieckspunkte[1, 0] = new PointF(x + iwidth, y);
+            Dreieckspunkte[1, 1] = new PointF((float)(x + iwidth - (iwidth * dDreieckkprozent)), y);
+            Dreieckspunkte[1, 2] = new PointF((x + iwidth), (float)(y + (iheight * dDreieckkprozent)));
+
+            Dreieckspunkte[2, 0] = new PointF(x, y + iheight);
+            Dreieckspunkte[2, 1] = new PointF((float)(x + (iwidth * dDreieckkprozent)), y + iheight);
+            Dreieckspunkte[2, 2] = new PointF((x), (float)(y + iheight - (iheight * dDreieckkprozent)));
+
+            Dreieckspunkte[3, 0] = new PointF(x + iwidth, y + iheight);
+            Dreieckspunkte[3, 1] = new PointF((float)(x + iwidth - (iwidth * dDreieckkprozent)), y + iheight);
+            Dreieckspunkte[3, 2] = new PointF((x + iwidth), (float)(y + iheight - (iheight * dDreieckkprozent)));
+        }
+
+        private void spielfeldtilezeichnen(int x, int y, int iwidth, int iheight)
+        {
+            PointF[] hilfsarray = new PointF[3];
+
+            //int x = 50, y = 50, iwidth = 100, iheight = 100;
+            Task Feld = new Task(() =>
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    for (int i = 0; i < 3; i++)
+                    {
+                        hilfsarray[i] = new PointF(Dreieckspunkte[j, i].X + x, Dreieckspunkte[j, i].Y + y);
+                    }
+                    spielfeldgraphic.FillPolygon(new SolidBrush(Color.Blue), hilfsarray);
+                }
+                spielfeldgraphic.DrawEllipse(new Pen(Color.Blue, spielfelder[0, 0].iwidth / 22 + 1.8f), x, y, iwidth, iheight);
+                spielfeldgraphic.DrawRectangle(new Pen(Color.Blue, spielfelder[0, 0].iwidth / 22 + 1.8f), x, y, iwidth, iheight);
+                kreisausgleich = Convert.ToSingle(Math.Pow(spielfelder[0, 0].iwidth / 32f, 0.88f));
+            });
+            Feld.RunSynchronously();
+        }
+
+        private void doublespielfeldtilezeichnen(int x, int y, int iwidth, int iheight)
+        {
+            PointF[] hilfsarray = new PointF[3];
+
+            Task Feld = new Task(() =>
+            {
+                for (int j = 0; j < 2; j++)
+                {
+                    hilfsarray[0] = new PointF(Dreieckspunkte[2, 1].X - 1 + x, Dreieckspunkte[2, 1].Y + y);
+                    hilfsarray[1] = new PointF(Dreieckspunkte[2, 2].X + x, Dreieckspunkte[2, 2].Y + y);
+                    hilfsarray[2] = new PointF(Dreieckspunkte[0, 2].X + x, Dreieckspunkte[0, 2].Y + y + iheight);
+                    spielfeldgraphic.FillPolygon(new SolidBrush(Color.Blue), hilfsarray);
+
+                    hilfsarray[0] = new PointF(Dreieckspunkte[3, 1].X + x, Dreieckspunkte[3, 1].Y + y);
+                    hilfsarray[1] = new PointF(Dreieckspunkte[3, 2].X + x, Dreieckspunkte[3, 2].Y + y);
+                    hilfsarray[2] = new PointF(Dreieckspunkte[1, 2].X + x, Dreieckspunkte[1, 2].Y + y + iheight);
+                    spielfeldgraphic.FillPolygon(new SolidBrush(Color.Blue), hilfsarray);
+                }
+
+                spielfeldgraphic.DrawEllipse(new Pen(Color.Blue, spielfelder[0, 0].iwidth / 20 + 1.5f), x, y, iwidth, iheight);
+                spielfeldgraphic.DrawRectangle(new Pen(Color.Blue, spielfelder[0, 0].iwidth / 20 + 1.5f), x, y, iwidth, iheight);
+                spielfeldgraphic.DrawEllipse(new Pen(Color.Blue, spielfelder[0, 0].iwidth / 20 + 1.5f), x, y + iheight, iwidth, iheight);
+                spielfeldgraphic.DrawRectangle(new Pen(Color.Blue, spielfelder[0, 0].iwidth / 20 + 1.5f), x, y + iheight, iwidth, iheight);
+                kreisausgleich = Convert.ToSingle(Math.Pow(spielfelder[0, 0].iwidth / 32f, 0.88f));
+            });
+            Feld.RunSynchronously();
+        }
+
+        private void Form3_Paint(object sender, PaintEventArgs e)
+        {
+            if (!AimationFlag && !resizing)
+            {
+                Console.WriteLine("redraw");
+                SpielfeldZeichnen();
+            }
+        }
+
+        private void Form3_Click(object sender, EventArgs e)
+        {
+            if (this.PointToClient(Cursor.Position).X > spielfelder[0, 0].x && this.PointToClient(Cursor.Position).X < spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].x + spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].iwidth && this.PointToClient(Cursor.Position).Y > spielfelder[0, 0].y && this.PointToClient(Cursor.Position).Y < spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].y + spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].iheight)
+            {
+                int spalte = -1, reihe = -1;
+                bool gesetzt = false;
+                spalte = (this.PointToClient(Cursor.Position).X - spielfelder[0, 0].x) / spielfelder[0, 0].iwidth;
+                sMeinZug = spalte.ToString();  // die Angecklikte spalte Wird Alszug Gesetzt Um sie Dann zu versenden
+                for (int i = iSpielfeldheight - 1; i >= 0; i--)
+                {
+                    if (spielfelder[spalte, i].farbe == "white")
+                    {
+                        gesetzt = true;
+                        spielfelder[spalte, i].farbe = currentcolor;
+                        Hovereffekt(-1);
+                        KreiszeichnenAnimation(spalte, i + 1, currentcolor);
+                        reihe = i;
+                        i = 0;
+                    }
+                }
+
+                bool gewonnen = false;
+                if (gesetzt && reihe != -1)
+                { 
+                    int infolge = 0;
+                    for (int x = 0; x < iSpielfeldwidth; x++)
+                    {
+                        if (spielfelder[x, reihe].farbe == currentcolor)
+                        {
+                            infolge++;
+                        }
+                        else
+                        {
+                            infolge = 0;
+                        }
+                        if (infolge == gewinnnummer)
+                        {
+                            gewonnen = true;
+                        }
+                    }
+                    for (int y = 0; y < iSpielfeldheight; y++)
+                    {
+                        if (spielfelder[spalte, y].farbe == currentcolor)
+                        {
+                            infolge++;
+                        }
+                        else
+                        {
+                            infolge = 0;
+                        }
+                        if (infolge == gewinnnummer)
+                        {
+                            gewonnen = true;
+                        }
+                    }
+
+                    int xabstand;
+                    int maxformat;
+                    int widthheightdif;
+                    xabstand = spalte - reihe;
+                    widthheightdif = iSpielfeldwidth - iSpielfeldheight;
+                    if (iSpielfeldheight > iSpielfeldwidth)
+                    {
+                        maxformat = iSpielfeldheight;
+                    }
+                    else
+                    {
+                        maxformat = iSpielfeldwidth;
+                    }
+                    for (int xy = 0; xy < maxformat; xy++)
+                    {
+                        if (xy + xabstand < iSpielfeldwidth && xy + xabstand >= 0 && xy < iSpielfeldheight && xy >= 0 && spielfelder[xy + xabstand, xy].farbe == currentcolor)
+                        {
+                            infolge++;
+                        }
+                        else
+                        {
+                            infolge = 0;
+                        }
+                        if (infolge == gewinnnummer)
+                        {
+                            gewonnen = true;
+                        }
+                    }
+                    xabstand = -1 + (spalte - reihe + (iSpielfeldheight - (spalte * 2)));
+
+                    for (int xy = 0; xy < maxformat + 1; xy++)
+                    {
+                        if (iSpielfeldwidth - xy - xabstand - widthheightdif < iSpielfeldwidth && iSpielfeldwidth - xy - xabstand - widthheightdif >= 0 && xy - 1 < iSpielfeldheight && xy - 1 >= 0 && spielfelder[iSpielfeldwidth - xy - xabstand - widthheightdif, xy - 1].farbe == currentcolor)
+                        {
+                            infolge++;
+                        }
+                        else
+                        {
+                            infolge = 0;
+                        }
+                        if (infolge == gewinnnummer)
+                        {
+                            gewonnen = true;
+                        }
+                    }
+
+                    if (gewonnen)
+                    {
+                        Gewonnen(currentcolor);
+                        // Senden Einder END Flagg
+                    }
+
+                    if (currentcolor == "red")
+                    {
+                        currentcolor = "yellow";
+                        lab_Player.Text = "Player Yellow";
+                    }
+                    else
+                    {
+                        currentcolor = "red";
+                        lab_Player.Text = "Player Red";
+                    }
+                    bool zugmöglich = false;
+                    for (int x = 0; x < iSpielfeldwidth; x++)
+                    {
+                        for (int y = 0; y < iSpielfeldheight; y++)
+                        {
+                            if (spielfelder[x, y].farbe == "white")
+                            {
+                                zugmöglich = true;
+                            }
+                        }
+                    }
+                    if (!zugmöglich)
+                    {
+                        Console.WriteLine("Ende");
+                    }
+                }
+            }
+            Console.WriteLine(this.PointToClient(new Point((Cursor.Position).X, (Cursor.Position).Y)));
+        }
+
+        private void KreiszeichnenAnimation(int X, int Y, string farbe)
+        {
+            int iHilfszahl = 0;
+            int iHilfszahl1 = 0;
+            int multiplyer = 8; // durch 2 teil bare Zahlen funktionieren am besten da Dann Weniger Komma stellen Entstehen die Ignoriert werden
+            Task animation1 = new Task(() =>
+            {
+                AimationFlag = true;
+
+                for (int i = -multiplyer; i < Y * multiplyer; i += 1)
+                {
+                    if (i == -multiplyer || i + 1 == Y * multiplyer || Convert.ToInt32((i / multiplyer) + 1) >= Y)
+                    {
+                        punkte.FillEllipse(new SolidBrush(this.BackColor),
+                        spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
+                        spielfelder[0, 0].y + ((i - 1) / multiplyer) * spielfelder[0, 0].iheight + kreisausgleich,
+                        spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
+
+                        punkte.FillEllipse(new SolidBrush(Color.FromName(farbe)),
+                         spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
+                         spielfelder[0, 0].y + (i / multiplyer) * spielfelder[0, 0].iheight + kreisausgleich,
+                         spielfelder[0, 0].iwidth - kreisausgleich * 2,
+                         spielfelder[0, 0].iheight - kreisausgleich * 2);
+                    }
+                    else
+                    {
+                        Task draw = new Task(() =>
+                        {
+                            iHilfszahl = i / multiplyer;
+
+                            if (i / multiplyer + 1 < Y)
+                            {
+                                iHilfszahl1 = i / multiplyer + 1;
+                            }
+                            else
+                            {
+                                iHilfszahl1 = i / multiplyer;
+                            }
+
+                            if (i <= 0)
+                            {
+                                punkte.FillEllipse(new SolidBrush(this.BackColor),
+                                 spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
+                                 spielfelder[0, 0].y + (((i - 1) * spielfelder[0, 0].iheight) / multiplyer) + kreisausgleich,
+                                 spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
+                            }
+                            else
+                            {
+                                punkte.FillEllipse(new SolidBrush(this.BackColor),
+                                 spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
+                                 spielfelder[0, 0].y + ((i - 1) / multiplyer) * spielfelder[0, 0].iheight + kreisausgleich,
+                                 spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
+                            }
+
+                            punkte.FillEllipse(new SolidBrush(Color.FromName(farbe)),
+                         spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
+                         spielfelder[0, 0].y + ((i * spielfelder[0, 0].iheight) / multiplyer) + kreisausgleich,
+                         spielfelder[0, 0].iwidth - kreisausgleich * 2,
+                         spielfelder[0, 0].iheight - kreisausgleich * 2);
+                            if (iHilfszahl >= 0)
+                            {
+                                doublespielfeldtilezeichnen(
+                                  spielfelder[X, iHilfszahl].x,
+                                  spielfelder[X, iHilfszahl].y,
+                                  spielfelder[X, iHilfszahl].iwidth,
+                                  spielfelder[X, iHilfszahl].iheight);
+                            }
+                            if (i <= 0)
+                            {
+                                spielfeldtilezeichnen(
+                                  spielfelder[X, iHilfszahl].x,
+                                  spielfelder[X, iHilfszahl].y,
+                                  spielfelder[X, iHilfszahl].iwidth,
+                                  spielfelder[X, iHilfszahl].iheight);
+                            }
+                        });
+                        draw.RunSynchronously();
+                    }
+                    Thread.Sleep((int)(1000 / dropspeed));
+                }
+            }
+            );
+            animation1.RunSynchronously();
+
+            AimationFlag = false;
+        }
+
+        private void Kreiszeichnen(int X, int Y, string farbe)
+        {
+            punkte.FillEllipse(new SolidBrush(Color.FromName(farbe)),
+             spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
+             spielfelder[0, 0].y + Y * spielfelder[0, 0].iheight + kreisausgleich,
+             spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
+        }
+
+        private void Gewonnen(string Gewinner)
+        {
+            //this.Hide();
+            var Result = MessageBox.Show($"{Gewinner} Hat gewonnen",
+                $"{Gewinner} Hat Gewonnen", MessageBoxButtons.RetryCancel, MessageBoxIcon.Information);
+
+            if (Result == DialogResult.Retry)
+            {
+                Form2 frm = new Form2(Fullscreen);
+
+                frm.Show();
+                this.Hide();
+            }
+            if (Result == DialogResult.Cancel)
+            {
+                Form1 frm = new Form1();
+
+                frm.Show();
+                this.Hide();
+            }
+        }
+
+        private void UhrUpdate(Object Obj, EventArgs e)
+        {
+            VergangeneSekunden = VergangeneSekunden.AddSeconds(1);
+            lab_Timer.Text = VergangeneSekunden.ToLongTimeString();
+            //lab_Timer.Text = DateTime.Now.ToLongTimeString();
+        }
+
+        private void Form2_MouseMove(object sender, MouseEventArgs e)
+        {
+            int spalte = -1;
+            if (this.PointToClient(Cursor.Position).X > spielfelder[0, 0].x && this.PointToClient(Cursor.Position).X < spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].x + spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].iwidth && this.PointToClient(Cursor.Position).Y > spielfelder[0, 0].y && this.PointToClient(Cursor.Position).Y < spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].y + spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].iheight)
+            {
+                if (oldspalte != (this.PointToClient(Cursor.Position).X - spielfelder[0, 0].x) / spielfelder[0, 0].iwidth)
+                {
+                    spalte = (this.PointToClient(Cursor.Position).X - spielfelder[0, 0].x) / spielfelder[0, 0].iwidth;
+                    Hovereffekt(spalte);
+                }
+            }
+            else
+            {
+                Hovereffekt(-1);
+            }
+        }
+
+        private int oldspalte = 0;
+
+        private void Hovereffekt(int spalte)
+        {
+            if (spalte >= 0)
+            {
+                if (oldspalte >= 0)
+                {
+                    punkte.FillEllipse(new SolidBrush(Color.FromName("white")), spielfelder[oldspalte, 0].x + kreisausgleich, spielfelder[oldspalte, 0].y - spielfelder[0, 0].iheight + kreisausgleich - 2, spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
+                }
+                punkte.FillEllipse(new SolidBrush(Color.FromName(currentcolor)), spielfelder[spalte, 0].x + kreisausgleich, spielfelder[spalte, 0].y - spielfelder[0, 0].iheight + kreisausgleich - 2, spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
+                oldspalte = spalte;
+            }
+            else
+            {
+                if (oldspalte >= 0)
+                {
+                    punkte.FillEllipse(new SolidBrush(Color.FromName("white")), spielfelder[oldspalte, 0].x + kreisausgleich, spielfelder[oldspalte, 0].y - spielfelder[0, 0].iheight + kreisausgleich - 2, spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
+                }
+                oldspalte = spalte;
+            }
+        }
+
+        private bool resizing = false;
+
+        private void Form2_Resize(object sender, EventArgs e)
+        {
+            Console.WriteLine("resize");
+            if (spielfeldgraphic != null)
+            {
+                spielfeldgraphic.FillRectangle(new SolidBrush(this.BackColor), 0, 0, this.Width, this.Height);
+            }
+            resizing = true;
+        }
+
+        private void Form2_ResizeEnd(object sender, EventArgs e)
+        {
+            if (resizing)
+            {
+                Console.WriteLine("resizeend");
+
+                resizing = false;
+                iSpielfeldheightpx = this.Height - 150;
+                iSpielfeldwidthpx = this.Width - 50;
+                SpielfeldErstellen();
+                EckenBerechnen(0, 0, spielfelder[0, 0].iwidth, spielfelder[0, 0].iheight);
+
+                spielfeldgraphic = this.CreateGraphics();
+                punkte = this.CreateGraphics();
+                Console.WriteLine("redraw");
+                spielfeldgraphic.FillRectangle(new SolidBrush(this.BackColor), 0, 0, this.Width, this.Height);
+                SpielfeldZeichnen();
+            }
+        }
     }
 
-    //https://stackoverflow.com/questions/28601678/calling-async-method-on-button-click
-    //https://docs.microsoft.com/de-de/dotnet/desktop/winforms/controls/how-to-run-an-operation-in-the-background?view=netframeworkdesktop-4.8
-    //https://docs.microsoft.com/de-de/dotnet/api/system.threading.manualresetevent?view=net-5.0
-    //https://docs.microsoft.com/de-de/dotnet/framework/network-programming/asynchronous-client-socket-example
+    #endregion Game
 }
+
+//https://stackoverflow.com/questions/28601678/calling-async-method-on-button-click
+//https://docs.microsoft.com/de-de/dotnet/desktop/winforms/controls/how-to-run-an-operation-in-the-background?view=netframeworkdesktop-4.8
+//https://docs.microsoft.com/de-de/dotnet/api/system.threading.manualresetevent?view=net-5.0
+//https://docs.microsoft.com/de-de/dotnet/framework/network-programming/asynchronous-client-socket-example
