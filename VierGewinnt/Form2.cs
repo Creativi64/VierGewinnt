@@ -10,12 +10,12 @@ namespace VierGewinnt
     public partial class Form2 : Form
     {
         private bool Fullscreen;
-        private string currentcolor;
-        private float kreisausgleich;
-        private float dropspeed = 100; //geschwindigkeit beim runterfallen
-        private int gewinnnummer;
+        private string currentcolor;                    //Farbe die am Zug ist
+        private float kreisausgleich;                   // zahl die die Kreisdicke ausgleichen soll
+        private float dropspeed = 100;                  //geschwindigkeit beim runterfallen
+        private int gewinnnummer;                       // anzahl zum Gewinnen nötiger steine in einer reihe
 
-        public struct Spielfeldtile
+        public struct Spielfeldtile                     //representiert die einzelnen Felder mit position und Farbe
         {
             public int x, y, iwidth, iheight;
             public string farbe;
@@ -23,17 +23,17 @@ namespace VierGewinnt
 
         private DateTime VergangeneSekunden;
 
-        private int iSpielfeldheightpx;
-        private int iSpielfeldwidthpx;
+        private int iSpielfeldheightpx;                 //höhe des Spielfeldes in Pixel
+        private int iSpielfeldwidthpx;                  //breite des Spielfeldes in Pixel
 
-        public static int iSpielfeldheight = 4;
-        public static int iSpielfeldwidth = 4;
+        public static int iSpielfeldheight = 4;         //spielfeldhöhe in spielfeldern
+        public static int iSpielfeldwidth = 4;          //spielfeldbreite in spielfeldern
 
         private Graphics spielfeldgraphic;
         private PointF[,] Dreieckspunkte;
         private Graphics punkte;
 
-        private bool AimationFlag = false;
+        private bool AimationFlag = false;              //Animationsflag wird angeschalten wenn eine Animation stattfindet, da in dieser zeit nicht Redrawt werden soll
 
         public Spielfeldtile[,] spielfelder;
 
@@ -47,12 +47,12 @@ namespace VierGewinnt
 
         public Form2(bool _Fullscreen)
         {
-            InitializeComponent();
+            InitializeComponent();                         
             DoubleBuffered = true;
             Fullscreen = _Fullscreen;
             AllocConsole();
 
-            dropspeed = dropspeed * iSpielfeldheight;
+            dropspeed = dropspeed * iSpielfeldheight;   //die Fallgeschwindigkeit ist abhängik von der Spielfeldgröße
             VergangeneSekunden = new DateTime(1, 1, 1, 0, 0, 0);
 
             if (_Fullscreen == true)
@@ -126,7 +126,7 @@ namespace VierGewinnt
 
                 //Erste Ecken Berechnen
                 int ispielfeldformat;
-                if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)
+                if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)                               //spielfeldformat wird so gewählt, dass das Spielfeld immer in das Fenster passt
                 {
                     ispielfeldformat = iSpielfeldheightpx / iSpielfeldheight;
                 }
@@ -134,17 +134,17 @@ namespace VierGewinnt
                 {
                     ispielfeldformat = iSpielfeldwidthpx / iSpielfeldwidth;
                 }
-                spielfelder[0, 0].x = (this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2) + 0 * ispielfeldformat;
+                spielfelder[0, 0].x = (this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2) + 0 * ispielfeldformat;      //Spielfelder werden erstmals erstellt
                 spielfelder[0, 0].y = (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2) + 0 * ispielfeldformat;
                 spielfelder[0, 0].iwidth = ispielfeldformat;
                 spielfelder[0, 0].iheight = ispielfeldformat;
 
                 EckenBerechnen(0, 0, spielfelder[0, 0].iwidth, spielfelder[0, 0].iheight);
-                //Spielfeldzeichen
                 SpielfeldErstellen();
                 SpielfeldZeichnen();
-                // Im array alle Farben Auf Weiß zu setzen
-                for (int x = 0; x < iSpielfeldwidth; x++)
+
+                
+                for (int x = 0; x < iSpielfeldwidth; x++)       // Im array alle Farben Auf Weiß setzen
                 {
                     for (int y = 0; y < iSpielfeldheight; y++)
                     {
@@ -184,9 +184,10 @@ namespace VierGewinnt
         private void SpielfeldErstellen()
         {
             int ispielfeldformat;
-            if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)
-            {
-                ispielfeldformat = iSpielfeldheightpx / iSpielfeldheight;
+            if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)               //spielfeldformat wird so gewählt, dass das Spielfeld immer in das Fenster passt
+
+                {
+                    ispielfeldformat = iSpielfeldheightpx / iSpielfeldheight;
             }
             else
             {
@@ -196,7 +197,7 @@ namespace VierGewinnt
             {
                 for (int y = 0; y < iSpielfeldheight; y++)
                 {
-                    spielfelder[x, y].x = (this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2) + x * ispielfeldformat;
+                    spielfelder[x, y].x = (this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2) + x * ispielfeldformat;        //Struct wird angelegt
                     spielfelder[x, y].y = (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2) + y * ispielfeldformat;
                     spielfelder[x, y].iwidth = ispielfeldformat;
                     spielfelder[x, y].iheight = ispielfeldformat;
@@ -210,8 +211,8 @@ namespace VierGewinnt
             {
                 for (int y = 0; y < iSpielfeldheight; y++)
                 {
-                    spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);
-                    if (spielfelder[x, y].farbe != "white" && spielfelder[x, y].farbe != null)
+                    spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight);       //Struct wird benutzt um Das Spielfeld zu Zeichnen
+                    if (spielfelder[x, y].farbe != "white" && spielfelder[x, y].farbe != null)                                                  //wenn die Farbe des Kreises Nicht weis ist wird er auch noch gezeichnet
                     {
                         Kreiszeichnen(x, y, spielfelder[x, y].farbe);
                     }
@@ -233,7 +234,7 @@ namespace VierGewinnt
             AimationFlag = false;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e)                  //Zurück zum Menü
         {
             Form1 frm = new Form1();
 
@@ -260,9 +261,9 @@ namespace VierGewinnt
             Dreieckspunkte[3, 0] = new PointF(x + iwidth, y + iheight);
             Dreieckspunkte[3, 1] = new PointF((float)(x + iwidth - (iwidth * dDreieckkprozent)), y + iheight);
             Dreieckspunkte[3, 2] = new PointF((x + iwidth), (float)(y + iheight - (iheight * dDreieckkprozent)));
-        }
+        } //Die koordinaten für die Polygone werden im bezug auf das Jeweilige Feld Berechnet
 
-        private void spielfeldtilezeichnen(int x, int y, int iwidth, int iheight)
+        private void spielfeldtilezeichnen(int x, int y, int iwidth, int iheight)   //Methode um ein einzelnes Spielfeld-feld zu zeichnen
         {
             PointF[] hilfsarray = new PointF[3];
 
@@ -284,7 +285,7 @@ namespace VierGewinnt
             Feld.RunSynchronously();
         }
 
-        private void doublespielfeldtilezeichnen(int x, int y, int iwidth, int iheight)
+        private void doublespielfeldtilezeichnen(int x, int y, int iwidth, int iheight)         //Methode um zwei Spielfelder auf einmal zu zeichnen (wird für die Fallanimation verwendet)
         {
             PointF[] hilfsarray = new PointF[3];
 
@@ -317,34 +318,34 @@ namespace VierGewinnt
         {
             if (!AimationFlag&&!resizing)
             {
-                Console.WriteLine("redraw");
-                SpielfeldZeichnen();
+                SpielfeldZeichnen();                            //neuzeichnen des Spielfeldes wenn nötig
             }
         }
 
         private void Form2_Click(object sender, EventArgs e)
         {
-            if (this.PointToClient(Cursor.Position).X > spielfelder[0, 0].x && this.PointToClient(Cursor.Position).X < spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].x + spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].iwidth && this.PointToClient(Cursor.Position).Y > spielfelder[0, 0].y && this.PointToClient(Cursor.Position).Y < spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].y + spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].iheight)
+            if (this.PointToClient(Cursor.Position).X > spielfelder[0, 0].x && this.PointToClient(Cursor.Position).X < spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].x + spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].iwidth && this.PointToClient(Cursor.Position).Y > spielfelder[0, 0].y && this.PointToClient(Cursor.Position).Y < spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].y + spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].iheight)    //abfrage ob klick auf Spielfeld ist
             {
                 int spalte, reihe = -1;
                 bool gesetzt = false;
-                spalte = (this.PointToClient(Cursor.Position).X - spielfelder[0, 0].x) / spielfelder[0, 0].iwidth;
-                for (int i = iSpielfeldheight - 1; i >= 0; i--)
+                spalte = (this.PointToClient(Cursor.Position).X - spielfelder[0, 0].x) / spielfelder[0, 0].iwidth;      //berechnung der Spalte
+                for (int i = iSpielfeldheight - 1; i >= 0; i--)                                                         //zählt von unten nach oben...
                 {
-                    if (spielfelder[spalte, i].farbe == "white")
+                    if (spielfelder[spalte, i].farbe == "white")                                                        //...Wenn die Farbe weis ist...
                     {
                         gesetzt = true;
                         spielfelder[spalte, i].farbe = currentcolor;
-                        Hovereffekt(-1);
-                        KreiszeichnenAnimation(spalte, i + 1, currentcolor);
+                        Hovereffekt(-1);                                                                                 //Hovereffekt wird während der Fallanimation entfernt
+                        KreiszeichnenAnimation(spalte, i + 1, currentcolor);                                             //...wird die animation abgespielt un das Feld Farbig
                         reihe = i;
                         i = 0;
                     }
                 }
 
                 bool gewonnen = false;
-                if (gesetzt && reihe != -1)
+                if (gesetzt && reihe != -1)                                                                             //wenn ein stein gesetzt wurde
                 {
+                    //überprüfung ob jemand gewonne hat
                     int infolge = 0;
                     for (int x = 0; x < iSpielfeldwidth; x++)
                     {
@@ -438,12 +439,14 @@ namespace VierGewinnt
                         currentcolor = "red";
                         lab_Player.Text = "Player Red";
                     }
+
+                    //überpfrüfung ob noch einzug möglich ist
                     bool zugmöglich = false;
                     for (int x = 0; x < iSpielfeldwidth; x++)
                     {
                         for (int y = 0; y < iSpielfeldheight; y++)
                         {
-                            if (spielfelder[x, y].farbe == "white")
+                            if (spielfelder[x, y].farbe == "white")             // wenn mindestens ein Feld weis ist, ist noch ein zug möglich
                             {
                                 zugmöglich = true;
                             }
@@ -455,7 +458,6 @@ namespace VierGewinnt
                     }
                 }
             }
-            Console.WriteLine(this.PointToClient(new Point((Cursor.Position).X, (Cursor.Position).Y)));
         }
 
         private void KreiszeichnenAnimation(int X, int Y, string farbe)
@@ -585,9 +587,9 @@ namespace VierGewinnt
         private void Form2_MouseMove(object sender, MouseEventArgs e)
         {
             int spalte = -1;
-            if (this.PointToClient(Cursor.Position).X > spielfelder[0, 0].x && this.PointToClient(Cursor.Position).X < spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].x + spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].iwidth && this.PointToClient(Cursor.Position).Y > spielfelder[0, 0].y && this.PointToClient(Cursor.Position).Y < spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].y + spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].iheight)
+            if (this.PointToClient(Cursor.Position).X > spielfelder[0, 0].x && this.PointToClient(Cursor.Position).X < spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].x + spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].iwidth && this.PointToClient(Cursor.Position).Y > spielfelder[0, 0].y && this.PointToClient(Cursor.Position).Y < spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].y + spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].iheight)    //überprüfung ob die Maus auf dem Spielfeld hovert
             {
-                if (oldspalte != (this.PointToClient(Cursor.Position).X - spielfelder[0, 0].x) / spielfelder[0, 0].iwidth)
+                if (oldspalte != (this.PointToClient(Cursor.Position).X - spielfelder[0, 0].x) / spielfelder[0, 0].iwidth)      //überprüfung ob die maus über einem anderen fällt ist als bei der Letzten abfrage
                 {
                     spalte = (this.PointToClient(Cursor.Position).X - spielfelder[0, 0].x) / spielfelder[0, 0].iwidth;
                     Hovereffekt(spalte);
@@ -595,7 +597,7 @@ namespace VierGewinnt
             }
             else
             {
-                Hovereffekt(-1);
+                Hovereffekt(-1);        //wenn die Maus nichtmehr auf dem Feld ist wird der Hovereffekt aufgehoben
             }
         }
 
@@ -603,19 +605,22 @@ namespace VierGewinnt
 
         private void Hovereffekt(int spalte)
         {
-            if (spalte >= 0)
+            if (spalte >= 0)  
             {
                 if (oldspalte >= 0)
                 {
+                    // hoverkreis entfernen:
                     punkte.FillEllipse(new SolidBrush(Color.FromName("white")), spielfelder[oldspalte, 0].x + kreisausgleich, spielfelder[oldspalte, 0].y - spielfelder[0, 0].iheight + kreisausgleich - 2, spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
                 }
+                // hoverkreis zeichnen:
                 punkte.FillEllipse(new SolidBrush(Color.FromName(currentcolor)), spielfelder[spalte, 0].x + kreisausgleich, spielfelder[spalte, 0].y - spielfelder[0, 0].iheight + kreisausgleich - 2, spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
                 oldspalte = spalte;
             }
-            else
+            else        // wenn minus 1 übergeben wird
             {
                 if (oldspalte >= 0)
                 {
+                    // hoverkreis entfernen:
                     punkte.FillEllipse(new SolidBrush(Color.FromName("white")), spielfelder[oldspalte, 0].x + kreisausgleich, spielfelder[oldspalte, 0].y - spielfelder[0, 0].iheight + kreisausgleich - 2, spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
                 }
                 oldspalte = spalte;
@@ -625,15 +630,14 @@ namespace VierGewinnt
         private bool resizing = false;
         private void Form2_Resize(object sender, EventArgs e)
         {
-            Console.WriteLine("resize");
             if (spielfeldgraphic != null)
             {
-                spielfeldgraphic.FillRectangle(new SolidBrush(this.BackColor), 0, 0, this.Width, this.Height);
+                spielfeldgraphic.FillRectangle(new SolidBrush(this.BackColor), 0, 0, this.Width, this.Height);  // wenn das Spielfeld neugezogen wird, wird es weis
             }
             resizing = true;
         }
 
-        private void Form2_ResizeEnd(object sender, EventArgs e)
+        private void Form2_ResizeEnd(object sender, EventArgs e)                                                // wenn das Spielfeld losgelassen wird, wird dass Spielfeld neu gezeichnet
         {
             if(resizing)
             {
