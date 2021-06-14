@@ -9,10 +9,13 @@ namespace VierGewinnt
 {
     public partial class Form2 : Form
     {
+
         private bool Fullscreen;
         private string currentcolor;
-        private float kreisausgleich = 2.530f;
-        private float dropspeed = 10; //geschwindigkeit beim runterfallen
+        private float kreisausgleich = 2.501f;
+        private float dropspeed = 60; //geschwindigkeit beim runterfallen
+        private int gewinnnummer;
+
 
         public struct Spielfeldtile
         {
@@ -26,8 +29,8 @@ namespace VierGewinnt
         private int iSpielfeldheightpx;
         private int iSpielfeldwidthpx;
 
-        private int iSpielfeldheight = 6;
-        private int iSpielfeldwidth = 7;
+        public static int iSpielfeldheight = 4;
+        public static int iSpielfeldwidth = 4;
 
         private Graphics spielfeldgraphic;
         private PointF[,] Dreieckspunkte;
@@ -53,7 +56,6 @@ namespace VierGewinnt
             AllocConsole();
 
             dropspeed = dropspeed * iSpielfeldheight;
-
             VergangeneSekunden = new DateTime(1, 1, 1, 0, 0, 0);
 
             if (_Fullscreen == true)
@@ -61,13 +63,13 @@ namespace VierGewinnt
                 this.FormBorderStyle = FormBorderStyle.None;
                 this.WindowState = FormWindowState.Maximized;
 
-                this.MaximizeBox = false;
+                this.MaximizeBox = true;
             }
             else
             {
-                this.FormBorderStyle = FormBorderStyle.FixedSingle;
+                //this.FormBorderStyle = FormBorderStyle.FixedSingle;
                 this.WindowState = FormWindowState.Normal;
-                this.MaximizeBox = false;
+                this.MaximizeBox = true;
             }
             iSpielfeldheightpx = this.Height - 150;
             iSpielfeldwidthpx = this.Width - 150;
@@ -75,6 +77,40 @@ namespace VierGewinnt
             spielfeldgraphic = this.CreateGraphics();
 
             punkte = this.CreateGraphics();
+
+            switch (Form1.sgewinnZahl)
+            {
+                case ("Zwei"):
+                    gewinnnummer = 2;
+                    break;
+                case ("Drei"):
+                    gewinnnummer = 3;
+                    break;
+                case ("Vier"):
+                    gewinnnummer = 4;
+                    break;
+                case ("Fünf"):
+                    gewinnnummer = 5;
+                    break;
+                case ("Sechs"):
+                    gewinnnummer = 6;
+                    break;
+                case ("Sieben"):
+                    gewinnnummer = 7;
+                    break;
+                case ("Acht"):
+                    gewinnnummer = 8;
+                    break;
+                case ("Neun"):
+                    gewinnnummer = 9;
+                    break;
+                case ("Zehn"):
+                    gewinnnummer = 10;
+                    break;
+                default:
+                    gewinnnummer = 4;
+                    break;
+            }
 
             this.BeginInvoke((MethodInvoker)delegate
             {
@@ -267,7 +303,6 @@ namespace VierGewinnt
             }
         }
 
-        private int gewinnnummer = 4;
 
         private void Form2_Click(object sender, EventArgs e)
         {
