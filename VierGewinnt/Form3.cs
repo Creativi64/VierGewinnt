@@ -60,56 +60,6 @@ namespace VierGewinnt
             Application.Exit();
         }
 
-        private void btn_Test_Click(object sender, EventArgs e)
-        {
-            // Daten, die gesendet werden
-            string textToSend = txB_1.Text;
-
-            // Endpunkt, zu dem verbunden wird
-            const string localhost = "127.0.0.1";
-            const int port = 42069;
-
-            var data = Encoding.UTF8.GetBytes(textToSend);
-            var ip = IPAddress.Parse(localhost);
-            var ipEndPoint = new IPEndPoint(ip, port);
-
-            try
-            {
-                // Socket, das verwendet wird
-                using (var socket = new Socket(AddressFamily.InterNetwork,
-                                           SocketType.Stream,
-                                           ProtocolType.Tcp))
-                {
-                    // Es wird zum Endpunkt verbunden
-                    socket.Connect(ipEndPoint);
-
-                    // Daten werden gesendet
-                    var byteCount = socket.Send(data, SocketFlags.None);
-                    WriteLine("Es wurden {0} bytes gesendet", byteCount);
-
-                    // Puffer für die zu empfangenen Daten
-                    var buffer = new byte[256];
-
-                    // Daten werden empfangen
-                    byteCount = socket.Receive(buffer, SocketFlags.None);
-
-                    // Wenn eine Antwort erhalten wurde, diese ausgeben
-                    if (byteCount > 0)
-                    {
-                        WriteLine("Es wurden {0} Bytes empfangen", byteCount);
-                        var answer = Encoding.UTF8.GetString(buffer);
-                        WriteLine("Empfangene Daten: {0}", answer);
-                    }
-                }
-
-                //Verbindung wird geschlossen
-            }
-            catch (SocketException)
-            {
-                Console.WriteLine("Error");
-            }
-        }
-
         private void btn_Suchen_Click(object sender, EventArgs e)
         {
             Console.WriteLine("Suchen");
@@ -151,10 +101,6 @@ namespace VierGewinnt
                 Console.WriteLine("Keine Gültige IP Adresse");
                 lab_Info.Text = ("Keine Gültige IP");
             }
-        }
-
-        private void btn_Senden_Click(object sender, EventArgs e)
-        {
         }
 
         #region NachConnectionsSuchen
@@ -318,13 +264,15 @@ namespace VierGewinnt
 
         #region Client_VerbindingMitServerHerstellen
 
-        public static ManualResetEvent allDone = new ManualResetEvent(false);
+        //public static ManualResetEvent allDone = new ManualResetEvent(false);
 
         private static ManualResetEvent connectDone = new ManualResetEvent(false);
 
         private static ManualResetEvent sendDone = new ManualResetEvent(false);
 
         private static ManualResetEvent receiveDone = new ManualResetEvent(false);
+
+        private static ManualResetEvent disconnectDone = new ManualResetEvent(false);
 
         public static bool bConectet = false;
 
@@ -347,17 +295,21 @@ namespace VierGewinnt
 
         private void StartClientVerbindung(IPAddress Ip)
         {
+            Console.WriteLine("--------------------------");
             Console.WriteLine("Start");
+
             lab_Info.Text = ("Connect...");
+            txB_Empfangen.Clear();
+
+            sendDone.Reset();
+            connectDone.Reset();
+            receiveDone.Reset();
+            disconnectDone.Reset();
 
             //const string localhost2 = "127.0.0.1";
             //var ip2 = IPAddress.Parse(Ip);
 
             const int port = 42069;
-
-            //string strrinf = "TestTestTes23";
-
-            //var data = Encoding.UTF8.GetBytes(strrinf);
 
             IPEndPoint RemoteEp = new IPEndPoint(Ip, port);
 
@@ -366,69 +318,54 @@ namespace VierGewinnt
 
             // Connect to the remote endpoint.
             s.BeginConnect(RemoteEp, new AsyncCallback(ConnectCallback), s);
+            connectDone.WaitOne(100);
 
-            connectDone.WaitOne();
+            if (s.Connected)
+            {
+                Console.WriteLine($"Kann Connecten {RemoteEp}");
+                lab_Info.Text = ("Connected");
 
-            // Send test data to the remote device.
-            SendServer(s, txB_Senden.Text);
+                // Send test data to the remote device.
+                lab_Info.Text = ("Sending");
+                SendClient(s, txB_Senden.Text);
 
-            sendDone.WaitOne();
+                sendDone.WaitOne();
 
-            // Receive the response from the remote device.
-            Receive(s);
-            receiveDone.WaitOne();
+                // Receive the response from the remote device.
+                lab_Info.Text = ("Receiving");
+                Receive(s);
+                receiveDone.WaitOne();
 
-            Console.WriteLine("Response received : {0}", response);
-            txB_Empfangen.Text = response;
-            s.Shutdown(SocketShutdown.Both);
-            s.Close();
-
-            #region re
-
-            //s.Bind(lep);
-
-            //s.Listen(1000);
-
-            //while (true)
-            //{
-            //    allDone.Reset();
-
-            //    Console.WriteLine($"{iZaeler} Waiting for a connection...");
-            //    int receivedDataSize = 265;
-
-            //    s.BeginAccept(null, receivedDataSize, new AsyncCallback(AcceptReceiveDataCallback), s);
-
-            //    Thread.Sleep(1000);
-
-            //    iZaeler++;
-            //}
-
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e.ToString());
-            //}
-
-            #endregion re
+                Console.WriteLine("Response received : {0}", response);
+                txB_Empfangen.Text = response;
+                lab_Info.Text = ("Done");
+            }
+            else
+            {
+                Console.WriteLine($"Nix Gefunden Bei auf {RemoteEp}");
+                lab_Info.Text = $"Konnte Zu {Ip} nicht Verbinden";
+                //throw new ApplicationException("Failed to connect server.");
+            }
         }
 
-        private static void SendServer(Socket client, String data)
+        private static void SendClient(Socket client, String data)
         {
             // Convert the string data to byte data using ASCII encoding.
+            Console.WriteLine($"Sending '{data}'");
             byte[] byteData = Encoding.UTF8.GetBytes(data);
 
             // Begin sending the data to the remote device.
-            client.BeginSend(byteData, 0, byteData.Length, 0,
-                new AsyncCallback(SendCallback), client);
+            client.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), client);
         }
 
-        private static void Receive(Socket client)
+        private void Receive(Socket client)
         {
             try
             {
                 // Create the state object.
                 StateObject state = new StateObject();
                 state.workSocket = client;
+                //state.sb.Clear();
 
                 // Begin receiving the data from the remote device.
                 client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReceiveCallback), state);
@@ -451,20 +388,16 @@ namespace VierGewinnt
                 // Complete the connection.
                 client.EndConnect(ar);
 
-                Console.WriteLine("Socket connected to {0}",
-                    client.RemoteEndPoint.ToString());
+                Console.WriteLine("Socket connected to {0}", client.RemoteEndPoint.ToString());
 
                 // Signal that the connection has been made.
                 connectDone.Set();
                 Console.WriteLine("Connectet");
-
-                bConectet = false;
             }
             catch (Exception e)
             {
                 Console.WriteLine("Conection Failed");
                 Console.WriteLine(e.ToString());
-                Thread.Sleep(1000);
             }
         }
 
@@ -500,6 +433,7 @@ namespace VierGewinnt
 
                 // Read data from the remote device.
                 int bytesRead = client.EndReceive(ar);
+                Console.WriteLine($"read {bytesRead} Bytes From Server");
 
                 if (bytesRead > 0)
                 {
@@ -507,8 +441,7 @@ namespace VierGewinnt
                     state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
 
                     // Get the rest of the data.
-                    client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
-                        new AsyncCallback(ReceiveCallback), state);
+                    client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0, new AsyncCallback(ReceiveCallback), state);
                 }
                 else
                 {
@@ -525,6 +458,7 @@ namespace VierGewinnt
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
+                Console.WriteLine("ConnectionERROR");
             }
         }
 
@@ -615,14 +549,13 @@ namespace VierGewinnt
                 Console.WriteLine($"Running On {localEndPoint}");
 
                 // Create a TCP/IP socket.
-                Socket listener = new Socket(ipv4Addresses[0].AddressFamily,
-                    SocketType.Stream, ProtocolType.Tcp);
+                Socket listener = new Socket(ipv4Addresses[0].AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
                 // Bind the socket to the local endpoint and listen for incoming connections.
                 try
                 {
                     listener.Bind(localEndPoint);
-                    listener.Listen(100);
+                    listener.Listen(1000);
 
                     while (true)
                     {
@@ -631,9 +564,7 @@ namespace VierGewinnt
 
                         // Start an asynchronous socket to listen for connections.
                         Console.WriteLine("Waiting for a connection...");
-                        listener.BeginAccept(
-                            new AsyncCallback(AcceptCallback),
-                            listener);
+                        listener.BeginAccept(new AsyncCallback(AcceptCallback), listener);
 
                         // Wait until a connection is made before continuing.
                         allDoneServer.WaitOne();
@@ -661,52 +592,59 @@ namespace VierGewinnt
             // Create the state object.
             StateObjectServer state = new StateObjectServer();
             state.workSocket = handler;
-            handler.BeginReceive(state.buffer, 0, StateObjectServer.BufferSize, 0,
-                new AsyncCallback(ReadCallback), state);
+
+            handler.BeginReceive(state.buffer, 0, StateObjectServer.BufferSize,0, new AsyncCallback(ReadCallback), state);
         }
 
         public static void ReadCallback(IAsyncResult ar)
         {
-            String content = String.Empty;
+            //try
+            //{
+                String content = String.Empty;
 
-            // Retrieve the state object and the handler socket
-            // from the asynchronous state object.
-            StateObjectServer state = (StateObjectServer)ar.AsyncState;
-            Socket handler = state.workSocket;
+                // Retrieve the state object and the handler socket
+                // from the asynchronous state object.
+                StateObjectServer state = (StateObjectServer)ar.AsyncState;
+                Socket handler = state.workSocket;
 
-            // Read data from the client socket.
-            int bytesRead = handler.EndReceive(ar); // CHrasht wenn die verbindung gescannt wurde ohne das sie Wieder Ge schlossen wurde // Gefixt
+                // Read data from the client socket.
+                int bytesRead = handler.EndReceive(ar); // CHrasht wenn die verbindung gescannt wurde ohne das sie Wieder Ge schlossen wurde // Gefixt
 
-            if (bytesRead > 0)
-            {
+                //if (bytesRead > 0)
+                //{
                 // There  might be more data, so store the data received so far.
-                state.sb.Append(Encoding.ASCII.GetString(
-                    state.buffer, 0, bytesRead));
+                state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
 
                 // Check for end-of-file tag. If it is not there, read
                 // more data.
                 content = state.sb.ToString();
-                if (content.IndexOf("<EOF>") > -1)
-                {
-                    // All the data has been read from the
-                    // client. Display it on the console.
-                    Console.WriteLine("Read {0} bytes from socket. \n Data : {1}",
-                        content.Length, content);
+                //if (content.IndexOf("<EOF>") > -1)
+                //{
+                // All the data has been read from the
+                // client. Display it on the console.
+                Console.WriteLine("Read {0} bytes from socket. \n Data : {1}", content.Length, content);
 
-                    // Echo the data back to the client.
-                    Send(handler, content);
-                }
-                else
-                {
-                    // Not all data received. Get more.
-                    handler.BeginReceive(state.buffer, 0, StateObjectServer.BufferSize, 0,
-                    new AsyncCallback(ReadCallback), state);
-                }
-            }
+                // Echo the data back to the client.
+                Send(handler, content);
+                //}
+                //else
+                //{
+                //    // Not all data received. Get more.
+                //    handler.BeginReceive(state.buffer, 0, StateObjectServer.BufferSize, 0,
+                //    new AsyncCallback(ReadCallback), state);
+                //}
+                //}
+            //}
+            //catch (Exception e)
+            //{
+            //    Console.WriteLine("ConnectionError");
+            //    Console.WriteLine(e.ToString());
+            //}
         }
 
         private static void Send(Socket handler, String data)
         {
+            // hier Spielzug Einfügen
             data = "Sendback " + data;
 
             // Convert the string data to byte data using ASCII encoding.
