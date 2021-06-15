@@ -71,8 +71,8 @@ namespace VierGewinnt
                 this.WindowState = FormWindowState.Normal;
                 this.MaximizeBox = true;
             }
-            iSpielfeldheightpx = this.Height - 150;
-            iSpielfeldwidthpx = this.Width - 150;
+            iSpielfeldheightpx = this.Height - 200;
+            iSpielfeldwidthpx = this.Width - 50;
 
             spielfeldgraphic = this.CreateGraphics();
 
@@ -369,7 +369,7 @@ namespace VierGewinnt
                 {
                     //überprüfung ob jemand gewonne hat
                     int infolge = 0;
-                    for (int x = 0; x < iSpielfeldwidth; x++)
+                    for (int x = 0; x < iSpielfeldwidth && !gewonnen; x++)
                     {
                         if (spielfelder[x, reihe].farbe == currentcolor)
                         {
@@ -461,6 +461,10 @@ namespace VierGewinnt
                     if (gewonnen)
                     {
                         KreisDrehen(Gewinnerkoordinaten, 5);
+                        for (int i = 0; i < 4; i++)
+                        {
+                            Console.WriteLine(Gewinnerkoordinaten[i]);
+                        }
                         AimationFlag = true;
                         for (int i = 0; i < this.Width; i += 10)
                         {
@@ -499,7 +503,6 @@ namespace VierGewinnt
                     }
                     if (!zugmöglich)
                     {
-                        Console.WriteLine("Ende");
                         Gewonnen("NIEMAND");
                     }
                 }
@@ -569,7 +572,6 @@ namespace VierGewinnt
             int iHilfszahl = 0;
             int iHilfszahl1 = 0;
             int multiplyer = (int)droptime; // durch 2 teil bare Zahlen funktionieren am besten da Dann Weniger Komma stellen Entstehen die Ignoriert werden
-            Console.WriteLine(droptime + " " + iSpielfeldheight);
             Task animation1 = new Task(() =>
             {
                 AimationFlag = true;
@@ -737,10 +739,10 @@ namespace VierGewinnt
                 if (oldspalte >= 0)
                 {
                     // hoverkreis entfernen:
-                    punkte.FillEllipse(new SolidBrush(Color.FromName("white")), spielfelder[oldspalte, 0].x + kreisausgleich, spielfelder[oldspalte, 0].y - spielfelder[0, 0].iheight + kreisausgleich - 2, spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
+                    Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName("white")), spielfelder[oldspalte, 0].x + kreisausgleich, spielfelder[oldspalte, 0].y - spielfelder[0, 0].iheight + kreisausgleich - 2, spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
                 }
                 // hoverkreis zeichnen:
-                punkte.FillEllipse(new SolidBrush(Color.FromName(currentcolor)), spielfelder[spalte, 0].x + kreisausgleich, spielfelder[spalte, 0].y - spielfelder[0, 0].iheight + kreisausgleich - 2, spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
+                Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName(currentcolor)), spielfelder[spalte, 0].x + kreisausgleich, spielfelder[spalte, 0].y - spielfelder[0, 0].iheight + kreisausgleich - 2, spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
                 oldspalte = spalte;
             }
             else        // wenn minus 1 übergeben wird
@@ -748,10 +750,12 @@ namespace VierGewinnt
                 if (oldspalte >= 0)
                 {
                     // hoverkreis entfernen:
-                    punkte.FillEllipse(new SolidBrush(Color.FromName("white")), spielfelder[oldspalte, 0].x + kreisausgleich, spielfelder[oldspalte, 0].y - spielfelder[0, 0].iheight + kreisausgleich - 2, spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
+                    Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName("white")), spielfelder[oldspalte, 0].x + kreisausgleich, spielfelder[oldspalte, 0].y - spielfelder[0, 0].iheight + kreisausgleich - 2, spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
                 }
                 oldspalte = spalte;
             }
+            spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
+
         }
 
         private bool resizing = false;
@@ -771,10 +775,9 @@ namespace VierGewinnt
         {
             if (resizing)
             {
-                Console.WriteLine("resizeend");
 
                 resizing = false;
-                iSpielfeldheightpx = this.Height - 150;
+                iSpielfeldheightpx = this.Height - 200;
                 iSpielfeldwidthpx = this.Width - 50;
                 SpielfeldErstellen();
                 EckenBerechnen(0, 0, spielfelder[0, 0].iwidth, spielfelder[0, 0].iheight);
@@ -790,7 +793,6 @@ namespace VierGewinnt
 
                 spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
 
-                Console.WriteLine("redraw");
                 //Bitmapgraphic.FillRectangle(new SolidBrush(this.BackColor), 0, 0, this.Width, this.Height);
             }
         }
