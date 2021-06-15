@@ -32,6 +32,8 @@ namespace VierGewinnt
             EckenBerechnen(0, 0, Form2.iSpielfeldwidth, Form2.iSpielfeldheight);
             SpielfeldZeichnen();
             textBox1.Text = "Vier";
+            Form2.iSpielfeldheight = 4;
+            Form2.iSpielfeldwidth = 4;
         }
 
         private void btn_Play_Click(object sender, EventArgs e)
