@@ -151,6 +151,7 @@ namespace VierGewinnt
         {
             spielfeldgraphic.FillRectangle(new SolidBrush(Color.White), 0, 0, this.Width , this.Height);
             Form2.iSpielfeldwidth = trackBarX.Value + 4;
+            Form3.iSpielfeldwidth = trackBarX.Value + 4;
             xstart = xstartmin + (iSpielfeldwidthmax - Form2.iSpielfeldwidth) * ispielfeldformat;
             SpielfeldZeichnen();
         }
@@ -164,6 +165,7 @@ namespace VierGewinnt
         {
             spielfeldgraphic.FillRectangle(new SolidBrush(Color.White), 0, 0, this.Width, this.Height);
             Form2.iSpielfeldheight = trackBarY.Value + 4;
+            Form3.iSpielfeldheight = trackBarY.Value + 4;
             ystart = ystartmin + (iSpielfeldheightmax - Form2.iSpielfeldheight) * ispielfeldformat;
             SpielfeldZeichnen();
         }
