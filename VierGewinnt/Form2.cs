@@ -29,7 +29,7 @@ namespace VierGewinnt
         public static int iSpielfeldheight = 4;         //spielfeldhöhe in spielfeldern
         public static int iSpielfeldwidth = 4;          //spielfeldbreite in spielfeldern
 
-        Bitmap Spielfeldframe;
+        private Bitmap Spielfeldframe;
         private Graphics Bitmapgraphic;
 
         private Graphics spielfeldgraphic;
@@ -50,7 +50,7 @@ namespace VierGewinnt
 
         public Form2(bool _Fullscreen)
         {
-            InitializeComponent();                         
+            InitializeComponent();
             DoubleBuffered = true;
             Fullscreen = _Fullscreen;
             AllocConsole();
@@ -77,8 +77,6 @@ namespace VierGewinnt
             spielfeldgraphic = this.CreateGraphics();
 
             punkte = this.CreateGraphics();
-
-
 
             switch (Form1.sgewinnZahl)
             {
@@ -196,8 +194,8 @@ namespace VierGewinnt
             int ispielfeldformat;
             if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)               //spielfeldformat wird so gewählt, dass das Spielfeld immer in das Fenster passt
 
-                {
-                    ispielfeldformat = iSpielfeldheightpx / iSpielfeldheight;
+            {
+                ispielfeldformat = iSpielfeldheightpx / iSpielfeldheight;
             }
             else
             {
@@ -300,7 +298,7 @@ namespace VierGewinnt
                     }
                     G.FillPolygon(new SolidBrush(Color.Blue), hilfsarray);
                 }
-                G.DrawEllipse(new Pen(Color.Blue, spielfelder[0,0].iwidth / 22 + 1.8f), x, y, iwidth, iheight);
+                G.DrawEllipse(new Pen(Color.Blue, spielfelder[0, 0].iwidth / 22 + 1.8f), x, y, iwidth, iheight);
                 G.DrawRectangle(new Pen(Color.Blue, spielfelder[0, 0].iwidth / 22 + 1.8f), x, y, iwidth, iheight);
                 kreisausgleich = Convert.ToSingle(Math.Pow(spielfelder[0, 0].iwidth / 32f, 0.88f));
             });
@@ -338,7 +336,7 @@ namespace VierGewinnt
 
         private void Form2_Paint(object sender, PaintEventArgs e)
         {
-            if (!AimationFlag&&!resizing)
+            if (!AimationFlag && !resizing)
             {
                 spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
             }
@@ -491,7 +489,7 @@ namespace VierGewinnt
             {
                 AimationFlag = true;
 
-                for (int i = -multiplyer; i < Y * multiplyer; i ++)
+                for (int i = -multiplyer; i < Y * multiplyer; i++)
                 {
                     if (i == -multiplyer || i + 1 == Y * multiplyer || Convert.ToInt32((i / multiplyer) + 1) >= Y)
                     {
@@ -543,19 +541,18 @@ namespace VierGewinnt
                              spielfelder[0, 0].iwidth - kreisausgleich * 2,
                              spielfelder[0, 0].iheight - kreisausgleich * 2);
 
-                                spielfeldtilezeichnen(
-                                  spielfelder[X, iHilfszahl].x,
-                                  spielfelder[X, iHilfszahl].y,
-                                  spielfelder[X, iHilfszahl].iwidth,
-                                  spielfelder[X, iHilfszahl].iheight,
-                                  Bitmapgraphic);
-                                spielfeldtilezeichnen(
-                                  spielfelder[X, iHilfszahl].x,
-                                  spielfelder[X, iHilfszahl+1].y,
-                                  spielfelder[X, iHilfszahl].iwidth,
-                                  spielfelder[X, iHilfszahl].iheight,
-                                  Bitmapgraphic);
-
+                            spielfeldtilezeichnen(
+                              spielfelder[X, iHilfszahl].x,
+                              spielfelder[X, iHilfszahl].y,
+                              spielfelder[X, iHilfszahl].iwidth,
+                              spielfelder[X, iHilfszahl].iheight,
+                              Bitmapgraphic);
+                            spielfeldtilezeichnen(
+                              spielfelder[X, iHilfszahl].x,
+                              spielfelder[X, iHilfszahl + 1].y,
+                              spielfelder[X, iHilfszahl].iwidth,
+                              spielfelder[X, iHilfszahl].iheight,
+                              Bitmapgraphic);
 
                             spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
                         });
@@ -631,7 +628,7 @@ namespace VierGewinnt
 
         private void Hovereffekt(int spalte)
         {
-            if (spalte >= 0)  
+            if (spalte >= 0)
             {
                 if (oldspalte >= 0)
                 {
@@ -654,6 +651,7 @@ namespace VierGewinnt
         }
 
         private bool resizing = false;
+
         private void Form2_Resize(object sender, EventArgs e)
         {
             if (Bitmapgraphic != null)
@@ -667,7 +665,7 @@ namespace VierGewinnt
 
         private void Form2_ResizeEnd(object sender, EventArgs e)                                                // wenn das Spielfeld losgelassen wird, wird dass Spielfeld neu gezeichnet
         {
-            if(resizing)
+            if (resizing)
             {
                 Console.WriteLine("resizeend");
 
@@ -688,13 +686,10 @@ namespace VierGewinnt
 
                 spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
 
-
                 Console.WriteLine("redraw");
                 //Bitmapgraphic.FillRectangle(new SolidBrush(this.BackColor), 0, 0, this.Width, this.Height);
-
             }
         }
-
     }
 }
 
