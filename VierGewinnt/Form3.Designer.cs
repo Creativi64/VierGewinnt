@@ -38,10 +38,6 @@ namespace VierGewinnt
             this.SpielHosten = new System.Windows.Forms.Button();
             this.btn_ConnectTo = new System.Windows.Forms.Button();
             this.txB_VerbindenIP = new System.Windows.Forms.TextBox();
-            this.BcWork_Server = new System.ComponentModel.BackgroundWorker();
-            this.txB_Empfangen = new System.Windows.Forms.TextBox();
-            this.txB_Senden = new System.Windows.Forms.TextBox();
-            this.lab_Info = new System.Windows.Forms.Label();
             this.lab_IPeingabeHier = new System.Windows.Forms.Label();
             this.btn_ZumMenue = new System.Windows.Forms.Button();
             this.lab_Timer = new System.Windows.Forms.Label();
@@ -49,6 +45,7 @@ namespace VierGewinnt
             this.lab_VerbundenMit = new System.Windows.Forms.Label();
             this.lab_MeineIp = new System.Windows.Forms.Label();
             this.lab_NotResponding = new System.Windows.Forms.Label();
+            this.lab_Info = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // btn_Suchen
@@ -132,37 +129,6 @@ namespace VierGewinnt
             this.txB_VerbindenIP.Size = new System.Drawing.Size(147, 23);
             this.txB_VerbindenIP.TabIndex = 9;
             // 
-            // BcWork_Server
-            // 
-            this.BcWork_Server.WorkerReportsProgress = true;
-            this.BcWork_Server.WorkerSupportsCancellation = true;
-            this.BcWork_Server.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker2_DoWork);
-            this.BcWork_Server.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.BcWork_Server_ProgressChanged);
-            this.BcWork_Server.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker2_RunWorkerCompleted);
-            // 
-            // txB_Empfangen
-            // 
-            this.txB_Empfangen.Location = new System.Drawing.Point(2, 401);
-            this.txB_Empfangen.Name = "txB_Empfangen";
-            this.txB_Empfangen.Size = new System.Drawing.Size(116, 23);
-            this.txB_Empfangen.TabIndex = 10;
-            // 
-            // txB_Senden
-            // 
-            this.txB_Senden.Location = new System.Drawing.Point(2, 372);
-            this.txB_Senden.Name = "txB_Senden";
-            this.txB_Senden.Size = new System.Drawing.Size(116, 23);
-            this.txB_Senden.TabIndex = 11;
-            // 
-            // lab_Info
-            // 
-            this.lab_Info.AutoSize = true;
-            this.lab_Info.Location = new System.Drawing.Point(2, 354);
-            this.lab_Info.Name = "lab_Info";
-            this.lab_Info.Size = new System.Drawing.Size(26, 15);
-            this.lab_Info.TabIndex = 12;
-            this.lab_Info.Text = "Idel";
-            // 
             // lab_IPeingabeHier
             // 
             this.lab_IPeingabeHier.AutoSize = true;
@@ -223,14 +189,23 @@ namespace VierGewinnt
             // 
             this.lab_NotResponding.AutoSize = true;
             this.lab_NotResponding.BackColor = System.Drawing.Color.DarkRed;
-            this.lab_NotResponding.Font = new System.Drawing.Font("Cascadia Code", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lab_NotResponding.Font = new System.Drawing.Font("Cascadia Code", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.lab_NotResponding.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lab_NotResponding.Location = new System.Drawing.Point(34, 100);
+            this.lab_NotResponding.Location = new System.Drawing.Point(256, 498);
             this.lab_NotResponding.Name = "lab_NotResponding";
-            this.lab_NotResponding.Size = new System.Drawing.Size(721, 340);
+            this.lab_NotResponding.Size = new System.Drawing.Size(223, 35);
             this.lab_NotResponding.TabIndex = 20;
-            this.lab_NotResponding.Text = "Application Could \r\nGo On \r\nNOT RESPONDING\r\n(It still runs)";
+            this.lab_NotResponding.Text = "It still runs";
             this.lab_NotResponding.Visible = false;
+            // 
+            // lab_Info
+            // 
+            this.lab_Info.AutoSize = true;
+            this.lab_Info.Location = new System.Drawing.Point(2, 167);
+            this.lab_Info.Name = "lab_Info";
+            this.lab_Info.Size = new System.Drawing.Size(26, 15);
+            this.lab_Info.TabIndex = 21;
+            this.lab_Info.Text = "idel";
             // 
             // Form3
             // 
@@ -238,6 +213,7 @@ namespace VierGewinnt
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(784, 561);
+            this.Controls.Add(this.lab_Info);
             this.Controls.Add(this.lab_NotResponding);
             this.Controls.Add(this.lab_MeineIp);
             this.Controls.Add(this.lab_VerbundenMit);
@@ -245,9 +221,6 @@ namespace VierGewinnt
             this.Controls.Add(this.lab_Player);
             this.Controls.Add(this.btn_ZumMenue);
             this.Controls.Add(this.lab_IPeingabeHier);
-            this.Controls.Add(this.lab_Info);
-            this.Controls.Add(this.txB_Senden);
-            this.Controls.Add(this.txB_Empfangen);
             this.Controls.Add(this.txB_VerbindenIP);
             this.Controls.Add(this.btn_ConnectTo);
             this.Controls.Add(this.SpielHosten);
@@ -279,10 +252,6 @@ namespace VierGewinnt
         private System.Windows.Forms.Button SpielHosten;
         private System.Windows.Forms.Button btn_ConnectTo;
         private System.Windows.Forms.TextBox txB_VerbindenIP;
-        private System.ComponentModel.BackgroundWorker BcWork_Server;
-        private System.Windows.Forms.TextBox txB_Empfangen;
-        private System.Windows.Forms.TextBox txB_Senden;
-        private System.Windows.Forms.Label lab_Info;
         private System.Windows.Forms.Label lab_IPeingabeHier;
         private System.Windows.Forms.Button btn_ZumMenue;
         private System.Windows.Forms.Label lab_Timer;
@@ -290,5 +259,6 @@ namespace VierGewinnt
         private System.Windows.Forms.Label lab_VerbundenMit;
         private System.Windows.Forms.Label lab_MeineIp;
         private System.Windows.Forms.Label lab_NotResponding;
+        private System.Windows.Forms.Label lab_Info;
     }
 }

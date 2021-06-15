@@ -7,14 +7,8 @@ using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using static System.Console;
-
 using System.Drawing;
 using System.Threading.Tasks;
-
-#pragma warning disable CS4014 // Da auf diesen Aufruf nicht gewartet wird, wird die Ausführung der aktuellen Methode vor Abschluss des Aufrufs fortgesetzt.
-#pragma warning disable CS1998 // Bei der asynchronen Methode fehlen "await"-Operatoren. Die Methode wird synchron ausgeführt.
-#pragma warning restore CS1998 // Bei der asynchronen Methode fehlen "await"-Operatoren. Die Methode wird synchron ausgeführt.
-#pragma warning restore CS4014 // Da auf diesen Aufruf nicht gewartet wird, wird die Ausführung der aktuellen Methode vor Abschluss des Aufrufs fortgesetzt.
 
 namespace VierGewinnt
 {
@@ -36,8 +30,6 @@ namespace VierGewinnt
 
         private int iLezztesGefundene = 0;
 
-        private string sEmpfangenerZug;
-
         private IPAddress AndererSpieler;
 
         private bool Block = true;
@@ -45,6 +37,10 @@ namespace VierGewinnt
         private bool MeinZug = false;
 
         private bool SpielEnde = false;
+
+        public static ManualResetEvent EmpfangenSignal = new ManualResetEvent(false);
+
+        public static ManualResetEvent MeinZugSignal = new ManualResetEvent(false);
 
         #region GameParams
 
@@ -101,7 +97,6 @@ namespace VierGewinnt
             }
             else
             {
-                //this.FormBorderStyle = FormBorderStyle.FixedSingle;
                 this.WindowState = FormWindowState.Normal;
                 this.MaximizeBox = true;
             }
@@ -323,7 +318,6 @@ namespace VierGewinnt
                         MeinZugSignal.Reset();
                         MeinZug = true;
                     } while (SpielEnde == false);
-                    
                 });
                 ts.Start();
             }
@@ -346,36 +340,18 @@ namespace VierGewinnt
                         GegnerZug(Convert.ToInt32(sGegnerZug));
                         MeinZugSignal.Reset();
                     } while (SpielEnde == false);
-                     
                 });
                 ts.Start();
             }
 
             Console.WriteLine("Ende");
-
-            
-            //StartListening();
-
-            //this.BcWork_Server.RunWorkerAsync();
-            //while (this.BcWork_Server.IsBusy)
-            //{
-            //    // Keep UI messages moving, so the form remains
-            //    // responsive during the asynchronous operation.
-            //    Application.DoEvents();
-            //}
         }
 
-        public static ManualResetEvent EmpfangenSignal = new ManualResetEvent(false);
-
-        public static ManualResetEvent MeinZugSignal = new ManualResetEvent(false);
+        
 
         private void btn_ConnectTo_Click(object sender, EventArgs e)
         {
             // CLIENT IST IMMER YELLOW
-
-            lab_Info.Text = ("");
-
-            //StartClientVerbindung(IPAddress.Parse(txB_VerbindenIP.Text));
             if (IPAddress.TryParse(txB_VerbindenIP.Text, out IPAddress _IP))
             {
                 btn_Suchen.Visible = false;
@@ -438,7 +414,6 @@ namespace VierGewinnt
                             GegnerZug(Convert.ToInt32(sGegnerZug));
                             MeinZugSignal.Reset();
                         } while (SpielEnde == false);
-                         
                     });
                     ts.Start();
                 }
@@ -461,18 +436,16 @@ namespace VierGewinnt
                             MeinZugSignal.Reset();
                             MeinZug = true;
                         } while (SpielEnde == false);
-                       
                     });
                     ts.Start();
                 }
 
                 Console.WriteLine("Ende");
-              
             }
             else
             {
                 Console.WriteLine("Keine Gültige IP Adresse");
-                lab_Info.Text = ("Keine Gültige IP");
+                lab_Info.Text = "Keine Gültige IP";
             }
         }
 
@@ -484,12 +457,6 @@ namespace VierGewinnt
             this.Hide();
         }
 
-        private void btn_Bestätigen_Click(object sender, EventArgs e)
-        {
-            //SpielFelInizialisieren();
-            //SpielerWählen();
-        }
-
         #region NachConnectionsSuchen
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
@@ -499,7 +466,6 @@ namespace VierGewinnt
             BackgroundWorker bw = sender as BackgroundWorker;
 
             // Extract the argument.
-            //int arg = (int)e.Argument;
 
             // Start the time-consuming operation.
             ConnectionSuchen(bw);
@@ -531,8 +497,6 @@ namespace VierGewinnt
                 progressBar1.Visible = false;
 
                 btn_Suchen.Enabled = true;
-
-                //MessageBox.Show(msg);
             }
             else
             {
@@ -571,7 +535,6 @@ namespace VierGewinnt
 
             double iProgress;
 
-            //string NetzBereich = "127.0.";
             string NetzBereich1 = "192.168.";
 
             for (int i = 0; i <= NetzverkBereich1; i++)
@@ -656,8 +619,6 @@ namespace VierGewinnt
             byte[] bytes = new Byte[1024];
 
             // Establish the local endpoint for the socket.
-            // Dns.GetHostName returns the name of the
-            // host running the application
 
             IPAddress[] ipv4Addresses = Array.FindAll(Dns.GetHostEntry(string.Empty).AddressList, a => a.AddressFamily == AddressFamily.InterNetwork);
 
@@ -676,14 +637,10 @@ namespace VierGewinnt
                 // Start listening for connections.
                 Console.WriteLine($"Running On {localEndPoint}");
 
-                //while (true)
-                //{
                 Console.WriteLine("Waiting for a connection...");
 
                 // Program is suspended while waiting for an incoming connection.
                 Socket handler = listener.Accept();
-
-                //data = null;
 
                 // An incoming connection needs to be processed.
                 while (true)
@@ -692,12 +649,7 @@ namespace VierGewinnt
                     sEmpfangen += Encoding.ASCII.GetString(bytes, 0, bytesRec);
 
                     EmpfangenSignal.Set();
-
-                    //if (data.IndexOf("<EOF>") > -1)
-                    //{
                     break;
-
-                    //}
                 }
 
                 // Show the data on the console.
@@ -709,8 +661,6 @@ namespace VierGewinnt
                 handler.Send(msg);
                 handler.Shutdown(SocketShutdown.Both);
                 handler.Close();
-
-                //}
             }
             catch (Exception e)
             {
@@ -740,9 +690,7 @@ namespace VierGewinnt
             try
             {
                 // Establish the remote endpoint for the socket.
-                // This example uses port 11000 on the local computer.
-                //IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
-                //IPAddress ipAddress = ipHostInfo.AddressList[0];
+
                 IPAddress ipAddress = AndererSpieler;
                 IPEndPoint remoteEP = new IPEndPoint(ipAddress, PORT);
 
@@ -1305,16 +1253,14 @@ namespace VierGewinnt
 
         private void Gewonnen(string Gewinner)
         {
-            //this.Hide();
-            
             var Result = MessageBox.Show($"{Gewinner} Hat gewonnen",
                 $"{Gewinner} Hat Gewonnen", MessageBoxButtons.RetryCancel, MessageBoxIcon.Information);
 
             if (Result == DialogResult.Retry)
             {
-                Form3 frm = new Form3(Fullscreen);
                 this.Invoke((MethodInvoker)delegate
                 {
+                    Form3 frm = new Form3(Fullscreen);
                     frm.Show();
 
                     this.Hide();
@@ -1322,21 +1268,13 @@ namespace VierGewinnt
             }
             if (Result == DialogResult.Cancel)
             {
-                Form1 frm = new Form1();
                 this.Invoke((MethodInvoker)delegate
                 {
+                    Form1 frm = new Form1();
                     frm.Show();
                     this.Hide();
                 });
             }
-        }
-
-        private void UhrUpdate(Object Obj, EventArgs e)
-        {
-            VergangeneSekunden = VergangeneSekunden.AddSeconds(1);
-            lab_Timer.Text = VergangeneSekunden.ToLongTimeString();
-
-            //lab_Timer.Text = DateTime.Now.ToLongTimeString();
         }
 
         private void Form3_MouseMove(object sender, MouseEventArgs e)
@@ -1421,7 +1359,6 @@ namespace VierGewinnt
         }
 
         #endregion Game
- 
     }
 }
 
