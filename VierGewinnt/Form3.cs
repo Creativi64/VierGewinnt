@@ -293,7 +293,7 @@ namespace VierGewinnt
             Thread.Sleep(1000);
             SpielerWählen();
 
-            // Feld, gewinnzahl und Farb Daten Schicken
+            // Feld Höhe, Breite , Farbe und Gewinnnummer werden Übertragen
             EmpfangenSignal.Reset();
             StartClient(iSpielfeldheight.ToString());
             EmpfangenSignal.WaitOne();
@@ -311,7 +311,24 @@ namespace VierGewinnt
             EmpfangenSignal.WaitOne();
 
             Console.WriteLine("Spieldaten ausgetauischt");
+            // je nachdem welche Farbe Anfängt wird Ein Andere Spiel Verlauf Genutzt wenn die Farbe Rot ist wird 1. Genutzt
+            // wenn die farbe nicht so ist dann 2.
+            /*
 
+            1.
+            Es wird zuerst Selbst Gesendet und dann Empangen und wieder Gesendet
+            -> |
+            | <-
+            -> | 
+
+            2.
+            es wird Zuerst Empfangen und dann gesenter und dann Empfangen
+            | <-
+            -> |
+            | <-
+
+             Dies Muss immer mit der Gegen seite Syncron laufen
+             */
             if (currentcolor == "red")
             {
                 // eigenen Spiezugmachen
@@ -443,6 +460,7 @@ namespace VierGewinnt
                 string sGewinnummer = StartListening("Empfangen");
                 EmpfangenSignal.WaitOne();
 
+                // parameter wqerden Gesetzt
                 iSpielfeldheight = Convert.ToInt32(sSpielfeldHöhe);
                 gewinnnummer = Convert.ToInt32(sGewinnummer);
                 iSpielfeldwidth = Convert.ToInt32(sSpielfeldBreite);
@@ -452,6 +470,24 @@ namespace VierGewinnt
 
                 SpielFelInizialisieren();
 
+                // je nachdem welche Farbe Anfängt wird Ein Andere Spiel Verlauf Genutzt wenn die Farbe Rot ist wird 1. Genutzt
+                // wenn die farbe nicht so ist dann 2.
+                /*
+
+                1.
+                es wird Zuerst Empfangen und dann gesenter und dann Empfangen
+                | <-
+                -> |
+                | <-
+
+                2.
+                Es wird zuerst Selbst Gesendet und dann Empangen und wieder Gesendet
+                -> |
+                | <-
+                -> |
+
+                 Dies Muss immer mit der Gegen seite Syncron laufen
+                 */
                 if (currentcolor == "red")
                 {
                     //auf zug warten
