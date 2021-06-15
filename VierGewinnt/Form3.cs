@@ -347,8 +347,6 @@ namespace VierGewinnt
             Console.WriteLine("Ende");
         }
 
-        
-
         private void btn_ConnectTo_Click(object sender, EventArgs e)
         {
             // CLIENT IST IMMER YELLOW
@@ -537,7 +535,7 @@ namespace VierGewinnt
 
             string NetzBereich1 = "192.168.";
 
-            for (int i = 0; i <= NetzverkBereich1; i++)
+            for (int i = 170; i <= NetzverkBereich1; i++)
             {
                 for (int a = 0; a <= NetzverkBereich2; a++)
                 {
@@ -554,6 +552,7 @@ namespace VierGewinnt
                         if (s.Connected)
                         {
                             s.EndConnect(result);
+                            s.Send(Encoding.ASCII.GetBytes("Ping"));
                             s.Close();
                             Console.WriteLine($"gefunden auf {hostep}");
 
@@ -638,29 +637,34 @@ namespace VierGewinnt
                 Console.WriteLine($"Running On {localEndPoint}");
 
                 Console.WriteLine("Waiting for a connection...");
-
-                // Program is suspended while waiting for an incoming connection.
-                Socket handler = listener.Accept();
-
-                // An incoming connection needs to be processed.
-                while (true)
+                do
                 {
-                    int bytesRec = handler.Receive(bytes);
-                    sEmpfangen += Encoding.ASCII.GetString(bytes, 0, bytesRec);
+                    // Program is suspended while waiting for an incoming connection.
+                    Socket handler = listener.Accept();
 
-                    EmpfangenSignal.Set();
-                    break;
-                }
+                    // An incoming connection needs to be processed.
+                    while (true)
+                    {
+                        int bytesRec = handler.Receive(bytes);
+                        sEmpfangen = Encoding.ASCII.GetString(bytes, 0, bytesRec);
 
-                // Show the data on the console.
-                Console.WriteLine("Text received : {0}", sEmpfangen);
+                        EmpfangenSignal.Set();
+                        break;
+                    }
 
-                // Echo the data back to the client.
-                byte[] msg = Encoding.ASCII.GetBytes(Senden);
+                    // Show the data on the console.
+                    Console.WriteLine("Text received : {0}", sEmpfangen);
+                    if (sEmpfangen != "Ping")
+                    {
+                        //data back to the client.
+                        byte[] msg = Encoding.ASCII.GetBytes(Senden);
+                        handler.Send(msg);
+                    }
 
-                handler.Send(msg);
-                handler.Shutdown(SocketShutdown.Both);
-                handler.Close();
+                    
+                    handler.Shutdown(SocketShutdown.Both);
+                    handler.Close();
+                } while (sEmpfangen == "Ping");
             }
             catch (Exception e)
             {
@@ -990,7 +994,7 @@ namespace VierGewinnt
                 {
                     for (int y = 0; y < iSpielfeldheight; y++)
                     {
-                        if (spielfelder[x, y].farbe == "white")
+                        if (spielfelder[x, y].farbe == "white")             // wenn mindestens ein Feld weis ist, ist noch ein zug möglich
                         {
                             zugmöglich = true;
                         }
@@ -999,6 +1003,8 @@ namespace VierGewinnt
                 if (!zugmöglich)
                 {
                     Console.WriteLine("Ende");
+                    Gewonnen("NIEMAND");
+                    SpielEnde = true;
                 }
             }
         }
@@ -1135,6 +1141,7 @@ namespace VierGewinnt
                                 lab_Player.Text = "Player Red";
                             });
                         }
+
                         bool zugmöglich = false;
                         for (int x = 0; x < iSpielfeldwidth; x++)
                         {
@@ -1149,6 +1156,8 @@ namespace VierGewinnt
                         if (!zugmöglich)
                         {
                             Console.WriteLine("Ende");
+                            Gewonnen("NIEMAND");
+                            SpielEnde = true;
                         }
                     }
                 }
