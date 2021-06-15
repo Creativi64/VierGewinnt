@@ -501,6 +501,8 @@ namespace VierGewinnt
                     if (!zugmöglich)
                     {
                         Console.WriteLine("Ende");
+                        Gewonnen("NIEMAND");
+                      
                     }
                 }
             }
