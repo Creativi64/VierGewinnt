@@ -233,7 +233,7 @@ namespace VierGewinnt
                 {
                     if (spielfelder[x, y].farbe != "white" && spielfelder[x, y].farbe != null)                                                  //wenn die Farbe des Kreises Nicht weis ist wird er auch noch gezeichnet
                     {
-                        Kreiszeichnen(x, y , spielfelder[x, y].farbe, Bitmapgraphic, starty);
+                        Kreiszeichnen(x, y, spielfelder[x, y].farbe, Bitmapgraphic, starty);
                     }
                 }
             }
@@ -389,7 +389,7 @@ namespace VierGewinnt
                             gewonnen = true;
                         }
                     }
-                    for (int y = 0; y < iSpielfeldheight &&!gewonnen; y++)
+                    for (int y = 0; y < iSpielfeldheight && !gewonnen; y++)
                     {
                         if (spielfelder[spalte, y].farbe == currentcolor)
                         {
@@ -462,13 +462,12 @@ namespace VierGewinnt
                     {
                         KreisDrehen(Gewinnerkoordinaten, 5);
                         AimationFlag = true;
-                        for (int i = 0; i < this.Width; i+=10)
+                        for (int i = 0; i < this.Width; i += 10)
                         {
                             Bitmapgraphic.FillRectangle(new SolidBrush(this.BackColor), 0, 0, this.Width, this.Height);
                             SpielsteineZeichnen(Bitmapgraphic, i);
                             SpielfeldZeichnen(Bitmapgraphic);
                             spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
-
                         }
                         AimationFlag = false;
 
@@ -502,7 +501,6 @@ namespace VierGewinnt
                     {
                         Console.WriteLine("Ende");
                         Gewonnen("NIEMAND");
-                      
                     }
                 }
             }
@@ -526,7 +524,7 @@ namespace VierGewinnt
                         Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName(spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].farbe)),
                             spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].x + kreisausgleich + ((spielfelder[0, 0].iwidth - j) / 2),
                             spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].y + kreisausgleich,
-                            j,                        
+                            j,
                             spielfelder[0, 0].iheight - kreisausgleich * 2);
 
                         spielfeldtilezeichnen(
@@ -538,7 +536,7 @@ namespace VierGewinnt
                     }
                     spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
                 }
-                for (int j = 0; j <= spielfelder[0, 0].iwidth; j += Drehgeschwindigkeit)      //schleife für andere hälfte 
+                for (int j = 0; j <= spielfelder[0, 0].iwidth; j += Drehgeschwindigkeit)      //schleife für andere hälfte
                 {
                     for (int i = 0; i < Kreiskoordinaten.Length; i++)   //schleife für jeden Kreis
                     {
@@ -562,7 +560,6 @@ namespace VierGewinnt
                             Bitmapgraphic);
                     }
                     spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
-
                 }
             }
         }
@@ -592,7 +589,7 @@ namespace VierGewinnt
                          spielfelder[0, 0].y + (i / multiplyer) * spielfelder[0, 0].iheight + kreisausgleich,
                          spielfelder[0, 0].iwidth - kreisausgleich * 2,
                          spielfelder[0, 0].iheight - kreisausgleich * 2);
-                        if (i + 1 == Y * multiplyer&& i / multiplyer >0)
+                        if (i + 1 == Y * multiplyer && i / multiplyer > 0)
                         {
                             spielfeldtilezeichnen(
                                 spielfelder[X, iHilfszahl].x,
@@ -644,7 +641,6 @@ namespace VierGewinnt
                                 spielfelder[X, iHilfszahl].iwidth,
                                 spielfelder[X, iHilfszahl].iheight,
                                 Bitmapgraphic);
-
 
                             spielfeldtilezeichnen(
                               spielfelder[X, iHilfszahl].x,
@@ -788,7 +784,7 @@ namespace VierGewinnt
                 spielfeldgraphic = this.CreateGraphics();
 
                 Bitmapgraphic.FillRectangle(new SolidBrush(this.BackColor), 0, 0, this.Width, this.Height);
-                SpielsteineZeichnen(Bitmapgraphic,0);
+                SpielsteineZeichnen(Bitmapgraphic, 0);
 
                 SpielfeldZeichnen(Bitmapgraphic);
 
