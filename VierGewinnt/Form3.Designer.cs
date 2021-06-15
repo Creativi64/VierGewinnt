@@ -46,6 +46,7 @@ namespace VierGewinnt
             this.lab_MeineIp = new System.Windows.Forms.Label();
             this.lab_NotResponding = new System.Windows.Forms.Label();
             this.lab_Info = new System.Windows.Forms.Label();
+            this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // btn_Suchen
@@ -260,5 +261,6 @@ namespace VierGewinnt
         private System.Windows.Forms.Label lab_MeineIp;
         private System.Windows.Forms.Label lab_NotResponding;
         private System.Windows.Forms.Label lab_Info;
+        private System.ComponentModel.BackgroundWorker backgroundWorker2;
     }
 }

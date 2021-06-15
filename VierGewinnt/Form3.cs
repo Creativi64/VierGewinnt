@@ -41,6 +41,8 @@ namespace VierGewinnt
         public static ManualResetEvent EmpfangenSignal = new ManualResetEvent(false);
 
         public static ManualResetEvent MeinZugSignal = new ManualResetEvent(false);
+        public static ManualResetEvent GegnerZugSignal = new ManualResetEvent(false);
+
 
         #region GameParams
 
@@ -271,8 +273,18 @@ namespace VierGewinnt
             SpielHosten.Enabled = false;
 
             // Empfängt die Ip Des Zu verbindenden
-            string EmpfangeneIp = StartListening("Empfangen");
-            AndererSpieler = IPAddress.Parse(EmpfangeneIp);
+            EmpfangenSignal.Reset();
+            Task iPAustasuchen = Task.Run(() =>
+            {
+                string EmpfangeneIp = StartListening("Empfangen");
+                AndererSpieler = IPAddress.Parse(EmpfangeneIp);
+            });
+            while (iPAustasuchen.IsCompleted == false)
+            {
+                Console.WriteLine("Wait");
+                Application.DoEvents();
+            }
+            iPAustasuchen.Wait();
             lab_VerbundenMit.Text = $"Verbunden Mit: {AndererSpieler}";
 
             // Feld Inizialisieren und Spieler Wählen
@@ -302,46 +314,94 @@ namespace VierGewinnt
 
             if (currentcolor == "red")
             {
-                MeinZug = true;
-
-                Task ts = new Task(() =>
+                // eigenen Spiezugmachen
+                Task warten2 = Task.Run(() =>
                 {
-                    do
+                    MeinZug = true;
+                    while (!MeinZugSignal.WaitOne())
                     {
+                        Application.DoEvents();
+                    }
+                });
+
+                while (warten2.IsCompleted == false)
+                {
+                    Application.DoEvents();
+                }
+                MeinZugSignal.Reset();
+
+                do
+                {
+                    // auf zug warten
+                    Task warten = Task.Run(() =>
+                    {
+                        string sGegnerZug = StartListening("");
+                        GegnerZug(Convert.ToInt32(sGegnerZug));
+                       
+                    });
+                    while (warten.IsCompleted == false)
+                    {
+                        Application.DoEvents();
+                    }
+
+                    // eigenen Spiezugmachen
+                    Task warten1 = Task.Run(() =>
+                    {
+                        MeinZug = true;
                         while (!MeinZugSignal.WaitOne())
                         {
                             Application.DoEvents();
                         }
+                    });
+                    while (warten1.IsCompleted == false)
+                    {
+                        Application.DoEvents();
+                    }
+                    MeinZugSignal.Reset();
 
-                        string sGegnerZug = StartListening("");
-                        GegnerZug(Convert.ToInt32(sGegnerZug));
-                        MeinZugSignal.Reset();
-                        MeinZug = true;
-                    } while (SpielEnde == false);
-                });
-                ts.Start();
+                } while (SpielEnde == false);
             }
             else
             {
-                string sGegnerZugErster = StartListening("Empfngen");
-                GegnerZug(Convert.ToInt32(sGegnerZugErster));
-                Task ts = new Task(() =>
+                // auf Zug warten
+                Task warten1 = Task.Run(() =>
                 {
-                    do
+                    string sGegnerZugErster = StartListening("Empfngen");
+                    GegnerZug(Convert.ToInt32(sGegnerZugErster));
+                });
+                while (warten1.IsCompleted == false)
+                {
+                    Application.DoEvents();
+                }
+
+                do
+                {
+                    // eigenen Spiezugmachen
+                    Task warten2 = Task.Run(() =>
                     {
                         MeinZug = true;
-                        Console.WriteLine("warte auf Zug");
                         while (!MeinZugSignal.WaitOne())
                         {
                             Application.DoEvents();
-                            Console.WriteLine("warten");
                         }
+                    });
+                    while (warten2.IsCompleted == false)
+                    {
+                        Application.DoEvents();
+                    }
+                    MeinZugSignal.Reset();
+
+                    //Auf Zug warten
+                    Task warten = Task.Run(() =>
+                    {
                         string sGegnerZug = StartListening("");
                         GegnerZug(Convert.ToInt32(sGegnerZug));
-                        MeinZugSignal.Reset();
-                    } while (SpielEnde == false);
-                });
-                ts.Start();
+                    });
+                    while (warten.IsCompleted == false)
+                    {
+                        Application.DoEvents();
+                    }
+                } while (SpielEnde == false);
             }
 
             Console.WriteLine("Ende");
@@ -394,48 +454,93 @@ namespace VierGewinnt
 
                 if (currentcolor == "red")
                 {
-                    //warte auf spielzug
-                    string sGegnerZugStart = StartListening("");
-                    GegnerZug(Convert.ToInt32(sGegnerZugStart));
-                    Task ts = new Task(() =>
+                    //auf zug warten
+                    Task warten = Task.Run(() =>
                     {
-                        do
+                        string sGegnerZugStart = StartListening("");
+                        GegnerZug(Convert.ToInt32(sGegnerZugStart));
+                    });
+                    while (warten.IsCompleted == false)
+                    {
+                        Application.DoEvents();
+                    }
+
+                    do
+                    {
+                        // eigenen Spiezugmachen
+                        Task warten2 = Task.Run(() =>
                         {
                             MeinZug = true;
-                            Console.WriteLine("warte auf Zug");
                             while (!MeinZugSignal.WaitOne())
                             {
+                                Console.WriteLine("warten Auf Zug");
                                 Application.DoEvents();
-                                Console.WriteLine("warten");
                             }
+                        });
+                        while (warten2.IsCompleted == false)
+                        {
+                            Application.DoEvents();
+                        }
+                        MeinZugSignal.Reset();
+                        //auf zug warten
+                        Task warten1 = Task.Run(() =>
+                        {
                             string sGegnerZug = StartListening("");
                             GegnerZug(Convert.ToInt32(sGegnerZug));
-                            MeinZugSignal.Reset();
-                        } while (SpielEnde == false);
-                    });
-                    ts.Start();
+                        });
+                        while (warten1.IsCompleted == false)
+                        {
+                            Application.DoEvents();
+                        }
+                    } while (SpielEnde == false);
                 }
                 else
                 {
-                    //mache Spiezug
-                    MeinZug = true;
-                    Task ts = new Task(() =>
+                    //eigenen Spiezugmachen
+
+                    Task warten1 = Task.Run(() =>
                     {
-                        Console.WriteLine("warte auf Zug");
-                        do
+                        MeinZug = true;
+                        while (!MeinZugSignal.WaitOne())
                         {
+                            Console.WriteLine("warten Auf Zug");
+                            Application.DoEvents();
+                        }
+                    });
+                    while (warten1.IsCompleted == false)
+                    {
+                        Application.DoEvents();
+                    }
+                    MeinZugSignal.Reset();
+                    do
+                    {
+                        // auf zug warten
+
+                        Task warten = Task.Run(() =>
+                        {
+                            string sGegnerZug = StartListening("");
+                            GegnerZug(Convert.ToInt32(sGegnerZug));
+                        });
+                        while (warten.IsCompleted == false)
+                        {
+                            Application.DoEvents();
+                        }
+
+                        // eigenen Spiezugmachen
+                        Task warten2 = Task.Run(() =>
+                        {
+                            MeinZug = true;
                             while (!MeinZugSignal.WaitOne())
                             {
                                 Application.DoEvents();
-                                Console.WriteLine("warten");
                             }
-                            string sGegnerZug = StartListening("");
-                            GegnerZug(Convert.ToInt32(sGegnerZug));
-                            MeinZugSignal.Reset();
-                            MeinZug = true;
-                        } while (SpielEnde == false);
-                    });
-                    ts.Start();
+                        });
+                        while (warten2.IsCompleted == false)
+                        {
+                            Application.DoEvents();
+                        }
+                        MeinZugSignal.Reset();
+                    } while (SpielEnde == false);
                 }
 
                 Console.WriteLine("Ende");
@@ -649,6 +754,7 @@ namespace VierGewinnt
                         sEmpfangen = Encoding.ASCII.GetString(bytes, 0, bytesRec);
 
                         EmpfangenSignal.Set();
+
                         break;
                     }
 
@@ -661,7 +767,6 @@ namespace VierGewinnt
                         handler.Send(msg);
                     }
 
-                    
                     handler.Shutdown(SocketShutdown.Both);
                     handler.Close();
                 } while (sEmpfangen == "Ping");
@@ -1019,8 +1124,7 @@ namespace VierGewinnt
                     bool gesetzt = false;
                     spalte = (this.PointToClient(Cursor.Position).X - spielfelder[0, 0].x) / spielfelder[0, 0].iwidth;
 
-                    //sMeinZug = spalte.ToString();  // die Angecklikte spalte Wird Alszug Gesetzt Um sie Dann zu versenden
-
+                    // zug wird Gesendet
                     StartClient(spalte.ToString());
                     MeinZugSignal.Set();
                     MeinZug = false;
