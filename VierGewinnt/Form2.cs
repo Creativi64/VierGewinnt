@@ -465,6 +465,10 @@ namespace VierGewinnt
 
                     if (gewonnen)
                     {
+                        for (int i = 0; i < 4; i++)
+                        {
+                            Console.WriteLine(Gewinnerkoordinaten[i]);
+                        }
                         KreisDrehen(Gewinnerkoordinaten, 5);
                         for (int i = 0; i < 4; i++)
                         {
