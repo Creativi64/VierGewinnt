@@ -17,6 +17,9 @@ namespace VierGewinnt
         private int iSpielfeldwidthmax = 20, iSpielfeldheightmax = 20, xstartmin = 308, ystartmin = 105, xstart = 468, ystart = 265, ispielfeldformat = 10;
         public static string sgewinnZahl;
 
+        private Bitmap Spielfeldframe;
+        private Graphics Bitmapgraphic;
+
         #region Console
 
         [DllImport("kernel32.dll", SetLastError = true)]
@@ -28,12 +31,18 @@ namespace VierGewinnt
         {
             InitializeComponent();
             AllocConsole();
+
             spielfeldgraphic = this.CreateGraphics();
+            Spielfeldframe = new Bitmap(this.Width, this.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            Bitmapgraphic = Graphics.FromImage(Spielfeldframe);
+
             EckenBerechnen(0, 0, Form2.iSpielfeldwidth, Form2.iSpielfeldheight);
             SpielfeldZeichnen();
             textBox1.Text = "Vier";
             Form2.iSpielfeldheight = 4;
             Form2.iSpielfeldwidth = 4;
+
+
         }
 
         private void btn_Play_Click(object sender, EventArgs e)
@@ -111,10 +120,11 @@ namespace VierGewinnt
             Dreieckspunkte[3, 2] = new PointF((x + iwidth), (float)(y + iheight - (iheight * dDreieckkprozent)));
         }
 
+
+
         private void SpielfeldZeichnen()
         {
-
-
+            Bitmapgraphic.FillRectangle(new SolidBrush(Color.White), 0, 0, this.Width, this.Height);
             for (int x = 0; x < Form2.iSpielfeldwidth; x++)
             {
                 for (int y = 0; y < Form2.iSpielfeldheight; y++)
@@ -126,6 +136,7 @@ namespace VierGewinnt
                         ispielfeldformat);
                 }
             }
+            spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
         }
 
         private void spielfeldtilezeichnen(int x, int y, int iwidth, int iheight)
@@ -141,18 +152,17 @@ namespace VierGewinnt
                     {
                         hilfsarray[i] = new PointF(Dreieckspunkte[j, i].X + x, Dreieckspunkte[j, i].Y + y);
                     }
-                    spielfeldgraphic.FillPolygon(new SolidBrush(Color.Blue), hilfsarray);
+                    Bitmapgraphic.FillPolygon(new SolidBrush(Color.Blue), hilfsarray);
                 }
-                spielfeldgraphic.DrawEllipse(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
-                spielfeldgraphic.DrawRectangle(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
-                Console.WriteLine(x + " " + y + " " + iwidth + " " + iheight);
+                Bitmapgraphic.DrawEllipse(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
+                Bitmapgraphic.DrawRectangle(new Pen(Color.Blue, 5), x, y, iwidth, iheight);
             });
             Feld.RunSynchronously();
         }
 
         private void trackBarX_Scroll(object sender, EventArgs e)
         {
-            spielfeldgraphic.FillRectangle(new SolidBrush(Color.White), 0, 0, this.Width , this.Height);
+            //spielfeldgraphic.FillRectangle(new SolidBrush(Color.White), 0, 0, this.Width , this.Height);
             Form2.iSpielfeldwidth = trackBarX.Value + 4;
             Form3.iSpielfeldwidth = trackBarX.Value + 4;
             xstart = xstartmin + (iSpielfeldwidthmax - Form2.iSpielfeldwidth) * ispielfeldformat;
@@ -166,7 +176,7 @@ namespace VierGewinnt
 
         private void trackBarY_Scroll(object sender, EventArgs e)
         {
-            spielfeldgraphic.FillRectangle(new SolidBrush(Color.White), 0, 0, this.Width, this.Height);
+            //spielfeldgraphic.FillRectangle(new SolidBrush(Color.White), 0, 0, this.Width, this.Height);
             Form2.iSpielfeldheight = trackBarY.Value + 4;
             Form3.iSpielfeldheight = trackBarY.Value + 4;
             ystart = ystartmin + (iSpielfeldheightmax - Form2.iSpielfeldheight) * ispielfeldformat;
