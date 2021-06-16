@@ -30,7 +30,9 @@ namespace VierGewinnt
         /// </summary>
 
         #region Console
-
+        /// <summary>
+        /// Erlaubt Uns Zum Form eine console zu starten
+        /// </summary>
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool AllocConsole();
@@ -161,7 +163,7 @@ namespace VierGewinnt
 
             Bitmapgraphic.FillRectangle(new SolidBrush(this.BackColor), 0, 0, this.Width, this.Height);
 
-            switch (Form1.sgewinnZahl)
+            switch (Form1.sGewinnAnzahl)
             {
                 case ("Zwei"):
                     gewinnnummer = 2;
@@ -511,7 +513,7 @@ namespace VierGewinnt
                 {
                     // wemm man sich verbinden kann wird sie wieder getrennt und Die Richtige erstellt
                     s.EndConnect(result);
-                    s.Send(Encoding.ASCII.GetBytes("Ping"));
+                    s.Send(Encoding.UTF8.GetBytes("Ping"));
                     s.Close();
 
                     btn_Suchen.Visible = false;
@@ -786,7 +788,7 @@ namespace VierGewinnt
                         if (s.Connected)
                         {
                             s.EndConnect(result);
-                            s.Send(Encoding.ASCII.GetBytes("Ping"));
+                            s.Send(Encoding.UTF8.GetBytes("Ping"));
                             s.Close();
                             Console.WriteLine($"gefunden auf {hostep}");
 
@@ -838,6 +840,12 @@ namespace VierGewinnt
 
         #region Einfacher Server
 
+        /// <summary>
+        /// Startet Ein Listening Prozzess um daten entegen zu nehmen
+        /// Encodeing und Decoding Leuft Über UTF8
+        /// </summary>
+        /// <param name="Senden">Es wird Ein String Übergeben der nach den empfangen von etwas zurück gesendet wird</param>
+        /// <returns>Gibt das empfangenen als string zurück</returns>
         public string StartListening(string Senden)
         {
             this.Invoke((MethodInvoker)delegate
@@ -879,7 +887,7 @@ namespace VierGewinnt
                     while (true)
                     {
                         int bytesRec = handler.Receive(bytes);
-                        sEmpfangen = Encoding.ASCII.GetString(bytes, 0, bytesRec);
+                        sEmpfangen = Encoding.UTF8.GetString(bytes, 0, bytesRec);
 
                         EmpfangenSignal.Set();
 
@@ -891,7 +899,7 @@ namespace VierGewinnt
                     if (sEmpfangen != "Ping")
                     {
                         //data back to the client.
-                        byte[] msg = Encoding.ASCII.GetBytes(Senden);
+                        byte[] msg = Encoding.UTF8.GetBytes(Senden);
                         handler.Send(msg);
                     }
 
@@ -941,14 +949,14 @@ namespace VierGewinnt
                     Console.WriteLine("Socket connected to {0}", sender.RemoteEndPoint.ToString());
 
                     // Encode the data string into a byte array.
-                    byte[] msg = Encoding.ASCII.GetBytes(Senden);
+                    byte[] msg = Encoding.UTF8.GetBytes(Senden);
 
                     // Send the data through the socket.
                     int bytesSent = sender.Send(msg);
 
                     // Receive the response from the remote device.
                     int bytesRec = sender.Receive(bytes);
-                    sEmpfangen = Encoding.ASCII.GetString(bytes, 0, bytesRec);
+                    sEmpfangen = Encoding.UTF8.GetString(bytes, 0, bytesRec);
                     Console.WriteLine("Echoed test = {0}", sEmpfangen);
 
                     // Release the socket.

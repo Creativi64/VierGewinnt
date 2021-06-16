@@ -60,7 +60,7 @@ namespace VierGewinnt
             this.btn_Play.TabIndex = 0;
             this.btn_Play.Text = "Play";
             this.btn_Play.UseVisualStyleBackColor = true;
-            this.btn_Play.Click += new System.EventHandler(this.btn_Play_Click);
+            this.btn_Play.Click += new System.EventHandler(this.Btn_Play_Click);
             // 
             // btn_Network
             // 
@@ -73,7 +73,7 @@ namespace VierGewinnt
             this.btn_Network.TabIndex = 3;
             this.btn_Network.Text = "Übers Netzwerk Spielen";
             this.btn_Network.UseVisualStyleBackColor = true;
-            this.btn_Network.Click += new System.EventHandler(this.btn_Network_Click);
+            this.btn_Network.Click += new System.EventHandler(this.Btn_Network_Click);
             // 
             // btn_Quit
             // 
@@ -87,7 +87,7 @@ namespace VierGewinnt
             this.btn_Quit.TabIndex = 4;
             this.btn_Quit.Text = "Quit";
             this.btn_Quit.UseVisualStyleBackColor = true;
-            this.btn_Quit.Click += new System.EventHandler(this.btn_Quit_Click);
+            this.btn_Quit.Click += new System.EventHandler(this.Btn_Quit_Click);
             // 
             // trackBarX
             // 
@@ -99,7 +99,7 @@ namespace VierGewinnt
             this.trackBarX.Size = new System.Drawing.Size(176, 45);
             this.trackBarX.TabIndex = 7;
             this.trackBarX.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
-            this.trackBarX.Scroll += new System.EventHandler(this.trackBarX_Scroll);
+            this.trackBarX.Scroll += new System.EventHandler(this.TrackBarX_Scroll);
             // 
             // trackBarY
             // 
@@ -113,7 +113,7 @@ namespace VierGewinnt
             this.trackBarY.Size = new System.Drawing.Size(45, 176);
             this.trackBarY.TabIndex = 8;
             this.trackBarY.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
-            this.trackBarY.Scroll += new System.EventHandler(this.trackBarY_Scroll);
+            this.trackBarY.Scroll += new System.EventHandler(this.TrackBarY_Scroll);
             // 
             // panel1
             // 
@@ -168,7 +168,7 @@ namespace VierGewinnt
             this.textBox1.Size = new System.Drawing.Size(150, 71);
             this.textBox1.TabIndex = 13;
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            this.textBox1.TextChanged += new System.EventHandler(this.TextBox1_TextChanged);
             // 
             // Form1
             // 

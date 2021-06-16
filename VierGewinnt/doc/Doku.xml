@@ -4,6 +4,11 @@
         <name>VierGewinnt</name>
     </assembly>
     <members>
+        <member name="M:VierGewinnt.Form1.AllocConsole">
+            <summary>
+            Erlaubt Uns Zum Form eine console zu starten
+            </summary>
+        </member>
         <member name="F:VierGewinnt.Form1.components">
             <summary>
              Required designer variable.
@@ -19,6 +24,11 @@
             <summary>
              Required method for Designer support - do not modify
              the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:VierGewinnt.Form2.AllocConsole">
+            <summary>
+            Erlaubt Uns Zum Form eine console zu starten
             </summary>
         </member>
         <member name="F:VierGewinnt.Form2.components">
@@ -39,21 +49,9 @@
             </summary>
         </member>
         <member name="M:VierGewinnt.Form3.AllocConsole">
-             <summary>
-            
-             Kann Nach Offen Servern Im Netzwerk Suchen (192.168)
-            
-             Man kann ein spiel auf machen auf das jemand conecten kann
-            
-             Mit einem offenen spiel connecten
-            
-             Der Code Fürs Game Ist der Gleiche Wie Im Lokalen (Form2)
-             Unterschiedlich ist nur das Alle Label Änderungen Mit invoke von einem anderen thread aufgerufen werden da diese meist nicht im main thread Aufgreiden werden
-             Block und MeinZug Blokieren am Anfang die spielfeld erstellung und dann immer wenn man nicht dran ist
-             Von der Click Event Funktion Gibt es eine Kopie Die Nur Dien Empfangenen zug übergeben bekommt und die gleiche logig mit diesem aus führt wie als häte man es selbst gemacht
-             Nach Dem man selbst Gecklickt hat wird der zug beendet und weggeschickt
-            
-             </summary>
+            <summary>
+            Erlaubt Uns Zum Form eine console zu starten
+            </summary>
         </member>
         <member name="F:VierGewinnt.Form3.EmpfangenSignal">
             <summary>
@@ -141,6 +139,14 @@
             Es wird eine message box Angezeigt die sagt das Das Programm beendet wurde
             
             </summary>
+        </member>
+        <member name="M:VierGewinnt.Form3.StartListening(System.String)">
+            <summary>
+            Startet Ein Listening Prozzess um daten entegen zu nehmen
+            Encodeing und Decoding Leuft Über UTF8
+            </summary>
+            <param name="Senden">Es wird Ein String Übergeben der nach den empfangen von etwas zurück gesendet wird</param>
+            <returns>Gibt das empfangenen als string zurück</returns>
         </member>
         <member name="F:VierGewinnt.Form3.components">
             <summary>
