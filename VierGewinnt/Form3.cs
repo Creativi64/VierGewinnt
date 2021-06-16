@@ -43,7 +43,6 @@ namespace VierGewinnt
         public static ManualResetEvent MeinZugSignal = new ManualResetEvent(false);
         public static ManualResetEvent GegnerZugSignal = new ManualResetEvent(false);
 
-
         #region GameParams
 
         private string currentcolor;
@@ -235,7 +234,10 @@ namespace VierGewinnt
             base.OnClosed(e);
 
             //backgroundworkerBeeneden
-
+            EmpfangenSignal.Set();
+            GegnerZugSignal.Set();
+            MeinZugSignal.Set();
+            Environment.Exit(0);
             Application.Exit();
         }
 
@@ -281,7 +283,6 @@ namespace VierGewinnt
             });
             while (iPAustasuchen.IsCompleted == false)
             {
-                Console.WriteLine("Wait");
                 Application.DoEvents();
             }
             iPAustasuchen.Wait();
@@ -319,7 +320,7 @@ namespace VierGewinnt
             Es wird zuerst Selbst Gesendet und dann Empangen und wieder Gesendet
             -> |
             | <-
-            -> | 
+            -> |
 
             2.
             es wird Zuerst Empfangen und dann gesenter und dann Empfangen
@@ -354,7 +355,6 @@ namespace VierGewinnt
                     {
                         string sGegnerZug = StartListening("");
                         GegnerZug(Convert.ToInt32(sGegnerZug));
-                       
                     });
                     while (warten.IsCompleted == false)
                     {
@@ -375,7 +375,6 @@ namespace VierGewinnt
                         Application.DoEvents();
                     }
                     MeinZugSignal.Reset();
-
                 } while (SpielEnde == false);
             }
             else
@@ -426,10 +425,12 @@ namespace VierGewinnt
 
         private void btn_ConnectTo_Click(object sender, EventArgs e)
         {
-
             // CLIENT IST IMMER YELLOW
+
+            // die Ip adresse prüfen
             if (IPAddress.TryParse(txB_VerbindenIP.Text, out IPAddress _IP))
             {
+                // prüfen ob man sich auf die adresse verbidnen kann
                 Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 IPAddress Ip = IPAddress.Parse(txB_VerbindenIP.Text);
                 IPEndPoint hostep = new IPEndPoint(Ip, 42069);
@@ -439,6 +440,7 @@ namespace VierGewinnt
                 bool success = result.AsyncWaitHandle.WaitOne(1, true);
                 if (s.Connected)
                 {
+                    // wemm man sich verbinden kann wird sie wieder getrennt und Die Richtige erstellt
                     s.EndConnect(result);
                     s.Send(Encoding.ASCII.GetBytes("Ping"));
                     s.Close();
@@ -523,7 +525,7 @@ namespace VierGewinnt
                                 MeinZug = true;
                                 while (!MeinZugSignal.WaitOne())
                                 {
-                                    Console.WriteLine("warten Auf Zug");
+                                    ;
                                     Application.DoEvents();
                                 }
                             });
@@ -553,7 +555,6 @@ namespace VierGewinnt
                             MeinZug = true;
                             while (!MeinZugSignal.WaitOne())
                             {
-                                Console.WriteLine("warten Auf Zug");
                                 Application.DoEvents();
                             }
                         });

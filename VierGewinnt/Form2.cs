@@ -250,7 +250,9 @@ namespace VierGewinnt
                 "Close Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
             base.OnClosed(e);
+            Environment.Exit(0);
             Application.Exit();
+
             AimationFlag = false;
         }
 
