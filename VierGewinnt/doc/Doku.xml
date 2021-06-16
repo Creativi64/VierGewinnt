@@ -120,9 +120,26 @@
                      Window state
                      maximise box -> ob man das Fenster vergrößern kann
                      
-                 Doubelbuffered, Das d
+                 die Größe Der Pixel Von den Federn X und Y
+                 
+                 Die Bitmap Frame Wird Definiert
+                 
+                 Die Bitmap Wird mit der Hintergrund farbe gefüllt
+                 
+                 Das Switch Case Legt Die Gewinnummer Fest Auf Der Bsis Was man In Form1 Eingegeben hat
+                 Der Default ist 4
+                 Eher Ein Easter Egg da es nicht gesagt wird das Man Die Gewinnummer Änder kann
+                 
+                 Am Ende Wird nach der Inizialisertung Noch die Ip Des Pc abgefragt und angezeigt
+                 Es Wird immer Die erste IP genommen auch wenn er mehr findet nimmt er immer die erste
             
              </summary>
+        </member>
+        <member name="M:VierGewinnt.Form3.OnClosed(System.EventArgs)">
+            <summary>
+            Wenn Man Das Fenster Schliest Sorgt dies Dafür das Alles geschlossen wird auch wenn noch die suche läuft oder ein Task/Thread hintergrund wartet und diese auch beendet werden
+            Es wird eine message box Angezeigt die sagt das Das Programm beendet wurde
+            </summary>
         </member>
         <member name="F:VierGewinnt.Form3.components">
             <summary>
