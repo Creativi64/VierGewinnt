@@ -113,23 +113,23 @@
         <member name="M:VierGewinnt.Form3.#ctor">
              <summary>
               Beim Inizialisieren Von Form 3
-                 
+            
                  Array Von Endpoinst Difiniert Die Bei Der Suche Nach Diesen Gefüllt wird Momentan wird davon ausgegangen das im gleichen Netztwerk nicht mehr als 10 sind
-                 
+            
                  Window Pratmeter wie
                      Window state
                      maximise box -> ob man das Fenster vergrößern kann
-                     
+            
                  die Größe Der Pixel Von den Federn X und Y
-                 
+            
                  Die Bitmap Frame Wird Definiert
-                 
+            
                  Die Bitmap Wird mit der Hintergrund farbe gefüllt
-                 
+            
                  Das Switch Case Legt Die Gewinnummer Fest Auf Der Bsis Was man In Form1 Eingegeben hat
                  Der Default ist 4
                  Eher Ein Easter Egg da es nicht gesagt wird das Man Die Gewinnummer Änder kann
-                 
+            
                  Am Ende Wird nach der Inizialisertung Noch die Ip Des Pc abgefragt und angezeigt
                  Es Wird immer Die erste IP genommen auch wenn er mehr findet nimmt er immer die erste
             

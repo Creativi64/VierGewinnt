@@ -87,7 +87,6 @@ namespace VierGewinnt
             public string farbe;
         }
 
-
         private int iSpielfeldheightpx;
 
         private int iSpielfeldwidthpx;
@@ -121,23 +120,23 @@ namespace VierGewinnt
 
         /// <summary>
         ///  Beim Inizialisieren Von Form 3
-        ///     
+        ///
         ///     Array Von Endpoinst Difiniert Die Bei Der Suche Nach Diesen Gefüllt wird Momentan wird davon ausgegangen das im gleichen Netztwerk nicht mehr als 10 sind
-        ///     
+        ///
         ///     Window Pratmeter wie
         ///         Window state
         ///         maximise box -> ob man das Fenster vergrößern kann
-        ///         
+        ///
         ///     die Größe Der Pixel Von den Federn X und Y
-        ///     
+        ///
         ///     Die Bitmap Frame Wird Definiert
-        ///     
+        ///
         ///     Die Bitmap Wird mit der Hintergrund farbe gefüllt
-        ///     
+        ///
         ///     Das Switch Case Legt Die Gewinnummer Fest Auf Der Bsis Was man In Form1 Eingegeben hat
         ///     Der Default ist 4
         ///     Eher Ein Easter Egg da es nicht gesagt wird das Man Die Gewinnummer Änder kann
-        ///     
+        ///
         ///     Am Ende Wird nach der Inizialisertung Noch die Ip Des Pc abgefragt und angezeigt
         ///     Es Wird immer Die erste IP genommen auch wenn er mehr findet nimmt er immer die erste
         ///
@@ -274,12 +273,14 @@ namespace VierGewinnt
                 }
             }
             Thread.Sleep(10);
+
             spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
         }
 
         /// <summary>
         /// Wenn Man Das Fenster Schliest Sorgt dies Dafür das Alles geschlossen wird auch wenn noch die suche läuft oder ein Task/Thread hintergrund wartet und diese auch beendet werden
         /// Es wird eine message box Angezeigt die sagt das Das Programm beendet wurde
+        /// 
         /// </summary>
         protected override void OnClosed(EventArgs e)
         {
@@ -295,8 +296,8 @@ namespace VierGewinnt
             EmpfangenSignal.Set();
 
             MeinZugSignal.Set();
-            Environment.Exit(0);
             Application.Exit();
+            Environment.Exit(0);
         }
 
         private void btn_Suchen_Click(object sender, EventArgs e)
@@ -336,26 +337,29 @@ namespace VierGewinnt
 
             // Empfängt die Ip Des Zu verbindenden
             EmpfangenSignal.Reset();
-            Task iPAustasuchen = Task.Run(() =>
+            do
             {
-                EmpfangeneIp = StartListening("Empfangen");
-                while (!EmpfangenSignal.WaitOne())
+                Task iPAustasuchen = Task.Run(() =>
+                {
+                    EmpfangeneIp = StartListening("Empfangen");
+                    while (!EmpfangenSignal.WaitOne())
+                    {
+                        Application.DoEvents();
+                    }
+                    EmpfangenSignal.Reset();
+                });
+                while (iPAustasuchen.IsCompleted == false)
                 {
                     Application.DoEvents();
                 }
-                EmpfangenSignal.Reset();
-            });
-            while (iPAustasuchen.IsCompleted == false)
-            {
-                Application.DoEvents();
-            }
-            iPAustasuchen.Wait();
+                iPAustasuchen.Wait();
+            } while (EmpfangeneIp == null);
             AndererSpieler = IPAddress.Parse(EmpfangeneIp);
             lab_VerbundenMit.Text = $"Verbunden Mit: {AndererSpieler}";
 
             // Feld Inizialisieren und Spieler Wählen
             SpielFelInizialisieren();
-            this.Refresh();
+
             Thread.Sleep(1000);
             SpielerWählen();
 
@@ -550,7 +554,8 @@ namespace VierGewinnt
                     Console.WriteLine("Spieldaten ausgetauischt");
 
                     SpielFelInizialisieren();
-                    this.Refresh();
+                    //this.Refresh();
+                    //spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
                     Thread.Sleep(1000);
                     // je nachdem welche Farbe Anfängt wird Ein Andere Spiel Verlauf Genutzt wenn die Farbe Rot ist wird 1. Genutzt
                     // wenn die farbe nicht so ist dann 2.
@@ -838,7 +843,6 @@ namespace VierGewinnt
             this.Invoke((MethodInvoker)delegate
            {
                lab_NotResponding.Visible = true;
-               this.Refresh();
            });
 
             string sEmpfangen = null;
@@ -903,7 +907,6 @@ namespace VierGewinnt
             this.Invoke((MethodInvoker)delegate
             {
                 this.lab_NotResponding.Visible = false;
-                this.Refresh();
             });
             return sEmpfangen;
         }
@@ -1615,7 +1618,6 @@ namespace VierGewinnt
                 oldspalte = spalte;
             }
             spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
-
         }
 
         private void KreisDrehen(Point[] Kreiskoordinaten, int Drehungen)
