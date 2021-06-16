@@ -394,15 +394,19 @@ namespace VierGewinnt
                             gewonnen = true;
                         }
                     }
+                    infolge = 0;
                     for (int y = 0; y < iSpielfeldheight && !gewonnen; y++)
                     {
                         if (spielfelder[spalte, y].farbe == currentcolor)
                         {
                             Gewinnerkoordinaten[infolge] = new Point(spalte, y);
+                            Console.WriteLine("new Point[" + infolge + "]:" + Gewinnerkoordinaten[infolge]);
+
                             infolge++;
                         }
                         else
                         {
+                            Console.WriteLine("alle punkte löschen");
                             infolge = 0;
                             for (int i = 0; i < gewinnnummer; i++)
                             {
@@ -428,6 +432,7 @@ namespace VierGewinnt
                     {
                         maxformat = iSpielfeldwidth;
                     }
+                    infolge = 0;
                     for (int xy = 0; xy < maxformat && !gewonnen; xy++)
                     {
                         if (xy + xabstand < iSpielfeldwidth && xy + xabstand >= 0 && xy < iSpielfeldheight && xy >= 0 && spielfelder[xy + xabstand, xy].farbe == currentcolor)
@@ -445,7 +450,7 @@ namespace VierGewinnt
                         }
                     }
                     xabstand = -1 + (spalte - reihe + (iSpielfeldheight - (spalte * 2)));
-
+                    infolge = 0;
                     for (int xy = 0; xy < maxformat + 1 && !gewonnen; xy++)
                     {
                         if (iSpielfeldwidth - xy - xabstand - widthheightdif < iSpielfeldwidth && iSpielfeldwidth - xy - xabstand - widthheightdif >= 0 && xy - 1 < iSpielfeldheight && xy - 1 >= 0 && spielfelder[iSpielfeldwidth - xy - xabstand - widthheightdif, xy - 1].farbe == currentcolor)
