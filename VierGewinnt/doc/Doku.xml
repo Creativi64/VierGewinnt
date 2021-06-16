@@ -38,6 +38,109 @@
             the contents of this method with the code editor.
             </summary>
         </member>
+        <member name="M:VierGewinnt.Form3.AllocConsole">
+             <summary>
+            
+             Kann Nach Offen Servern Im Netzwerk Suchen (192.168)
+            
+             Man kann ein spiel auf machen auf das jemand conecten kann
+            
+             Mit einem offenen spiel connecten
+            
+             Der Code Fürs Game Ist der Gleiche Wie Im Lokalen (Form2)
+             Unterschiedlich ist nur das Alle Label Änderungen Mit invoke von einem anderen thread aufgerufen werden da diese meist nicht im main thread Aufgreiden werden
+             Block und MeinZug Blokieren am Anfang die spielfeld erstellung und dann immer wenn man nicht dran ist
+             Von der Click Event Funktion Gibt es eine Kopie Die Nur Dien Empfangenen zug übergeben bekommt und die gleiche logig mit diesem aus führt wie als häte man es selbst gemacht
+             Nach Dem man selbst Gecklickt hat wird der zug beendet und weggeschickt
+            
+             </summary>
+        </member>
+        <member name="F:VierGewinnt.Form3.EmpfangenSignal">
+            <summary>
+            Signaliseirt Den Task/Threads ob was Empfangen wurde damit sie nicht mehr wartenüssen
+            </summary>
+        </member>
+        <member name="F:VierGewinnt.Form3.MeinZugSignal">
+            <summary>
+            Mein Zug Signalisert wann Der Eigene Zug Zuendet ist undnicht mehr darauf gewartet werden muss Das man sein zug macht
+            </summary>
+        </member>
+        <member name="T:VierGewinnt.Form3.Spielfeldtile">
+            <summary>
+            Struct woraus das spielfeld erstellt wird mit den posotionen und der Frabe Des dort liegenden steins
+            </summary>
+        </member>
+        <member name="F:VierGewinnt.Form3.Spielfeldtile.x">
+            <summary>
+            Die X und Y achsen Und Die Pixel Hühe und Breite Des Steins
+            </summary>
+        </member>
+        <member name="F:VierGewinnt.Form3.Spielfeldtile.y">
+            <summary>
+            Die X und Y achsen Und Die Pixel Hühe und Breite Des Steins
+            </summary>
+        </member>
+        <member name="F:VierGewinnt.Form3.Spielfeldtile.iwidth">
+            <summary>
+            Die X und Y achsen Und Die Pixel Hühe und Breite Des Steins
+            </summary>
+        </member>
+        <member name="F:VierGewinnt.Form3.Spielfeldtile.iheight">
+            <summary>
+            Die X und Y achsen Und Die Pixel Hühe und Breite Des Steins
+            </summary>
+        </member>
+        <member name="F:VierGewinnt.Form3.Spielfeldtile.farbe">
+            <summary>
+            Farbe des Steins Weis -> Nix
+            </summary>
+        </member>
+        <member name="F:VierGewinnt.Form3.iSpielfeldheight">
+            <summary>
+            Die Spielfeld Höhe Standart ist Vier Wird Vor Aufruf Von Form3 Von Form1 Festgelget
+            </summary>
+        </member>
+        <member name="F:VierGewinnt.Form3.iSpielfeldwidth">
+            <summary>
+            Die Spielfeld breite Standart ist Vier Wird Vor Aufruf Von Form3 Von Form1 Festgelget
+            </summary>
+        </member>
+        <member name="F:VierGewinnt.Form3.spielfelder">
+            <summary>
+            Erstellt aus dem struct Spielfeldtile ein
+            </summary>
+        </member>
+        <member name="M:VierGewinnt.Form3.#ctor">
+             <summary>
+              Beim Inizialisieren Von Form 3
+                 
+                 Array Von Endpoinst Difiniert Die Bei Der Suche Nach Diesen Gefüllt wird Momentan wird davon ausgegangen das im gleichen Netztwerk nicht mehr als 10 sind
+                 
+                 Window Pratmeter wie
+                     Window state
+                     maximise box -> ob man das Fenster vergrößern kann
+                     
+                 die Größe Der Pixel Von den Federn X und Y
+                 
+                 Die Bitmap Frame Wird Definiert
+                 
+                 Die Bitmap Wird mit der Hintergrund farbe gefüllt
+                 
+                 Das Switch Case Legt Die Gewinnummer Fest Auf Der Bsis Was man In Form1 Eingegeben hat
+                 Der Default ist 4
+                 Eher Ein Easter Egg da es nicht gesagt wird das Man Die Gewinnummer Änder kann
+                 
+                 Am Ende Wird nach der Inizialisertung Noch die Ip Des Pc abgefragt und angezeigt
+                 Es Wird immer Die erste IP genommen auch wenn er mehr findet nimmt er immer die erste
+            
+             </summary>
+        </member>
+        <member name="M:VierGewinnt.Form3.OnClosed(System.EventArgs)">
+            <summary>
+            Wenn Man Das Fenster Schliest Sorgt dies Dafür das Alles geschlossen wird auch wenn noch die suche läuft oder ein Task/Thread hintergrund wartet und diese auch beendet werden
+            Es wird eine message box Angezeigt die sagt das Das Programm beendet wurde
+            </summary>
+        </member>
         <member name="F:VierGewinnt.Form3.components">
             <summary>
             Required designer variable.

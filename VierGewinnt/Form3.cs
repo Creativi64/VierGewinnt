@@ -37,8 +37,6 @@ namespace VierGewinnt
 
         #endregion Console
 
-        private bool Fullscreen;
-
         private const int PORT = 42069;
 
         private IPEndPoint[] GefundenEndpoints;
@@ -130,7 +128,18 @@ namespace VierGewinnt
         ///         Window state
         ///         maximise box -> ob man das Fenster vergrößern kann
         ///         
-        ///     Doubelbuffered, Das d
+        ///     die Größe Der Pixel Von den Federn X und Y
+        ///     
+        ///     Die Bitmap Frame Wird Definiert
+        ///     
+        ///     Die Bitmap Wird mit der Hintergrund farbe gefüllt
+        ///     
+        ///     Das Switch Case Legt Die Gewinnummer Fest Auf Der Bsis Was man In Form1 Eingegeben hat
+        ///     Der Default ist 4
+        ///     Eher Ein Easter Egg da es nicht gesagt wird das Man Die Gewinnummer Änder kann
+        ///     
+        ///     Am Ende Wird nach der Inizialisertung Noch die Ip Des Pc abgefragt und angezeigt
+        ///     Es Wird immer Die erste IP genommen auch wenn er mehr findet nimmt er immer die erste
         ///
         /// </summary>
         public Form3()
@@ -142,10 +151,6 @@ namespace VierGewinnt
 
             this.WindowState = FormWindowState.Normal;
             this.MaximizeBox = true;
-
-            
-
-            droptime = droptime / iSpielfeldheight;
 
             iSpielfeldheightpx = this.Height - 150;
             iSpielfeldwidthpx = this.Width - 150;
@@ -231,6 +236,7 @@ namespace VierGewinnt
         private void SpielFelInizialisieren()
         {
             Console.WriteLine("Spielfeld");
+            droptime = droptime / iSpielfeldheight;
             Block = false;
             spielfelder = new Spielfeldtile[iSpielfeldwidth, iSpielfeldheight];
             Thread.Sleep(400);
@@ -268,6 +274,10 @@ namespace VierGewinnt
             spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
         }
 
+        /// <summary>
+        /// Wenn Man Das Fenster Schliest Sorgt dies Dafür das Alles geschlossen wird auch wenn noch die suche läuft oder ein Task/Thread hintergrund wartet und diese auch beendet werden
+        /// Es wird eine message box Angezeigt die sagt das Das Programm beendet wurde
+        /// </summary>
         protected override void OnClosed(EventArgs e)
         {
             //wenn man mit X das Programm Schließet Schliest es sich Komlett mit einer Meldung
@@ -537,7 +547,8 @@ namespace VierGewinnt
                     Console.WriteLine("Spieldaten ausgetauischt");
 
                     SpielFelInizialisieren();
-
+                    this.Refresh();
+                    Thread.Sleep(1000);
                     // je nachdem welche Farbe Anfängt wird Ein Andere Spiel Verlauf Genutzt wenn die Farbe Rot ist wird 1. Genutzt
                     // wenn die farbe nicht so ist dann 2.
                     /*
@@ -750,7 +761,7 @@ namespace VierGewinnt
 
             string NetzBereich1 = "192.168.";
 
-            for (int i = 170; i <= NetzverkBereich1; i++)
+            for (int i = 0; i <= NetzverkBereich1; i++)
             {
                 for (int a = 0; a <= NetzverkBereich2; a++)
                 {
