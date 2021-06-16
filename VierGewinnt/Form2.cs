@@ -10,30 +10,40 @@ namespace VierGewinnt
     public partial class Form2 : Form
     {
         private bool Fullscreen;
+
         private string currentcolor;                    //Farbe die am Zug ist
+
         private float kreisausgleich;                   // zahl die die Kreisdicke ausgleichen soll
+
         private float droptime = 50;                    //wie langsam der stein fällt
+
         private int gewinnnummer;                       // anzahl zum Gewinnen nötiger steine in einer reihe
 
         public struct Spielfeldtile                     //representiert die einzelnen Felder mit position und Farbe
         {
             public int x, y, iwidth, iheight;
+
             public string farbe;
         }
 
         private DateTime VergangeneSekunden;
 
         private int iSpielfeldheightpx;                 //höhe des Spielfeldes in Pixel
+
         private int iSpielfeldwidthpx;                  //breite des Spielfeldes in Pixel
 
         public static int iSpielfeldheight = 4;         //spielfeldhöhe in spielfeldern
+
         public static int iSpielfeldwidth = 4;          //spielfeldbreite in spielfeldern
 
         private Bitmap Spielfeldframe;
+
         private Graphics Bitmapgraphic;
 
         private Graphics spielfeldgraphic;
+
         private PointF[,] Dreieckspunkte;
+
         private Graphics punkte;
 
         private bool AimationFlag = false;              //Animationsflag wird angeschalten wenn eine Animation stattfindet, da in dieser zeit nicht Redrawt werden soll
@@ -57,7 +67,6 @@ namespace VierGewinnt
 
             droptime = droptime / iSpielfeldheight;   //die Fallgeschwindigkeit ist abhängik von der Spielfeldgröße
             VergangeneSekunden = new DateTime(1, 1, 1, 0, 0, 0);
-
 
             //this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.WindowState = FormWindowState.Normal;
@@ -162,21 +171,23 @@ namespace VierGewinnt
                     lab_Player.Text = "Player Yellow";
                 }
 
-#pragma warning disable CS4014 // Da auf diesen Aufruf nicht gewartet wird, wird die Ausführung der aktuellen Methode vor Abschluss des Aufrufs fortgesetzt.
+ 
                 UhrStarten();
-#pragma warning restore CS4014 // Da auf diesen Aufruf nicht gewartet wird, wird die Ausführung der aktuellen Methode vor Abschluss des Aufrufs fortgesetzt.
+ 
             });
         }
 
-#pragma warning disable CS1998 // Bei der asynchronen Methode fehlen "await"-Operatoren. Die Methode wird synchron ausgeführt.
+ 
 
-        private async Task UhrStarten()
-#pragma warning restore CS1998 // Bei der asynchronen Methode fehlen "await"-Operatoren. Die Methode wird synchron ausgeführt.
-        {
-            timer.Tick += new EventHandler(UhrUpdate);
-            timer.Interval = 1000;
-            timer.Start();
-            timer.Enabled = true;
+        private void UhrStarten()
+         {
+            Task uhr = Task.Run(() =>
+            {
+                timer.Tick += new EventHandler(UhrUpdate);
+                timer.Interval = 1000;
+                timer.Start();
+                timer.Enabled = true;
+            });
         }
 
         private void SpielfeldErstellen()
@@ -212,6 +223,7 @@ namespace VierGewinnt
                     spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight, G);       //Struct wird benutzt um Das Spielfeld zu Zeichnen
                 }
             }
+
             //spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
         }
 
@@ -227,6 +239,7 @@ namespace VierGewinnt
                     }
                 }
             }
+
             //spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
         }
 
@@ -467,8 +480,7 @@ namespace VierGewinnt
                         }
                         AimationFlag = false;
 
-                        
-                        if(currentcolor == "red")
+                        if (currentcolor == "red")
                         {
                             Gewonnen("Rot");
                         }
@@ -664,6 +676,7 @@ namespace VierGewinnt
                         });
                         draw.RunSynchronously();
                     }
+
                     //Thread.Sleep((int)(100 / dropspeed));
                 }
             }
@@ -708,9 +721,14 @@ namespace VierGewinnt
 
         private void UhrUpdate(Object Obj, EventArgs e)
         {
-            VergangeneSekunden = VergangeneSekunden.AddSeconds(1);
-            lab_Timer.Text = VergangeneSekunden.ToLongTimeString();
-            //lab_Timer.Text = DateTime.Now.ToLongTimeString();
+            Task uhr = Task.Run(() =>
+            {
+                VergangeneSekunden = VergangeneSekunden.AddSeconds(1);
+                this.Invoke((MethodInvoker)delegate
+                {
+                    lab_Timer.Text = VergangeneSekunden.ToLongTimeString();
+                });
+            });
         }
 
         private void Form2_MouseMove(object sender, MouseEventArgs e)
@@ -741,6 +759,7 @@ namespace VierGewinnt
                     // hoverkreis entfernen:
                     Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName("white")), spielfelder[oldspalte, 0].x + kreisausgleich, spielfelder[oldspalte, 0].y - spielfelder[0, 0].iheight + kreisausgleich - 2, spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
                 }
+
                 // hoverkreis zeichnen:
                 Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName(currentcolor)), spielfelder[spalte, 0].x + kreisausgleich, spielfelder[spalte, 0].y - spielfelder[0, 0].iheight + kreisausgleich - 2, spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
                 oldspalte = spalte;
@@ -755,7 +774,6 @@ namespace VierGewinnt
                 oldspalte = spalte;
             }
             spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
-
         }
 
         private bool resizing = false;
@@ -775,7 +793,6 @@ namespace VierGewinnt
         {
             if (resizing)
             {
-
                 resizing = false;
                 iSpielfeldheightpx = this.Height - 200;
                 iSpielfeldwidthpx = this.Width - 50;
