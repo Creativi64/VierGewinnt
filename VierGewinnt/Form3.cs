@@ -156,7 +156,7 @@ namespace VierGewinnt
             iSpielfeldwidthpx = this.Width - 150;
 
             spielfeldgraphic = this.CreateGraphics();
-
+            SpielfeldErstellen();
             Spielfeldframe = new Bitmap(this.Width, this.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
             Bitmapgraphic = Graphics.FromImage(Spielfeldframe);
 
@@ -233,8 +233,11 @@ namespace VierGewinnt
             }
         }
 
+        bool Inizialisiertflag = false;
+
         private void SpielFelInizialisieren()
         {
+            Inizialisiertflag = true;
             Console.WriteLine("Spielfeld");
             droptime = droptime / iSpielfeldheight;
             Block = false;
@@ -976,23 +979,26 @@ namespace VierGewinnt
 
         private void SpielfeldErstellen()
         {
-            int ispielfeldformat;
-            if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)
+            if (Inizialisiertflag)
             {
-                ispielfeldformat = iSpielfeldheightpx / iSpielfeldheight;
-            }
-            else
-            {
-                ispielfeldformat = iSpielfeldwidthpx / iSpielfeldwidth;
-            }
-            for (int x = 0; x < iSpielfeldwidth; x++)
-            {
-                for (int y = 0; y < iSpielfeldheight; y++)
+                int ispielfeldformat;
+                if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)
                 {
-                    spielfelder[x, y].x = (this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2) + x * ispielfeldformat;
-                    spielfelder[x, y].y = (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2) + y * ispielfeldformat;
-                    spielfelder[x, y].iwidth = ispielfeldformat;
-                    spielfelder[x, y].iheight = ispielfeldformat;
+                    ispielfeldformat = iSpielfeldheightpx / iSpielfeldheight;
+                }
+                else
+                {
+                    ispielfeldformat = iSpielfeldwidthpx / iSpielfeldwidth;
+                }
+                for (int x = 0; x < iSpielfeldwidth; x++)
+                {
+                    for (int y = 0; y < iSpielfeldheight; y++)
+                    {
+                        spielfelder[x, y].x = (this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2) + x * ispielfeldformat;
+                        spielfelder[x, y].y = (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2) + y * ispielfeldformat;
+                        spielfelder[x, y].iwidth = ispielfeldformat;
+                        spielfelder[x, y].iheight = ispielfeldformat;
+                    }
                 }
             }
         }
@@ -1674,7 +1680,7 @@ namespace VierGewinnt
 
         private void Form3_Resize(object sender, EventArgs e)
         {
-            if (Bitmapgraphic != null)
+            if (Bitmapgraphic != null && !Block)
             {
                 Spielfeldframe = new Bitmap(this.Width, this.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
 
@@ -1685,7 +1691,7 @@ namespace VierGewinnt
 
         private void Form3_ResizeEnd(object sender, EventArgs e)                                                // wenn das Spielfeld losgelassen wird, wird dass Spielfeld neu gezeichnet
         {
-            if (resizing)
+            if (resizing && !Block)
             {
                 resizing = false;
                 iSpielfeldheightpx = this.Height - 200;
