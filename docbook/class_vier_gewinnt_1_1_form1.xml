@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_vier_gewinnt_1_1_form1" xml:lang="en-US">
+<title>VierGewinnt.Form1 Class Reference</title>
+<indexterm><primary>VierGewinnt.Form1</primary></indexterm>
+<para>Inheritance diagram for VierGewinnt.Form1:    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_vier_gewinnt_1_1_form1.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Static Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para><anchor xml:id="_class_vier_gewinnt_1_1_form1_1a5dd54c5ad58a27eabdf8ba84187742f2"/>static string <emphasis role="strong">sgewinnZahl</emphasis></para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Protected Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><anchor xml:id="_class_vier_gewinnt_1_1_form1_1afd19f86c635026310aa67de167cf284d"/>override void <emphasis role="strong">OnClosed</emphasis> (EventArgs e)</para>
+</listitem>
+            <listitem><para>override void <link linkend="_class_vier_gewinnt_1_1_form1_1a7ff974d21b5c38d9257550561da36832">Dispose</link> (bool disposing)</para>
+
+<para>Clean up any resources being used. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Properties    </title>
+        <itemizedlist>
+            <listitem><para><anchor xml:id="_class_vier_gewinnt_1_1_form1_1add14ced80e3f2ce6d39ec210356ce953"/>bool <emphasis role="strong">Fullscreen</emphasis><computeroutput> [get]</computeroutput>
+</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_vier_gewinnt_1_1_form1_1a7ff974d21b5c38d9257550561da36832"/>    <section>
+    <title>Dispose()</title>
+<indexterm><primary>Dispose</primary><secondary>VierGewinnt.Form1</secondary></indexterm>
+<indexterm><primary>VierGewinnt.Form1</primary><secondary>Dispose</secondary></indexterm>
+<para><computeroutput>override void VierGewinnt.Form1.Dispose (bool disposing)<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para>Clean up any resources being used. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters                    </title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+                                <entry>disposing</entry>
+                                <entry>
+<para>true if managed resources should be disposed; otherwise, false.</para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+C:/Users/creat/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form1.csC:/Users/creat/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form1.Designer.cs</section>
+</section>

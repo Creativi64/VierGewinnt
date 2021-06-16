@@ -1,0 +1,193 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_class_vier_gewinnt_1_1_form3" xml:lang="en-US">
+<title>VierGewinnt.Form3 Class Reference</title>
+<indexterm><primary>VierGewinnt.Form3</primary></indexterm>
+<para>Inheritance diagram for VierGewinnt.Form3:    <informalfigure>
+        <mediaobject>
+            <imageobject>
+                <imagedata width="50%" align="center" valign="middle" scalefit="0" fileref="class_vier_gewinnt_1_1_form3.png"></imagedata>
+            </imageobject>
+        </mediaobject>
+    </informalfigure>
+</para>
+<simplesect>
+    <title>Classes    </title>
+        <itemizedlist>
+            <listitem><para>struct <link linkend="_struct_vier_gewinnt_1_1_form3_1_1_spielfeldtile">Spielfeldtile</link></para>
+
+<para>Struct woraus das spielfeld erstellt wird mit den posotionen und der Frabe Des dort liegenden steins </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_class_vier_gewinnt_1_1_form3_1a06d5ba8f870d48c5be2331bf56d782c5">Form3</link> ()</para>
+
+<para>Beim Inizialisieren Von Form 3 </para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_vier_gewinnt_1_1_form3_1a4d0ade1395d5f1f45c1849a4042b2cb8"/>string <emphasis role="strong">StartListening</emphasis> (string Senden)</para>
+</listitem>
+            <listitem><para><anchor xml:id="_class_vier_gewinnt_1_1_form3_1a970a30f5e0c415219e358065ee1bea2e"/>string <emphasis role="strong">StartClient</emphasis> (string Senden)</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para><link linkend="_struct_vier_gewinnt_1_1_form3_1_1_spielfeldtile">Spielfeldtile</link>[,] <link linkend="_class_vier_gewinnt_1_1_form3_1a773bc30ee13dff69733cdee1c2f194d3">spielfelder</link></para>
+
+<para>Erstellt aus dem struct <link linkend="_struct_vier_gewinnt_1_1_form3_1_1_spielfeldtile">Spielfeldtile</link> ein </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Static Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para>static ManualResetEvent <link linkend="_class_vier_gewinnt_1_1_form3_1ab61d8b200e2c524d0384605a8efa85d4">EmpfangenSignal</link> = new ManualResetEvent(false)</para>
+
+<para>Signaliseirt Den Task/Threads ob was Empfangen wurde damit sie nicht mehr wartenüssen </para>
+</listitem>
+            <listitem><para>static ManualResetEvent <link linkend="_class_vier_gewinnt_1_1_form3_1a6351c481df15e85e4147a70a69e3af7f">MeinZugSignal</link> = new ManualResetEvent(false)</para>
+
+<para>Mein Zug Signalisert wann Der Eigene Zug Zuendet ist undnicht mehr darauf gewartet werden muss Das man sein zug macht </para>
+</listitem>
+            <listitem><para>static int <link linkend="_class_vier_gewinnt_1_1_form3_1a49c6854620654e1823ce79d3c97eed52">iSpielfeldheight</link> = 4</para>
+
+<para>Die Spielfeld Höhe Standart ist Vier Wird Vor Aufruf Von <link linkend="_class_vier_gewinnt_1_1_form3">Form3</link> Von <link linkend="_class_vier_gewinnt_1_1_form1">Form1</link> Festgelget </para>
+</listitem>
+            <listitem><para>static int <link linkend="_class_vier_gewinnt_1_1_form3_1ad2f16b46211e8c2c5c57a746d7297cda">iSpielfeldwidth</link> = 4</para>
+
+<para>Die Spielfeld breite Standart ist Vier Wird Vor Aufruf Von <link linkend="_class_vier_gewinnt_1_1_form3">Form3</link> Von <link linkend="_class_vier_gewinnt_1_1_form1">Form1</link> Festgelget </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Protected Member Functions    </title>
+        <itemizedlist>
+            <listitem><para>override void <link linkend="_class_vier_gewinnt_1_1_form3_1a00740629674b919eb6fadacf10196735">OnClosed</link> (EventArgs e)</para>
+
+<para>Wenn Man Das Fenster Schliest Sorgt dies Dafür das Alles geschlossen wird auch wenn noch die suche läuft oder ein Task/Thread hintergrund wartet und diese auch beendet werden Es wird eine message box Angezeigt die sagt das Das Programm beendet wurde </para>
+</listitem>
+            <listitem><para>override void <link linkend="_class_vier_gewinnt_1_1_form3_1acaa9c2cafb16e6bf81d29280a6a78d2d">Dispose</link> (bool disposing)</para>
+
+<para>Clean up any resources being used. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_class_vier_gewinnt_1_1_form3_1a06d5ba8f870d48c5be2331bf56d782c5"/>    <section>
+    <title>Form3()</title>
+<indexterm><primary>Form3</primary><secondary>VierGewinnt.Form3</secondary></indexterm>
+<indexterm><primary>VierGewinnt.Form3</primary><secondary>Form3</secondary></indexterm>
+<para><computeroutput>VierGewinnt.Form3.Form3 ( )</computeroutput></para><para>
+
+<para>Beim Inizialisieren Von Form 3 </para>
+</para>
+
+<para>Array Von Endpoinst Difiniert Die Bei Der Suche Nach Diesen Gefüllt wird Momentan wird davon ausgegangen das im gleichen Netztwerk nicht mehr als 10 sind</para>
+
+<para>Window Pratmeter wie Window state maximise box -&gt; ob man das Fenster vergrößern kann</para>
+
+<para>die Größe Der Pixel Von den Federn X und Y</para>
+
+<para>Die Bitmap Frame Wird Definiert</para>
+
+<para>Die Bitmap Wird mit der Hintergrund farbe gefüllt</para>
+
+<para>Das Switch Case Legt Die Gewinnummer Fest Auf Der Bsis Was man In <link linkend="_class_vier_gewinnt_1_1_form1">Form1</link> Eingegeben hat Der Default ist 4 Eher Ein Easter Egg da es nicht gesagt wird das Man Die Gewinnummer Änder kann</para>
+
+<para>Am Ende Wird nach der Inizialisertung Noch die Ip Des Pc abgefragt und angezeigt Es Wird immer Die erste IP genommen auch wenn er mehr findet nimmt er immer die erste</para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_class_vier_gewinnt_1_1_form3_1acaa9c2cafb16e6bf81d29280a6a78d2d"/>    <section>
+    <title>Dispose()</title>
+<indexterm><primary>Dispose</primary><secondary>VierGewinnt.Form3</secondary></indexterm>
+<indexterm><primary>VierGewinnt.Form3</primary><secondary>Dispose</secondary></indexterm>
+<para><computeroutput>override void VierGewinnt.Form3.Dispose (bool disposing)<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para>Clean up any resources being used. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters                    </title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+                                <entry>disposing</entry>
+                                <entry>
+<para>true if managed resources should be disposed; otherwise, false.</para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+    </section><anchor xml:id="_class_vier_gewinnt_1_1_form3_1a00740629674b919eb6fadacf10196735"/>    <section>
+    <title>OnClosed()</title>
+<indexterm><primary>OnClosed</primary><secondary>VierGewinnt.Form3</secondary></indexterm>
+<indexterm><primary>VierGewinnt.Form3</primary><secondary>OnClosed</secondary></indexterm>
+<para><computeroutput>override void VierGewinnt.Form3.OnClosed (EventArgs e)<computeroutput>[protected]</computeroutput></computeroutput></para><para>
+
+<para>Wenn Man Das Fenster Schliest Sorgt dies Dafür das Alles geschlossen wird auch wenn noch die suche läuft oder ein Task/Thread hintergrund wartet und diese auch beendet werden Es wird eine message box Angezeigt die sagt das Das Programm beendet wurde </para>
+</para>
+</section>
+</section>
+<section>
+<title>Member Data Documentation</title>
+<anchor xml:id="_class_vier_gewinnt_1_1_form3_1ab61d8b200e2c524d0384605a8efa85d4"/>    <section>
+    <title>EmpfangenSignal</title>
+<indexterm><primary>EmpfangenSignal</primary><secondary>VierGewinnt.Form3</secondary></indexterm>
+<indexterm><primary>VierGewinnt.Form3</primary><secondary>EmpfangenSignal</secondary></indexterm>
+<para><computeroutput>ManualResetEvent VierGewinnt.Form3.EmpfangenSignal = new ManualResetEvent(false)<computeroutput>[static]</computeroutput></computeroutput></para><para>
+
+<para>Signaliseirt Den Task/Threads ob was Empfangen wurde damit sie nicht mehr wartenüssen </para>
+</para>
+    </section><anchor xml:id="_class_vier_gewinnt_1_1_form3_1a49c6854620654e1823ce79d3c97eed52"/>    <section>
+    <title>iSpielfeldheight</title>
+<indexterm><primary>iSpielfeldheight</primary><secondary>VierGewinnt.Form3</secondary></indexterm>
+<indexterm><primary>VierGewinnt.Form3</primary><secondary>iSpielfeldheight</secondary></indexterm>
+<para><computeroutput>int VierGewinnt.Form3.iSpielfeldheight = 4<computeroutput>[static]</computeroutput></computeroutput></para><para>
+
+<para>Die Spielfeld Höhe Standart ist Vier Wird Vor Aufruf Von <link linkend="_class_vier_gewinnt_1_1_form3">Form3</link> Von <link linkend="_class_vier_gewinnt_1_1_form1">Form1</link> Festgelget </para>
+</para>
+    </section><anchor xml:id="_class_vier_gewinnt_1_1_form3_1ad2f16b46211e8c2c5c57a746d7297cda"/>    <section>
+    <title>iSpielfeldwidth</title>
+<indexterm><primary>iSpielfeldwidth</primary><secondary>VierGewinnt.Form3</secondary></indexterm>
+<indexterm><primary>VierGewinnt.Form3</primary><secondary>iSpielfeldwidth</secondary></indexterm>
+<para><computeroutput>int VierGewinnt.Form3.iSpielfeldwidth = 4<computeroutput>[static]</computeroutput></computeroutput></para><para>
+
+<para>Die Spielfeld breite Standart ist Vier Wird Vor Aufruf Von <link linkend="_class_vier_gewinnt_1_1_form3">Form3</link> Von <link linkend="_class_vier_gewinnt_1_1_form1">Form1</link> Festgelget </para>
+</para>
+    </section><anchor xml:id="_class_vier_gewinnt_1_1_form3_1a6351c481df15e85e4147a70a69e3af7f"/>    <section>
+    <title>MeinZugSignal</title>
+<indexterm><primary>MeinZugSignal</primary><secondary>VierGewinnt.Form3</secondary></indexterm>
+<indexterm><primary>VierGewinnt.Form3</primary><secondary>MeinZugSignal</secondary></indexterm>
+<para><computeroutput>ManualResetEvent VierGewinnt.Form3.MeinZugSignal = new ManualResetEvent(false)<computeroutput>[static]</computeroutput></computeroutput></para><para>
+
+<para>Mein Zug Signalisert wann Der Eigene Zug Zuendet ist undnicht mehr darauf gewartet werden muss Das man sein zug macht </para>
+</para>
+    </section><anchor xml:id="_class_vier_gewinnt_1_1_form3_1a773bc30ee13dff69733cdee1c2f194d3"/>    <section>
+    <title>spielfelder</title>
+<indexterm><primary>spielfelder</primary><secondary>VierGewinnt.Form3</secondary></indexterm>
+<indexterm><primary>VierGewinnt.Form3</primary><secondary>spielfelder</secondary></indexterm>
+<para><computeroutput><link linkend="_struct_vier_gewinnt_1_1_form3_1_1_spielfeldtile">Spielfeldtile</link> [,] VierGewinnt.Form3.spielfelder</computeroutput></para><para>
+
+<para>Erstellt aus dem struct <link linkend="_struct_vier_gewinnt_1_1_form3_1_1_spielfeldtile">Spielfeldtile</link> ein </para>
+</para>
+</section>
+<para>
+The documentation for this class was generated from the following files:</para>
+C:/Users/creat/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.csC:/Users/creat/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.Designer.cs</section>
+</section>
