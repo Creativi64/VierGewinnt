@@ -58,6 +58,7 @@ namespace VierGewinnt
             MessageBox.Show("Spiel Beendet",
                 "Close Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             base.OnClosed(e);
+            Environment.Exit(0);
             Application.Exit();
         }
 
