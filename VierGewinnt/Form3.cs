@@ -277,6 +277,7 @@ namespace VierGewinnt
         /// <summary>
         /// Wenn Man Das Fenster Schliest Sorgt dies Dafür das Alles geschlossen wird auch wenn noch die suche läuft oder ein Task/Thread hintergrund wartet und diese auch beendet werden
         /// Es wird eine message box Angezeigt die sagt das Das Programm beendet wurde
+        /// 
         /// </summary>
         protected override void OnClosed(EventArgs e)
         {
