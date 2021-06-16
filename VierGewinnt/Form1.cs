@@ -64,7 +64,7 @@ namespace VierGewinnt
 
         private void btn_Network_Click(object sender, EventArgs e)
         {
-            Form3 frm = new Form3(Fullscreen);
+            Form3 frm = new Form3();
 
             frm.Show();
             this.Hide();

@@ -14,6 +14,22 @@ namespace VierGewinnt
 {
     public partial class Form3 : Form
     {
+        /// <summary>
+        ///
+        /// Kann Nach Offen Servern Im Netzwerk Suchen (192.168)
+        ///
+        /// Man kann ein spiel auf machen auf das jemand conecten kann
+        ///
+        /// Mit einem offenen spiel connecten
+        ///
+        /// Der Code Fürs Game Ist der Gleiche Wie Im Lokalen (Form2)
+        /// Unterschiedlich ist nur das Alle Label Änderungen Mit invoke von einem anderen thread aufgerufen werden da diese meist nicht im main thread Aufgreiden werden
+        /// Block und MeinZug Blokieren am Anfang die spielfeld erstellung und dann immer wenn man nicht dran ist
+        /// Von der Click Event Funktion Gibt es eine Kopie Die Nur Dien Empfangenen zug übergeben bekommt und die gleiche logig mit diesem aus führt wie als häte man es selbst gemacht
+        /// Nach Dem man selbst Gecklickt hat wird der zug beendet und weggeschickt
+        ///
+        /// </summary>
+
         #region Console
 
         [DllImport("kernel32.dll", SetLastError = true)]
@@ -38,10 +54,15 @@ namespace VierGewinnt
 
         private bool SpielEnde = false;
 
+        /// <summary>
+        /// Signaliseirt Den Task/Threads ob was Empfangen wurde damit sie nicht mehr wartenüssen
+        /// </summary>
         public static ManualResetEvent EmpfangenSignal = new ManualResetEvent(false);
 
+        /// <summary>
+        /// Mein Zug Signalisert wann Der Eigene Zug Zuendet ist undnicht mehr darauf gewartet werden muss Das man sein zug macht
+        /// </summary>
         public static ManualResetEvent MeinZugSignal = new ManualResetEvent(false);
-        public static ManualResetEvent GegnerZugSignal = new ManualResetEvent(false);
 
         #region GameParams
 
@@ -53,21 +74,35 @@ namespace VierGewinnt
 
         private int gewinnnummer;
 
+        /// <summary>
+        /// Struct woraus das spielfeld erstellt wird mit den posotionen und der Frabe Des dort liegenden steins
+        /// </summary>
         public struct Spielfeldtile
         {
+            /// <summary>
+            /// Die X und Y achsen Und Die Pixel Hühe und Breite Des Steins
+            /// </summary>
             public int x, y, iwidth, iheight;
 
+            /// <summary>
+            /// Farbe des Steins Weis -> Nix
+            /// </summary>
             public string farbe;
         }
 
-        private DateTime VergangeneSekunden;
 
         private int iSpielfeldheightpx;
 
         private int iSpielfeldwidthpx;
 
+        /// <summary>
+        /// Die Spielfeld Höhe Standart ist Vier Wird Vor Aufruf Von Form3 Von Form1 Festgelget
+        /// </summary>
         public static int iSpielfeldheight = 4;         //spielfeldhöhe in spielfeldern
 
+        /// <summary>
+        /// Die Spielfeld breite Standart ist Vier Wird Vor Aufruf Von Form3 Von Form1 Festgelget
+        /// </summary>
         public static int iSpielfeldwidth = 4;          //spielfeldbreite in spielfeldern
 
         private Graphics spielfeldgraphic;
@@ -78,33 +113,36 @@ namespace VierGewinnt
 
         private bool AimationFlag = true;
 
+        /// <summary>
+        /// Erstellt aus dem struct Spielfeldtile ein
+        /// </summary>
         public Spielfeldtile[,] spielfelder;
 
         #endregion GameParams
 
-        public Form3(bool _Fullscreen)
+        /// <summary>
+        ///  Beim Inizialisieren Von Form 3
+        ///     
+        ///     Array Von Endpoinst Difiniert Die Bei Der Suche Nach Diesen Gefüllt wird Momentan wird davon ausgegangen das im gleichen Netztwerk nicht mehr als 10 sind
+        ///     
+        ///     Window Pratmeter wie
+        ///         Window state
+        ///         maximise box -> ob man das Fenster vergrößern kann
+        ///         
+        ///     Doubelbuffered, Das d
+        ///
+        /// </summary>
+        public Form3()
         {
             InitializeComponent();
             AllocConsole();
 
             GefundenEndpoints = new IPEndPoint[10]; // maximal 10  Vill. Variable, Je anch Anzahl, Aber Es Sollten Momentan Nicht mehr als 10 Geben
 
-            Fullscreen = _Fullscreen;
-            if (_Fullscreen == true)
-            {
-                this.FormBorderStyle = FormBorderStyle.None;
-                this.WindowState = FormWindowState.Maximized;
-                this.MaximizeBox = true;
-            }
-            else
-            {
-                this.WindowState = FormWindowState.Normal;
-                this.MaximizeBox = true;
-            }
+            this.WindowState = FormWindowState.Normal;
+            this.MaximizeBox = true;
 
-            VergangeneSekunden = new DateTime(1, 1, 1, 0, 0, 0);
-
-            DoubleBuffered = true;
+            
 
             dropspeed = dropspeed * iSpielfeldheight;
 
@@ -235,7 +273,7 @@ namespace VierGewinnt
 
             //backgroundworkerBeeneden
             EmpfangenSignal.Set();
-            GegnerZugSignal.Set();
+
             MeinZugSignal.Set();
             Environment.Exit(0);
             Application.Exit();
@@ -274,18 +312,25 @@ namespace VierGewinnt
             btn_ConnectTo.Visible = false;
             SpielHosten.Enabled = false;
 
+            string EmpfangeneIp = null;
+
             // Empfängt die Ip Des Zu verbindenden
             EmpfangenSignal.Reset();
             Task iPAustasuchen = Task.Run(() =>
             {
-                string EmpfangeneIp = StartListening("Empfangen");
-                AndererSpieler = IPAddress.Parse(EmpfangeneIp);
+                EmpfangeneIp = StartListening("Empfangen");
+                while (!EmpfangenSignal.WaitOne())
+                {
+                    Application.DoEvents();
+                }
+                EmpfangenSignal.Reset();
             });
             while (iPAustasuchen.IsCompleted == false)
             {
                 Application.DoEvents();
             }
             iPAustasuchen.Wait();
+            AndererSpieler = IPAddress.Parse(EmpfangeneIp);
             lab_VerbundenMit.Text = $"Verbunden Mit: {AndererSpieler}";
 
             // Feld Inizialisieren und Spieler Wählen
@@ -1431,7 +1476,7 @@ namespace VierGewinnt
             {
                 this.Invoke((MethodInvoker)delegate
                 {
-                    Form3 frm = new Form3(Fullscreen);
+                    Form3 frm = new Form3();
                     frm.Show();
 
                     this.Hide();
