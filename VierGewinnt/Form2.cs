@@ -58,25 +58,15 @@ namespace VierGewinnt
             droptime = droptime / iSpielfeldheight;   //die Fallgeschwindigkeit ist abhängik von der Spielfeldgröße
             VergangeneSekunden = new DateTime(1, 1, 1, 0, 0, 0);
 
-            if (_Fullscreen == true)
-            {
-                this.FormBorderStyle = FormBorderStyle.None;
-                this.WindowState = FormWindowState.Maximized;
 
-                this.MaximizeBox = true;
-            }
-            else
-            {
-                //this.FormBorderStyle = FormBorderStyle.FixedSingle;
-                this.WindowState = FormWindowState.Normal;
-                this.MaximizeBox = true;
-            }
-            iSpielfeldheightpx = this.Height - 200;
+            //this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.WindowState = FormWindowState.Normal;
+            this.MaximizeBox = false;
+
+            iSpielfeldheightpx = this.Height - 150;
             iSpielfeldwidthpx = this.Width - 50;
 
             spielfeldgraphic = this.CreateGraphics();
-
-            punkte = this.CreateGraphics();
 
             switch (Form1.sgewinnZahl)
             {
@@ -477,7 +467,15 @@ namespace VierGewinnt
                         }
                         AimationFlag = false;
 
-                        Gewonnen(currentcolor);
+                        
+                        if(currentcolor == "red")
+                        {
+                            Gewonnen("Rot");
+                        }
+                        else
+                        {
+                            Gewonnen("Gelb");
+                        }
                     }
 
                     if (currentcolor == "red")
@@ -505,7 +503,7 @@ namespace VierGewinnt
                     }
                     if (!zugmöglich)
                     {
-                        Gewonnen("NIEMAND");
+                        Gewonnen("niemand");
                     }
                 }
             }
@@ -690,7 +688,7 @@ namespace VierGewinnt
         {
             //this.Hide();
             var Result = MessageBox.Show($"{Gewinner} Hat gewonnen",
-                $"{Gewinner} Hat Gewonnen", MessageBoxButtons.RetryCancel, MessageBoxIcon.Information);
+                $"{Gewinner} hat Gewonnen", MessageBoxButtons.RetryCancel, MessageBoxIcon.Information);
 
             if (Result == DialogResult.Retry)
             {
