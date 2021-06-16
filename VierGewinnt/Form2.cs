@@ -9,114 +9,110 @@ namespace VierGewinnt
 {
     public partial class Form2 : Form
     {
-        private bool Fullscreen;
+        public static int iSpielfeldHeight = 4;//spielfeldhöhe in spielfeldern
+        public static int iSpielfeldWidth = 4; //spielfeldbreite in spielfeldern
 
-        private string currentcolor;                    //Farbe die am Zug ist
+        public SpielfeldTile[,] Spielfelder;
+        private PointF[,] DreiecksPunkte;
 
-        private float kreisausgleich;                   // zahl die die Kreisdicke ausgleichen soll
+        private string sCurrentcolor;//Farbe die am Zug ist
 
-        private float droptime = 50;                    //wie langsam der stein fällt
+        private float dKreisausgleich;// zahl die die Kreisdicke ausgleichen soll
+        private float fDroptime = 50;//wie langsam der stein fällt
 
-        private int gewinnnummer;                       // anzahl zum Gewinnen nötiger steine in einer reihe
+        private int iGewinnAnzahl; // anzahl zum Gewinnen nötiger steine in einer reihe
+        private int iOldSpalte = 0; //Für hover effekt letzte spalte, damit nicht redrawt wird wenn es die gleiche Zeile ist
+        private int iSpielfeldHeightPx;//höhe des Spielfeldes in Pixel
+        private int iSpielfeldWidthPx;//breite des Spielfeldes in Pixel
 
-        public struct Spielfeldtile                     //representiert die einzelnen Felder mit position und Farbe
-        {
-            public int x, y, iwidth, iheight;
+        
 
-            public string farbe;
-        }
-
-        private DateTime VergangeneSekunden;
-
-        private int iSpielfeldheightpx;                 //höhe des Spielfeldes in Pixel
-
-        private int iSpielfeldwidthpx;                  //breite des Spielfeldes in Pixel
-
-        public static int iSpielfeldheight = 4;         //spielfeldhöhe in spielfeldern
-
-        public static int iSpielfeldwidth = 4;          //spielfeldbreite in spielfeldern
+        private bool bAimationFlag = false;//Animationsflag wird angeschalten wenn eine Animation stattfindet, da in dieser zeit nicht Redrawt werden soll
+        private bool bResizing = false;
 
         private Bitmap Spielfeldframe;
 
+        private Graphics Spielfeldgraphic;
         private Graphics Bitmapgraphic;
 
-        private Graphics spielfeldgraphic;
+        private DateTime VergangeneSekunden;
 
-        private PointF[,] Dreieckspunkte;
-
-        private Graphics punkte;
-
-        private bool AimationFlag = false;              //Animationsflag wird angeschalten wenn eine Animation stattfindet, da in dieser zeit nicht Redrawt werden soll
-
-        public Spielfeldtile[,] spielfelder;
+        public struct SpielfeldTile                     //representiert die einzelnen Felder mit position und Farbe
+        {
+            public string sFarbe;
+            public int iX, iY, iWidth, iHeight;
+        }
 
         #region Console
 
+        /// <summary>
+        /// Erlaubt Uns Zum Form eine console zu starten
+        /// </summary>
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool AllocConsole();
 
         #endregion Console
 
-        public Form2(bool _Fullscreen)
+        public Form2()
         {
             InitializeComponent();
             DoubleBuffered = true;
-            Fullscreen = _Fullscreen;
+
             AllocConsole();
 
-            droptime = droptime / iSpielfeldheight;   //die Fallgeschwindigkeit ist abhängik von der Spielfeldgröße
+            fDroptime = fDroptime / iSpielfeldHeight;   //die Fallgeschwindigkeit ist abhängik von der Spielfeldgröße
             VergangeneSekunden = new DateTime(1, 1, 1, 0, 0, 0);
 
             //this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.WindowState = FormWindowState.Normal;
             this.MaximizeBox = false;
 
-            iSpielfeldheightpx = this.Height - 150;
-            iSpielfeldwidthpx = this.Width - 50;
+            iSpielfeldHeightPx = this.Height - 150;
+            iSpielfeldWidthPx = this.Width - 50;
 
-            spielfeldgraphic = this.CreateGraphics();
+            Spielfeldgraphic = this.CreateGraphics();
 
-            switch (Form1.sgewinnZahl)
+            switch (Form1.sGewinnAnzahl)
             {
                 case ("Zwei"):
-                    gewinnnummer = 2;
+                    iGewinnAnzahl = 2;
                     break;
 
                 case ("Drei"):
-                    gewinnnummer = 3;
+                    iGewinnAnzahl = 3;
                     break;
 
                 case ("Vier"):
-                    gewinnnummer = 4;
+                    iGewinnAnzahl = 4;
                     break;
 
                 case ("Fünf"):
-                    gewinnnummer = 5;
+                    iGewinnAnzahl = 5;
                     break;
 
                 case ("Sechs"):
-                    gewinnnummer = 6;
+                    iGewinnAnzahl = 6;
                     break;
 
                 case ("Sieben"):
-                    gewinnnummer = 7;
+                    iGewinnAnzahl = 7;
                     break;
 
                 case ("Acht"):
-                    gewinnnummer = 8;
+                    iGewinnAnzahl = 8;
                     break;
 
                 case ("Neun"):
-                    gewinnnummer = 9;
+                    iGewinnAnzahl = 9;
                     break;
 
                 case ("Zehn"):
-                    gewinnnummer = 10;
+                    iGewinnAnzahl = 10;
                     break;
 
                 default:
-                    gewinnnummer = 4;
+                    iGewinnAnzahl = 4;
                     break;
             }
 
@@ -124,25 +120,25 @@ namespace VierGewinnt
             {
                 // wird Aufgerufen wenn Das From Geladen Wurde
 
-                spielfelder = new Spielfeldtile[iSpielfeldwidth, iSpielfeldheight];
+                Spielfelder = new SpielfeldTile[iSpielfeldWidth, iSpielfeldHeight];
                 Thread.Sleep(400);
 
                 //Erste Ecken Berechnen
                 int ispielfeldformat;
-                if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)                               //spielfeldformat wird so gewählt, dass das Spielfeld immer in das Fenster passt
+                if (iSpielfeldHeightPx / iSpielfeldHeight <= iSpielfeldWidthPx / iSpielfeldWidth)                               //spielfeldformat wird so gewählt, dass das Spielfeld immer in das Fenster passt
                 {
-                    ispielfeldformat = iSpielfeldheightpx / iSpielfeldheight;
+                    ispielfeldformat = iSpielfeldHeightPx / iSpielfeldHeight;
                 }
                 else
                 {
-                    ispielfeldformat = iSpielfeldwidthpx / iSpielfeldwidth;
+                    ispielfeldformat = iSpielfeldWidthPx / iSpielfeldWidth;
                 }
-                spielfelder[0, 0].x = (this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2) + 0 * ispielfeldformat;      //Spielfelder werden erstmals erstellt
-                spielfelder[0, 0].y = (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2) + 0 * ispielfeldformat;
-                spielfelder[0, 0].iwidth = ispielfeldformat;
-                spielfelder[0, 0].iheight = ispielfeldformat;
+                Spielfelder[0, 0].iX = (this.Width / 2) - (ispielfeldformat * iSpielfeldWidth / 2) + 0 * ispielfeldformat;      //Spielfelder werden erstmals erstellt
+                Spielfelder[0, 0].iY = (this.Height / 2) - (ispielfeldformat * iSpielfeldHeight / 2) + 0 * ispielfeldformat;
+                Spielfelder[0, 0].iWidth = ispielfeldformat;
+                Spielfelder[0, 0].iHeight = ispielfeldformat;
 
-                EckenBerechnen(0, 0, spielfelder[0, 0].iwidth, spielfelder[0, 0].iheight);
+                EckenBerechnen(0, 0, Spielfelder[0, 0].iWidth, Spielfelder[0, 0].iHeight);
                 SpielfeldErstellen();
 
                 Spielfeldframe = new Bitmap(this.Width, this.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
@@ -151,102 +147,34 @@ namespace VierGewinnt
                 Bitmapgraphic.FillRectangle(new SolidBrush(this.BackColor), 0, 0, this.Width, this.Height);
                 SpielfeldZeichnen(Bitmapgraphic);
 
-                for (int x = 0; x < iSpielfeldwidth; x++)       // Im array alle Farben Auf Weiß setzen
+                for (int x = 0; x < iSpielfeldWidth; x++)       // Im array alle Farben Auf Weiß setzen
                 {
-                    for (int y = 0; y < iSpielfeldheight; y++)
+                    for (int y = 0; y < iSpielfeldHeight; y++)
                     {
-                        spielfelder[x, y].farbe = "white";
+                        Spielfelder[x, y].sFarbe = "white";
                     }
                 }
 
                 // zufällige start Fahrbe Wählen
                 if ((new Random()).Next(0, 2) == 0)
                 {
-                    currentcolor = "red";
+                    sCurrentcolor = "red";
                     lab_Player.Text = "Player Red";
                 }
                 else
                 {
-                    currentcolor = "yellow";
+                    sCurrentcolor = "yellow";
                     lab_Player.Text = "Player Yellow";
                 }
 
- 
                 UhrStarten();
- 
             });
-        }
-
- 
-
-        private void UhrStarten()
-         {
-            Task uhr = Task.Run(() =>
-            {
-                timer.Tick += new EventHandler(UhrUpdate);
-                timer.Interval = 1000;
-                timer.Start();
-                timer.Enabled = true;
-            });
-        }
-
-        private void SpielfeldErstellen()
-        {
-            int ispielfeldformat;
-            if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)               //spielfeldformat wird so gewählt, dass das Spielfeld immer in das Fenster passt
-
-            {
-                ispielfeldformat = iSpielfeldheightpx / iSpielfeldheight;
-            }
-            else
-            {
-                ispielfeldformat = iSpielfeldwidthpx / iSpielfeldwidth;
-            }
-            for (int x = 0; x < iSpielfeldwidth; x++)
-            {
-                for (int y = 0; y < iSpielfeldheight; y++)
-                {
-                    spielfelder[x, y].x = (this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2) + x * ispielfeldformat;        //Struct wird angelegt
-                    spielfelder[x, y].y = (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2) + y * ispielfeldformat;
-                    spielfelder[x, y].iwidth = ispielfeldformat;
-                    spielfelder[x, y].iheight = ispielfeldformat;
-                }
-            }
-        }
-
-        private void SpielfeldZeichnen(Graphics G)
-        {
-            for (int x = 0; x < iSpielfeldwidth; x++)
-            {
-                for (int y = 0; y < iSpielfeldheight; y++)
-                {
-                    spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight, G);       //Struct wird benutzt um Das Spielfeld zu Zeichnen
-                }
-            }
-
-            //spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
-        }
-
-        private void SpielsteineZeichnen(Graphics G, int starty)
-        {
-            for (int x = 0; x < iSpielfeldwidth; x++)
-            {
-                for (int y = 0; y < iSpielfeldheight; y++)
-                {
-                    if (spielfelder[x, y].farbe != "white" && spielfelder[x, y].farbe != null)                                                  //wenn die Farbe des Kreises Nicht weis ist wird er auch noch gezeichnet
-                    {
-                        Kreiszeichnen(x, y, spielfelder[x, y].farbe, Bitmapgraphic, starty);
-                    }
-                }
-            }
-
-            //spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
         }
 
         protected override void OnClosed(EventArgs e)
         {
             //wenn man mit X das Programm Schließet Schliest es sich Komlett mit einer Meldung
-            AimationFlag = true;
+            bAimationFlag = true;
             this.Hide();
 
             MessageBox.Show("Spiel Beendet",
@@ -256,10 +184,10 @@ namespace VierGewinnt
             Environment.Exit(0);
             Application.Exit();
 
-            AimationFlag = false;
+            bAimationFlag = false;
         }
 
-        private void button1_Click(object sender, EventArgs e)                  //Zurück zum Menü
+        private void Button1_Click(object sender, EventArgs e)  //Zurück zum Menü
         {
             Form1 frm = new Form1();
 
@@ -267,116 +195,58 @@ namespace VierGewinnt
             this.Hide();
         }
 
-        private void EckenBerechnen(int x, int y, int iwidth, int iheight)
+        private void EckenBerechnen(int iX, int iY, int iWidth, int iHeight)
         {
-            double dDreieckkprozent = 0.3;
-            Dreieckspunkte = new PointF[4, 3];
-            Dreieckspunkte[0, 0] = new PointF(x, y);
-            Dreieckspunkte[0, 1] = new PointF((float)(x + (iwidth * dDreieckkprozent)), y);
-            Dreieckspunkte[0, 2] = new PointF((x), (float)(y + (iheight * dDreieckkprozent)));
+            //Die koordinaten für die Polygone werden im bezug auf das Jeweilige Feld Berechnet
+            float dDreieckkprozent = 0.3F;
+            DreiecksPunkte = new PointF[4, 3];
+            DreiecksPunkte[0, 0] = new PointF(iX, iY);
+            DreiecksPunkte[0, 1] = new PointF((float)(iX + (iWidth * dDreieckkprozent)), iY);
+            DreiecksPunkte[0, 2] = new PointF((iX), (float)(iY + (iHeight * dDreieckkprozent)));
 
-            Dreieckspunkte[1, 0] = new PointF(x + iwidth, y);
-            Dreieckspunkte[1, 1] = new PointF((float)(x + iwidth - (iwidth * dDreieckkprozent)), y);
-            Dreieckspunkte[1, 2] = new PointF((x + iwidth), (float)(y + (iheight * dDreieckkprozent)));
+            DreiecksPunkte[1, 0] = new PointF(iX + iWidth, iY);
+            DreiecksPunkte[1, 1] = new PointF((float)(iX + iWidth - (iWidth * dDreieckkprozent)), iY);
+            DreiecksPunkte[1, 2] = new PointF((iX + iWidth), (float)(iY + (iHeight * dDreieckkprozent)));
 
-            Dreieckspunkte[2, 0] = new PointF(x, y + iheight);
-            Dreieckspunkte[2, 1] = new PointF((float)(x + (iwidth * dDreieckkprozent)), y + iheight);
-            Dreieckspunkte[2, 2] = new PointF((x), (float)(y + iheight - (iheight * dDreieckkprozent)));
+            DreiecksPunkte[2, 0] = new PointF(iX, iY + iHeight);
+            DreiecksPunkte[2, 1] = new PointF((float)(iX + (iWidth * dDreieckkprozent)), iY + iHeight);
+            DreiecksPunkte[2, 2] = new PointF((iX), (float)(iY + iHeight - (iHeight * dDreieckkprozent)));
 
-            Dreieckspunkte[3, 0] = new PointF(x + iwidth, y + iheight);
-            Dreieckspunkte[3, 1] = new PointF((float)(x + iwidth - (iwidth * dDreieckkprozent)), y + iheight);
-            Dreieckspunkte[3, 2] = new PointF((x + iwidth), (float)(y + iheight - (iheight * dDreieckkprozent)));
-        } //Die koordinaten für die Polygone werden im bezug auf das Jeweilige Feld Berechnet
-
-        private void spielfeldtilezeichnen(int x, int y, int iwidth, int iheight, Graphics G)   //Methode um ein einzelnes Spielfeld-feld zu zeichnen
-        {
-            PointF[] hilfsarray = new PointF[3];
-
-            //int x = 50, y = 50, iwidth = 100, iheight = 100;
-            Task Feld = new Task(() =>
-            {
-                for (int j = 0; j < 4; j++)
-                {
-                    for (int i = 0; i < 3; i++)
-                    {
-                        hilfsarray[i] = new PointF(Dreieckspunkte[j, i].X + x, Dreieckspunkte[j, i].Y + y);
-                    }
-                    G.FillPolygon(new SolidBrush(Color.Blue), hilfsarray);
-                }
-                G.DrawEllipse(new Pen(Color.Blue, spielfelder[0, 0].iwidth / 22 + 1.8f), x, y, iwidth, iheight);
-                G.DrawRectangle(new Pen(Color.Blue, spielfelder[0, 0].iwidth / 22 + 1.8f), x, y, iwidth, iheight);
-                kreisausgleich = Convert.ToSingle(Math.Pow(spielfelder[0, 0].iwidth / 32f, 0.88f));
-            });
-            Feld.RunSynchronously();
-        }
-
-        //private void doublespielfeldtilezeichnen(int x, int y, int iwidth, int iheight, Graphics G)         //Methode um zwei Spielfelder auf einmal zu zeichnen (wird für die Fallanimation verwendet)
-        //{
-        //    PointF[] hilfsarray = new PointF[3];
-
-        //    Task Feld = new Task(() =>
-        //    {
-        //        for (int j = 0; j < 2; j++)
-        //        {
-        //            hilfsarray[0] = new PointF(Dreieckspunkte[2, 1].X - 1 + x, Dreieckspunkte[2, 1].Y + y);
-        //            hilfsarray[1] = new PointF(Dreieckspunkte[2, 2].X + x, Dreieckspunkte[2, 2].Y + y);
-        //            hilfsarray[2] = new PointF(Dreieckspunkte[0, 2].X + x, Dreieckspunkte[0, 2].Y + y + iheight);
-        //            spielfeldgraphic.FillPolygon(new SolidBrush(Color.Blue), hilfsarray);
-
-        //            hilfsarray[0] = new PointF(Dreieckspunkte[3, 1].X + x, Dreieckspunkte[3, 1].Y + y);
-        //            hilfsarray[1] = new PointF(Dreieckspunkte[3, 2].X + x, Dreieckspunkte[3, 2].Y + y);
-        //            hilfsarray[2] = new PointF(Dreieckspunkte[1, 2].X + x, Dreieckspunkte[1, 2].Y + y + iheight);
-        //            spielfeldgraphic.FillPolygon(new SolidBrush(Color.Blue), hilfsarray);
-        //        }
-
-        //        spielfeldgraphic.DrawEllipse(new Pen(Color.Blue, spielfelder[0, 0].iwidth / 20 + 1.5f), x, y, iwidth, iheight);
-        //        spielfeldgraphic.DrawRectangle(new Pen(Color.Blue, spielfelder[0, 0].iwidth / 20 + 1.5f), x, y, iwidth, iheight);
-        //        spielfeldgraphic.DrawEllipse(new Pen(Color.Blue, spielfelder[0, 0].iwidth / 20 + 1.5f), x, y + iheight, iwidth, iheight);
-        //        spielfeldgraphic.DrawRectangle(new Pen(Color.Blue, spielfelder[0, 0].iwidth / 20 + 1.5f), x, y + iheight, iwidth, iheight);
-        //        kreisausgleich = Convert.ToSingle(Math.Pow(spielfelder[0, 0].iwidth / 32f, 0.88f));
-
-        //    });
-        //    Feld.RunSynchronously();
-        //}
-
-        private void Form2_Paint(object sender, PaintEventArgs e)
-        {
-            if (!AimationFlag && !resizing)
-            {
-                spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
-            }
+            DreiecksPunkte[3, 0] = new PointF(iX + iWidth, iY + iHeight);
+            DreiecksPunkte[3, 1] = new PointF((float)(iX + iWidth - (iWidth * dDreieckkprozent)), iY + iHeight);
+            DreiecksPunkte[3, 2] = new PointF((iX + iWidth), (float)(iY + iHeight - (iHeight * dDreieckkprozent)));
         }
 
         private void Form2_Click(object sender, EventArgs e)
         {
-            if (this.PointToClient(Cursor.Position).X > spielfelder[0, 0].x && this.PointToClient(Cursor.Position).X < spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].x + spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].iwidth && this.PointToClient(Cursor.Position).Y > spielfelder[0, 0].y && this.PointToClient(Cursor.Position).Y < spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].y + spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].iheight)    //abfrage ob klick auf Spielfeld ist
+            if (this.PointToClient(Cursor.Position).X > Spielfelder[0, 0].iX && this.PointToClient(Cursor.Position).X < Spielfelder[iSpielfeldWidth - 1, iSpielfeldHeight - 1].iX + Spielfelder[iSpielfeldWidth - 1, iSpielfeldHeight - 1].iWidth && this.PointToClient(Cursor.Position).Y > Spielfelder[0, 0].iY && this.PointToClient(Cursor.Position).Y < Spielfelder[iSpielfeldWidth - 1, iSpielfeldHeight - 1].iY + Spielfelder[iSpielfeldWidth - 1, iSpielfeldHeight - 1].iHeight)    //abfrage ob klick auf Spielfeld ist
             {
                 int spalte, reihe = -1;
                 bool gesetzt = false;
-                spalte = (this.PointToClient(Cursor.Position).X - spielfelder[0, 0].x) / spielfelder[0, 0].iwidth;      //berechnung der Spalte
-                for (int i = iSpielfeldheight - 1; i >= 0; i--)                                                         //zählt von unten nach oben...
+                spalte = (this.PointToClient(Cursor.Position).X - Spielfelder[0, 0].iX) / Spielfelder[0, 0].iWidth;      //berechnung der Spalte
+                for (int i = iSpielfeldHeight - 1; i >= 0; i--)                                                         //zählt von unten nach oben...
                 {
-                    if (spielfelder[spalte, i].farbe == "white")                                                        //...Wenn die Farbe weis ist...
+                    if (Spielfelder[spalte, i].sFarbe == "white")                                                        //...Wenn die Farbe weis ist...
                     {
                         gesetzt = true;
-                        spielfelder[spalte, i].farbe = currentcolor;
+                        Spielfelder[spalte, i].sFarbe = sCurrentcolor;
                         Hovereffekt(-1);                                                                                 //Hovereffekt wird während der Fallanimation entfernt
-                        KreiszeichnenAnimation(spalte, i + 1, currentcolor, Bitmapgraphic);                              //...wird die animation abgespielt un das Feld Farbig
+                        KreiszeichnenAnimation(spalte, i + 1, sCurrentcolor, Bitmapgraphic);                              //...wird die animation abgespielt un das Feld Farbig
                         reihe = i;
                         i = 0;
                     }
                 }
 
-                Point[] Gewinnerkoordinaten = new Point[gewinnnummer];
+                Point[] Gewinnerkoordinaten = new Point[iGewinnAnzahl];
 
                 bool gewonnen = false;
                 if (gesetzt && reihe != -1)                                                                             //wenn ein stein gesetzt wurde
                 {
                     //überprüfung ob jemand gewonne hat
                     int infolge = 0;
-                    for (int x = 0; x < iSpielfeldwidth && !gewonnen; x++)
+                    for (int x = 0; x < iSpielfeldWidth && !gewonnen; x++)
                     {
-                        if (spielfelder[x, reihe].farbe == currentcolor)
+                        if (Spielfelder[x, reihe].sFarbe == sCurrentcolor)
                         {
                             Gewinnerkoordinaten[infolge] = new Point(x, reihe);
                             infolge++;
@@ -384,20 +254,20 @@ namespace VierGewinnt
                         else
                         {
                             infolge = 0;
-                            for (int i = 0; i < gewinnnummer; i++)
+                            for (int i = 0; i < iGewinnAnzahl; i++)
                             {
                                 Gewinnerkoordinaten[i] = new Point(0, 0);
                             }
                         }
-                        if (infolge == gewinnnummer)
+                        if (infolge == iGewinnAnzahl)
                         {
                             gewonnen = true;
                         }
                     }
                     infolge = 0;
-                    for (int y = 0; y < iSpielfeldheight && !gewonnen; y++)
+                    for (int y = 0; y < iSpielfeldHeight && !gewonnen; y++)
                     {
-                        if (spielfelder[spalte, y].farbe == currentcolor)
+                        if (Spielfelder[spalte, y].sFarbe == sCurrentcolor)
                         {
                             Gewinnerkoordinaten[infolge] = new Point(spalte, y);
                             Console.WriteLine("new Point[" + infolge + "]:" + Gewinnerkoordinaten[infolge]);
@@ -408,12 +278,12 @@ namespace VierGewinnt
                         {
                             Console.WriteLine("alle punkte löschen");
                             infolge = 0;
-                            for (int i = 0; i < gewinnnummer; i++)
+                            for (int i = 0; i < iGewinnAnzahl; i++)
                             {
                                 Gewinnerkoordinaten[i] = new Point(0, 0);
                             }
                         }
-                        if (infolge == gewinnnummer)
+                        if (infolge == iGewinnAnzahl)
                         {
                             gewonnen = true;
                         }
@@ -423,19 +293,19 @@ namespace VierGewinnt
                     int maxformat;
                     int widthheightdif;
                     xabstand = spalte - reihe;
-                    widthheightdif = iSpielfeldwidth - iSpielfeldheight;
-                    if (iSpielfeldheight > iSpielfeldwidth)
+                    widthheightdif = iSpielfeldWidth - iSpielfeldHeight;
+                    if (iSpielfeldHeight > iSpielfeldWidth)
                     {
-                        maxformat = iSpielfeldheight;
+                        maxformat = iSpielfeldHeight;
                     }
                     else
                     {
-                        maxformat = iSpielfeldwidth;
+                        maxformat = iSpielfeldWidth;
                     }
                     infolge = 0;
                     for (int xy = 0; xy < maxformat && !gewonnen; xy++)
                     {
-                        if (xy + xabstand < iSpielfeldwidth && xy + xabstand >= 0 && xy < iSpielfeldheight && xy >= 0 && spielfelder[xy + xabstand, xy].farbe == currentcolor)
+                        if (xy + xabstand < iSpielfeldWidth && xy + xabstand >= 0 && xy < iSpielfeldHeight && xy >= 0 && Spielfelder[xy + xabstand, xy].sFarbe == sCurrentcolor)
                         {
                             Gewinnerkoordinaten[infolge] = new Point(xy + xabstand, xy);
                             infolge++;
@@ -444,25 +314,25 @@ namespace VierGewinnt
                         {
                             infolge = 0;
                         }
-                        if (infolge == gewinnnummer)
+                        if (infolge == iGewinnAnzahl)
                         {
                             gewonnen = true;
                         }
                     }
-                    xabstand = -1 + (spalte - reihe + (iSpielfeldheight - (spalte * 2)));
+                    xabstand = -1 + (spalte - reihe + (iSpielfeldHeight - (spalte * 2)));
                     infolge = 0;
                     for (int xy = 0; xy < maxformat + 1 && !gewonnen; xy++)
                     {
-                        if (iSpielfeldwidth - xy - xabstand - widthheightdif < iSpielfeldwidth && iSpielfeldwidth - xy - xabstand - widthheightdif >= 0 && xy - 1 < iSpielfeldheight && xy - 1 >= 0 && spielfelder[iSpielfeldwidth - xy - xabstand - widthheightdif, xy - 1].farbe == currentcolor)
+                        if (iSpielfeldWidth - xy - xabstand - widthheightdif < iSpielfeldWidth && iSpielfeldWidth - xy - xabstand - widthheightdif >= 0 && xy - 1 < iSpielfeldHeight && xy - 1 >= 0 && Spielfelder[iSpielfeldWidth - xy - xabstand - widthheightdif, xy - 1].sFarbe == sCurrentcolor)
                         {
-                            Gewinnerkoordinaten[infolge] = new Point(iSpielfeldwidth - xy - xabstand - widthheightdif, xy - 1);
+                            Gewinnerkoordinaten[infolge] = new Point(iSpielfeldWidth - xy - xabstand - widthheightdif, xy - 1);
                             infolge++;
                         }
                         else
                         {
                             infolge = 0;
                         }
-                        if (infolge == gewinnnummer)
+                        if (infolge == iGewinnAnzahl)
                         {
                             gewonnen = true;
                         }
@@ -479,17 +349,17 @@ namespace VierGewinnt
                         {
                             Console.WriteLine(Gewinnerkoordinaten[i]);
                         }
-                        AimationFlag = true;
+                        bAimationFlag = true;
                         for (int i = 0; i < this.Width; i += 10)
                         {
                             Bitmapgraphic.FillRectangle(new SolidBrush(this.BackColor), 0, 0, this.Width, this.Height);
                             SpielsteineZeichnen(Bitmapgraphic, i);
                             SpielfeldZeichnen(Bitmapgraphic);
-                            spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
+                            Spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
                         }
-                        AimationFlag = false;
+                        bAimationFlag = false;
 
-                        if (currentcolor == "red")
+                        if (sCurrentcolor == "red")
                         {
                             Gewonnen("Rot");
                         }
@@ -499,24 +369,24 @@ namespace VierGewinnt
                         }
                     }
 
-                    if (currentcolor == "red")
+                    if (sCurrentcolor == "red")
                     {
-                        currentcolor = "yellow";
+                        sCurrentcolor = "yellow";
                         lab_Player.Text = "Player Yellow";
                     }
                     else
                     {
-                        currentcolor = "red";
+                        sCurrentcolor = "red";
                         lab_Player.Text = "Player Red";
                     }
 
                     //überpfrüfung ob noch einzug möglich ist
                     bool zugmöglich = false;
-                    for (int x = 0; x < iSpielfeldwidth; x++)
+                    for (int x = 0; x < iSpielfeldWidth; x++)
                     {
-                        for (int y = 0; y < iSpielfeldheight; y++)
+                        for (int y = 0; y < iSpielfeldHeight; y++)
                         {
-                            if (spielfelder[x, y].farbe == "white")             // wenn mindestens ein Feld weis ist, ist noch ein zug möglich
+                            if (Spielfelder[x, y].sFarbe == "white")             // wenn mindestens ein Feld weis ist, ist noch ein zug möglich
                             {
                                 zugmöglich = true;
                             }
@@ -530,191 +400,76 @@ namespace VierGewinnt
             }
         }
 
-        private void KreisDrehen(Point[] Kreiskoordinaten, int Drehungen)
+        private void Form2_MouseMove(object sender, MouseEventArgs e)
         {
-            int Drehgeschwindigkeit = 5;
-            for (int k = 0; k < Drehungen; k++)                         //schleife pro Drehung
+            int spalte = -1;
+            if (this.PointToClient(Cursor.Position).X > Spielfelder[0, 0].iX && this.PointToClient(Cursor.Position).X < Spielfelder[iSpielfeldWidth - 1, iSpielfeldHeight - 1].iX + Spielfelder[iSpielfeldWidth - 1, iSpielfeldHeight - 1].iWidth && this.PointToClient(Cursor.Position).Y > Spielfelder[0, 0].iY && this.PointToClient(Cursor.Position).Y < Spielfelder[iSpielfeldWidth - 1, iSpielfeldHeight - 1].iY + Spielfelder[iSpielfeldWidth - 1, iSpielfeldHeight - 1].iHeight)    //überprüfung ob die Maus auf dem Spielfeld hovert
             {
-                for (int j = spielfelder[0, 0].iwidth; j >= 0; j -= Drehgeschwindigkeit)       //schleife für halbe umdrehung
+                if (iOldSpalte != (this.PointToClient(Cursor.Position).X - Spielfelder[0, 0].iX) / Spielfelder[0, 0].iWidth)      //überprüfung ob die maus über einem anderen fällt ist als bei der Letzten abfrage
                 {
-                    for (int i = 0; i < Kreiskoordinaten.Length; i++)   //schleife für jeden Kreis
-                    {
-                        Bitmapgraphic.FillEllipse(new SolidBrush(this.BackColor),
-                            spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].x + kreisausgleich,
-                            spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].y + kreisausgleich,
-                            spielfelder[0, 0].iwidth - kreisausgleich * 2,
-                            spielfelder[0, 0].iheight - kreisausgleich * 2);
-
-                        Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName(spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].farbe)),
-                            spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].x + kreisausgleich + ((spielfelder[0, 0].iwidth - j) / 2),
-                            spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].y + kreisausgleich,
-                            j,
-                            spielfelder[0, 0].iheight - kreisausgleich * 2);
-
-                        spielfeldtilezeichnen(
-                            spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].x,
-                            spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].y,
-                            spielfelder[0, 0].iwidth,
-                            spielfelder[0, 0].iheight,
-                            Bitmapgraphic);
-                    }
-                    spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
+                    spalte = (this.PointToClient(Cursor.Position).X - Spielfelder[0, 0].iX) / Spielfelder[0, 0].iWidth;
+                    Hovereffekt(spalte);
                 }
-                for (int j = 0; j <= spielfelder[0, 0].iwidth; j += Drehgeschwindigkeit)      //schleife für andere hälfte
-                {
-                    for (int i = 0; i < Kreiskoordinaten.Length; i++)   //schleife für jeden Kreis
-                    {
-                        Bitmapgraphic.FillEllipse(new SolidBrush(this.BackColor),
-                            spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].x + kreisausgleich,
-                            spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].y + kreisausgleich,
-                            spielfelder[0, 0].iwidth - kreisausgleich * 2,
-                            spielfelder[0, 0].iheight - kreisausgleich * 2);
-
-                        Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName(spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].farbe)),
-                            spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].x + kreisausgleich + ((spielfelder[0, 0].iwidth - j) / 2),
-                            spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].y + kreisausgleich,
-                            j,
-                            spielfelder[0, 0].iheight - kreisausgleich * 2);
-
-                        spielfeldtilezeichnen(
-                            spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].x,
-                            spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].y,
-                            spielfelder[0, 0].iwidth,
-                            spielfelder[0, 0].iheight,
-                            Bitmapgraphic);
-                    }
-                    spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
-                }
+            }
+            else
+            {
+                Hovereffekt(-1);        //wenn die Maus nichtmehr auf dem Feld ist wird der Hovereffekt aufgehoben
             }
         }
 
-        private void KreiszeichnenAnimation(int X, int Y, string farbe, Graphics G)
+        private void Form2_Paint(object sender, PaintEventArgs e)
         {
-            int iHilfszahl = 0;
-            int iHilfszahl1 = 0;
-            int multiplyer = (int)droptime; // durch 2 teil bare Zahlen funktionieren am besten da Dann Weniger Komma stellen Entstehen die Ignoriert werden
-            Task animation1 = new Task(() =>
+            if (!bAimationFlag && !bResizing)
             {
-                AimationFlag = true;
-
-                for (int i = -multiplyer; i < Y * multiplyer; i++)
-                {
-                    if (i == -multiplyer || i + 1 == Y * multiplyer || Convert.ToInt32((i / multiplyer) + 1) >= Y)
-                    {
-                        G.FillEllipse(new SolidBrush(this.BackColor),
-                        spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
-                        spielfelder[0, 0].y + ((i - 1) / multiplyer) * spielfelder[0, 0].iheight + kreisausgleich,
-                        spielfelder[0, 0].iwidth - kreisausgleich * 2,
-                        spielfelder[0, 0].iheight - kreisausgleich * 2);
-
-                        G.FillEllipse(new SolidBrush(Color.FromName(farbe)),
-                         spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
-                         spielfelder[0, 0].y + (i / multiplyer) * spielfelder[0, 0].iheight + kreisausgleich,
-                         spielfelder[0, 0].iwidth - kreisausgleich * 2,
-                         spielfelder[0, 0].iheight - kreisausgleich * 2);
-                        if (i + 1 == Y * multiplyer && i / multiplyer > 0)
-                        {
-                            spielfeldtilezeichnen(
-                                spielfelder[X, iHilfszahl].x,
-                                spielfelder[X, i / multiplyer - 1].y,
-                                spielfelder[X, iHilfszahl].iwidth,
-                                spielfelder[X, iHilfszahl].iheight,
-                                Bitmapgraphic);
-                        }
-                    }
-                    else
-                    {
-                        Task draw = new Task(() =>
-                        {
-                            iHilfszahl = i / multiplyer;
-
-                            if (i / multiplyer + 1 < Y)
-                            {
-                                iHilfszahl1 = i / multiplyer + 1;
-                            }
-                            else
-                            {
-                                iHilfszahl1 = i / multiplyer;
-                            }
-
-                            if (i <= 0)
-                            {
-                                G.FillRectangle(new SolidBrush(this.BackColor),
-                                 spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
-                                 spielfelder[0, 0].y + (((i - 1) * spielfelder[0, 0].iheight) / multiplyer) + kreisausgleich,
-                                 spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
-                            }
-                            else
-                            {
-                                G.FillRectangle(new SolidBrush(this.BackColor),
-                                 spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
-                                 spielfelder[0, 0].y + ((i - 1) / multiplyer) * spielfelder[0, 0].iheight + kreisausgleich,
-                                 spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
-                            }
-
-                            G.FillEllipse(new SolidBrush(Color.FromName(farbe)),
-                             spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
-                             spielfelder[0, 0].y + ((i * spielfelder[0, 0].iheight) / multiplyer) + kreisausgleich,
-                             spielfelder[0, 0].iwidth - kreisausgleich * 2,
-                             spielfelder[0, 0].iheight - kreisausgleich * 2);
-
-                            spielfeldtilezeichnen(
-                                spielfelder[X, iHilfszahl].x,
-                                spielfelder[X, iHilfszahl + 1].y,
-                                spielfelder[X, iHilfszahl].iwidth,
-                                spielfelder[X, iHilfszahl].iheight,
-                                Bitmapgraphic);
-
-                            spielfeldtilezeichnen(
-                              spielfelder[X, iHilfszahl].x,
-                              spielfelder[X, iHilfszahl].y,
-                              spielfelder[X, iHilfszahl].iwidth,
-                              spielfelder[X, iHilfszahl].iheight,
-                              Bitmapgraphic);
-                            if (iHilfszahl - 1 >= 0)
-                            {
-                                spielfeldtilezeichnen(
-                              spielfelder[X, iHilfszahl].x,
-                              spielfelder[X, iHilfszahl - 1].y,
-                              spielfelder[X, iHilfszahl].iwidth,
-                              spielfelder[X, iHilfszahl].iheight,
-                              Bitmapgraphic);
-                            }
-
-                            spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
-                        });
-                        draw.RunSynchronously();
-                    }
-
-                    //Thread.Sleep((int)(100 / dropspeed));
-                }
+                Spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
             }
-            );
-            animation1.RunSynchronously();
-
-            SpielsteineZeichnen(Bitmapgraphic, 0);
-            spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
-
-            AimationFlag = false;
         }
 
-        private void Kreiszeichnen(int X, int Y, string farbe, Graphics G, int starty)
+        private void Form2_Resize(object sender, EventArgs e)
         {
-            G.FillEllipse(new SolidBrush(Color.FromName(farbe)),
-             spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
-             spielfelder[0, 0].y + Y * spielfelder[0, 0].iheight + kreisausgleich + starty,
-             spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
+            if (Bitmapgraphic != null)
+            {
+                Spielfeldframe = new Bitmap(this.Width, this.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+
+                Bitmapgraphic.FillRectangle(new SolidBrush(this.BackColor), 0, 0, this.Width, this.Height);  // wenn das Spielfeld neugezogen wird, wird es weis
+            }
+            bResizing = true;
         }
 
-        private void Gewonnen(string Gewinner)
+        private void Form2_ResizeEnd(object sender, EventArgs e)                                                // wenn das Spielfeld losgelassen wird, wird dass Spielfeld neu gezeichnet
+        {
+            if (bResizing)
+            {
+                bResizing = false;
+                iSpielfeldHeightPx = this.Height - 200;
+                iSpielfeldWidthPx = this.Width - 50;
+                SpielfeldErstellen();
+                EckenBerechnen(0, 0, Spielfelder[0, 0].iWidth, Spielfelder[0, 0].iHeight);
+
+                Spielfeldframe = new Bitmap(this.Width, this.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+                Bitmapgraphic = Graphics.FromImage(Spielfeldframe);
+                Spielfeldgraphic = this.CreateGraphics();
+
+                Bitmapgraphic.FillRectangle(new SolidBrush(this.BackColor), 0, 0, this.Width, this.Height);
+                SpielsteineZeichnen(Bitmapgraphic, 0);
+
+                SpielfeldZeichnen(Bitmapgraphic);
+
+                Spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
+
+                //Bitmapgraphic.FillRectangle(new SolidBrush(this.BackColor), 0, 0, this.Width, this.Height);
+            }
+        }
+
+        private void Gewonnen(string sGewinner)
         {
             //this.Hide();
-            var Result = MessageBox.Show($"{Gewinner} Hat gewonnen",
-                $"{Gewinner} hat Gewonnen", MessageBoxButtons.RetryCancel, MessageBoxIcon.Information);
+            var Result = MessageBox.Show($"{sGewinner} Hat gewonnen",
+                $"{sGewinner} hat Gewonnen", MessageBoxButtons.RetryCancel, MessageBoxIcon.Information);
 
             if (Result == DialogResult.Retry)
             {
-                Form2 frm = new Form2(Fullscreen);
+                Form2 frm = new Form2();
 
                 frm.Show();
                 this.Hide();
@@ -728,6 +483,294 @@ namespace VierGewinnt
             }
         }
 
+        private void Hovereffekt(int iSpalte)
+        {
+            if (iSpalte >= 0)
+            {
+                if (iOldSpalte >= 0)
+                {
+                    // hoverkreis entfernen:
+                    Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName("white")), Spielfelder[iOldSpalte, 0].iX + dKreisausgleich, Spielfelder[iOldSpalte, 0].iY - Spielfelder[0, 0].iHeight + dKreisausgleich - 2, Spielfelder[0, 0].iWidth - dKreisausgleich * 2, Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
+                }
+
+                // hoverkreis zeichnen:
+                Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName(sCurrentcolor)), Spielfelder[iSpalte, 0].iX + dKreisausgleich, Spielfelder[iSpalte, 0].iY - Spielfelder[0, 0].iHeight + dKreisausgleich - 2, Spielfelder[0, 0].iWidth - dKreisausgleich * 2, Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
+                iOldSpalte = iSpalte;
+            }
+            else        // wenn minus 1 übergeben wird
+            {
+                if (iOldSpalte >= 0)
+                {
+                    // hoverkreis entfernen:
+                    Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName("white")), Spielfelder[iOldSpalte, 0].iX + dKreisausgleich, Spielfelder[iOldSpalte, 0].iY - Spielfelder[0, 0].iHeight + dKreisausgleich - 2, Spielfelder[0, 0].iWidth - dKreisausgleich * 2, Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
+                }
+                iOldSpalte = iSpalte;
+            }
+            Spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
+        }
+
+        private void KreisDrehen(Point[] KreisKoordinaten, int iDrehungen)
+        {
+            int Drehgeschwindigkeit = 5;
+            for (int k = 0; k < iDrehungen; k++)                         //schleife pro Drehung
+            {
+                for (int j = Spielfelder[0, 0].iWidth; j >= 0; j -= Drehgeschwindigkeit)       //schleife für halbe umdrehung
+                {
+                    for (int i = 0; i < KreisKoordinaten.Length; i++)   //schleife für jeden Kreis
+                    {
+                        Bitmapgraphic.FillEllipse(new SolidBrush(this.BackColor),
+                            Spielfelder[KreisKoordinaten[i].X, KreisKoordinaten[i].Y].iX + dKreisausgleich,
+                            Spielfelder[KreisKoordinaten[i].X, KreisKoordinaten[i].Y].iY + dKreisausgleich,
+                            Spielfelder[0, 0].iWidth - dKreisausgleich * 2,
+                            Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
+
+                        Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName(Spielfelder[KreisKoordinaten[i].X, KreisKoordinaten[i].Y].sFarbe)),
+                            Spielfelder[KreisKoordinaten[i].X, KreisKoordinaten[i].Y].iX + dKreisausgleich + ((Spielfelder[0, 0].iWidth - j) / 2),
+                            Spielfelder[KreisKoordinaten[i].X, KreisKoordinaten[i].Y].iY + dKreisausgleich,
+                            j,
+                            Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
+
+                        SpielfeldTileZeichnen(
+                            Spielfelder[KreisKoordinaten[i].X, KreisKoordinaten[i].Y].iX,
+                            Spielfelder[KreisKoordinaten[i].X, KreisKoordinaten[i].Y].iY,
+                            Spielfelder[0, 0].iWidth,
+                            Spielfelder[0, 0].iHeight,
+                            Bitmapgraphic);
+                    }
+                    Spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
+                }
+                for (int j = 0; j <= Spielfelder[0, 0].iWidth; j += Drehgeschwindigkeit)      //schleife für andere hälfte
+                {
+                    for (int i = 0; i < KreisKoordinaten.Length; i++)   //schleife für jeden Kreis
+                    {
+                        Bitmapgraphic.FillEllipse(new SolidBrush(this.BackColor),
+                            Spielfelder[KreisKoordinaten[i].X, KreisKoordinaten[i].Y].iX + dKreisausgleich,
+                            Spielfelder[KreisKoordinaten[i].X, KreisKoordinaten[i].Y].iY + dKreisausgleich,
+                            Spielfelder[0, 0].iWidth - dKreisausgleich * 2,
+                            Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
+
+                        Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName(Spielfelder[KreisKoordinaten[i].X, KreisKoordinaten[i].Y].sFarbe)),
+                            Spielfelder[KreisKoordinaten[i].X, KreisKoordinaten[i].Y].iX + dKreisausgleich + ((Spielfelder[0, 0].iWidth - j) / 2),
+                            Spielfelder[KreisKoordinaten[i].X, KreisKoordinaten[i].Y].iY + dKreisausgleich,
+                            j,
+                            Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
+
+                        SpielfeldTileZeichnen(
+                            Spielfelder[KreisKoordinaten[i].X, KreisKoordinaten[i].Y].iX,
+                            Spielfelder[KreisKoordinaten[i].X, KreisKoordinaten[i].Y].iY,
+                            Spielfelder[0, 0].iWidth,
+                            Spielfelder[0, 0].iHeight,
+                            Bitmapgraphic);
+                    }
+                    Spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
+                }
+            }
+        }
+
+        private void Kreiszeichnen(int iX, int iY, string sFarbe, Graphics G, int iStartY)
+        {
+            G.FillEllipse(new SolidBrush(Color.FromName(sFarbe)),
+             Spielfelder[0, 0].iX + iX * Spielfelder[0, 0].iWidth + dKreisausgleich,
+             Spielfelder[0, 0].iY + iY * Spielfelder[0, 0].iHeight + dKreisausgleich + iStartY,
+             Spielfelder[0, 0].iWidth - dKreisausgleich * 2, Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
+        }
+
+        private void KreiszeichnenAnimation(int iX, int iY, string sFarbe, Graphics G)
+        {
+            int iHilfszahl = 0;
+            int iHilfszahl1 = 0;
+            int multiplyer = (int)fDroptime; // durch 2 teil bare Zahlen funktionieren am besten da Dann Weniger Komma stellen Entstehen die Ignoriert werden
+            Task animation1 = new Task(() =>
+            {
+                bAimationFlag = true;
+
+                for (int i = -multiplyer; i < iY * multiplyer; i++)
+                {
+                    if (i == -multiplyer || i + 1 == iY * multiplyer || Convert.ToInt32((i / multiplyer) + 1) >= iY)
+                    {
+                        G.FillEllipse(new SolidBrush(this.BackColor),
+                        Spielfelder[0, 0].iX + iX * Spielfelder[0, 0].iWidth + dKreisausgleich,
+                        Spielfelder[0, 0].iY + ((i - 1) / multiplyer) * Spielfelder[0, 0].iHeight + dKreisausgleich,
+                        Spielfelder[0, 0].iWidth - dKreisausgleich * 2,
+                        Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
+
+                        G.FillEllipse(new SolidBrush(Color.FromName(sFarbe)),
+                         Spielfelder[0, 0].iX + iX * Spielfelder[0, 0].iWidth + dKreisausgleich,
+                         Spielfelder[0, 0].iY + (i / multiplyer) * Spielfelder[0, 0].iHeight + dKreisausgleich,
+                         Spielfelder[0, 0].iWidth - dKreisausgleich * 2,
+                         Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
+                        if (i + 1 == iY * multiplyer && i / multiplyer > 0)
+                        {
+                            SpielfeldTileZeichnen(
+                                Spielfelder[iX, iHilfszahl].iX,
+                                Spielfelder[iX, i / multiplyer - 1].iY,
+                                Spielfelder[iX, iHilfszahl].iWidth,
+                                Spielfelder[iX, iHilfszahl].iHeight,
+                                Bitmapgraphic);
+                        }
+                    }
+                    else
+                    {
+                        Task draw = new Task(() =>
+                        {
+                            iHilfszahl = i / multiplyer;
+
+                            if (i / multiplyer + 1 < iY)
+                            {
+                                iHilfszahl1 = i / multiplyer + 1;
+                            }
+                            else
+                            {
+                                iHilfszahl1 = i / multiplyer;
+                            }
+
+                            if (i <= 0)
+                            {
+                                G.FillRectangle(new SolidBrush(this.BackColor),
+                                 Spielfelder[0, 0].iX + iX * Spielfelder[0, 0].iWidth + dKreisausgleich,
+                                 Spielfelder[0, 0].iY + (((i - 1) * Spielfelder[0, 0].iHeight) / multiplyer) + dKreisausgleich,
+                                 Spielfelder[0, 0].iWidth - dKreisausgleich * 2, Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
+                            }
+                            else
+                            {
+                                G.FillRectangle(new SolidBrush(this.BackColor),
+                                 Spielfelder[0, 0].iX + iX * Spielfelder[0, 0].iWidth + dKreisausgleich,
+                                 Spielfelder[0, 0].iY + ((i - 1) / multiplyer) * Spielfelder[0, 0].iHeight + dKreisausgleich,
+                                 Spielfelder[0, 0].iWidth - dKreisausgleich * 2, Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
+                            }
+
+                            G.FillEllipse(new SolidBrush(Color.FromName(sFarbe)),
+                             Spielfelder[0, 0].iX + iX * Spielfelder[0, 0].iWidth + dKreisausgleich,
+                             Spielfelder[0, 0].iY + ((i * Spielfelder[0, 0].iHeight) / multiplyer) + dKreisausgleich,
+                             Spielfelder[0, 0].iWidth - dKreisausgleich * 2,
+                             Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
+
+                            SpielfeldTileZeichnen(
+                                Spielfelder[iX, iHilfszahl].iX,
+                                Spielfelder[iX, iHilfszahl + 1].iY,
+                                Spielfelder[iX, iHilfszahl].iWidth,
+                                Spielfelder[iX, iHilfszahl].iHeight,
+                                Bitmapgraphic);
+
+                            SpielfeldTileZeichnen(
+                              Spielfelder[iX, iHilfszahl].iX,
+                              Spielfelder[iX, iHilfszahl].iY,
+                              Spielfelder[iX, iHilfszahl].iWidth,
+                              Spielfelder[iX, iHilfszahl].iHeight,
+                              Bitmapgraphic);
+                            if (iHilfszahl - 1 >= 0)
+                            {
+                                SpielfeldTileZeichnen(
+                              Spielfelder[iX, iHilfszahl].iX,
+                              Spielfelder[iX, iHilfszahl - 1].iY,
+                              Spielfelder[iX, iHilfszahl].iWidth,
+                              Spielfelder[iX, iHilfszahl].iHeight,
+                              Bitmapgraphic);
+                            }
+
+                            Spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
+                        });
+                        draw.RunSynchronously();
+                    }
+
+                    //Thread.Sleep((int)(100 / dropspeed));
+                }
+            }
+            );
+            animation1.RunSynchronously();
+
+            SpielsteineZeichnen(Bitmapgraphic, 0);
+            Spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
+
+            bAimationFlag = false;
+        }
+
+        private void SpielfeldErstellen()
+        {
+            int ispielfeldformat;
+            if (iSpielfeldHeightPx / iSpielfeldHeight <= iSpielfeldWidthPx / iSpielfeldWidth)               //spielfeldformat wird so gewählt, dass das Spielfeld immer in das Fenster passt
+
+            {
+                ispielfeldformat = iSpielfeldHeightPx / iSpielfeldHeight;
+            }
+            else
+            {
+                ispielfeldformat = iSpielfeldWidthPx / iSpielfeldWidth;
+            }
+            for (int x = 0; x < iSpielfeldWidth; x++)
+            {
+                for (int y = 0; y < iSpielfeldHeight; y++)
+                {
+                    Spielfelder[x, y].iX = (this.Width / 2) - (ispielfeldformat * iSpielfeldWidth / 2) + x * ispielfeldformat;        //Struct wird angelegt
+                    Spielfelder[x, y].iY = (this.Height / 2) - (ispielfeldformat * iSpielfeldHeight / 2) + y * ispielfeldformat;
+                    Spielfelder[x, y].iWidth = ispielfeldformat;
+                    Spielfelder[x, y].iHeight = ispielfeldformat;
+                }
+            }
+        }
+
+        private void SpielfeldTileZeichnen(int iX, int iY, int iWidth, int iHeight, Graphics G)   //Methode um ein einzelnes Spielfeld-feld zu zeichnen
+        {
+            PointF[] hilfsarray = new PointF[3];
+
+            //int x = 50, y = 50, iwidth = 100, iheight = 100;
+            Task Feld = new Task(() =>
+            {
+                for (int j = 0; j < 4; j++)
+                {
+                    for (int i = 0; i < 3; i++)
+                    {
+                        hilfsarray[i] = new PointF(DreiecksPunkte[j, i].X + iX, DreiecksPunkte[j, i].Y + iY);
+                    }
+                    G.FillPolygon(new SolidBrush(Color.Blue), hilfsarray);
+                }
+                G.DrawEllipse(new Pen(Color.Blue, Spielfelder[0, 0].iWidth / 22 + 1.8f), iX, iY, iWidth, iHeight);
+                G.DrawRectangle(new Pen(Color.Blue, Spielfelder[0, 0].iWidth / 22 + 1.8f), iX, iY, iWidth, iHeight);
+                dKreisausgleich = Convert.ToSingle(Math.Pow(Spielfelder[0, 0].iWidth / 32f, 0.88f));
+            });
+            Feld.RunSynchronously();
+        }
+
+        private void SpielfeldZeichnen(Graphics G)
+        {
+            for (int x = 0; x < iSpielfeldWidth; x++)
+            {
+                for (int y = 0; y < iSpielfeldHeight; y++)
+                {
+                    SpielfeldTileZeichnen(Spielfelder[x, y].iX, Spielfelder[x, y].iY, Spielfelder[x, y].iWidth, Spielfelder[x, y].iHeight, G);       //Struct wird benutzt um Das Spielfeld zu Zeichnen
+                }
+            }
+
+            //spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
+        }
+
+        private void SpielsteineZeichnen(Graphics G, int iStartY)
+        {
+            for (int x = 0; x < iSpielfeldWidth; x++)
+            {
+                for (int y = 0; y < iSpielfeldHeight; y++)
+                {
+                    if (Spielfelder[x, y].sFarbe != "white" && Spielfelder[x, y].sFarbe != null)                                                  //wenn die Farbe des Kreises Nicht weis ist wird er auch noch gezeichnet
+                    {
+                        Kreiszeichnen(x, y, Spielfelder[x, y].sFarbe, Bitmapgraphic, iStartY);
+                    }
+                }
+            }
+
+            //spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
+        }
+
+        private void UhrStarten()
+        {
+            Task uhr = Task.Run(() =>
+            {
+                timer.Tick += new EventHandler(UhrUpdate);
+                timer.Interval = 1000;
+                timer.Start();
+                timer.Enabled = true;
+            });
+        }
+
         private void UhrUpdate(Object Obj, EventArgs e)
         {
             Task uhr = Task.Run(() =>
@@ -738,89 +781,6 @@ namespace VierGewinnt
                     lab_Timer.Text = VergangeneSekunden.ToLongTimeString();
                 });
             });
-        }
-
-        private void Form2_MouseMove(object sender, MouseEventArgs e)
-        {
-            int spalte = -1;
-            if (this.PointToClient(Cursor.Position).X > spielfelder[0, 0].x && this.PointToClient(Cursor.Position).X < spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].x + spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].iwidth && this.PointToClient(Cursor.Position).Y > spielfelder[0, 0].y && this.PointToClient(Cursor.Position).Y < spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].y + spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].iheight)    //überprüfung ob die Maus auf dem Spielfeld hovert
-            {
-                if (oldspalte != (this.PointToClient(Cursor.Position).X - spielfelder[0, 0].x) / spielfelder[0, 0].iwidth)      //überprüfung ob die maus über einem anderen fällt ist als bei der Letzten abfrage
-                {
-                    spalte = (this.PointToClient(Cursor.Position).X - spielfelder[0, 0].x) / spielfelder[0, 0].iwidth;
-                    Hovereffekt(spalte);
-                }
-            }
-            else
-            {
-                Hovereffekt(-1);        //wenn die Maus nichtmehr auf dem Feld ist wird der Hovereffekt aufgehoben
-            }
-        }
-
-        private int oldspalte = 0;
-
-        private void Hovereffekt(int spalte)
-        {
-            if (spalte >= 0)
-            {
-                if (oldspalte >= 0)
-                {
-                    // hoverkreis entfernen:
-                    Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName("white")), spielfelder[oldspalte, 0].x + kreisausgleich, spielfelder[oldspalte, 0].y - spielfelder[0, 0].iheight + kreisausgleich - 2, spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
-                }
-
-                // hoverkreis zeichnen:
-                Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName(currentcolor)), spielfelder[spalte, 0].x + kreisausgleich, spielfelder[spalte, 0].y - spielfelder[0, 0].iheight + kreisausgleich - 2, spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
-                oldspalte = spalte;
-            }
-            else        // wenn minus 1 übergeben wird
-            {
-                if (oldspalte >= 0)
-                {
-                    // hoverkreis entfernen:
-                    Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName("white")), spielfelder[oldspalte, 0].x + kreisausgleich, spielfelder[oldspalte, 0].y - spielfelder[0, 0].iheight + kreisausgleich - 2, spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
-                }
-                oldspalte = spalte;
-            }
-            spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
-        }
-
-        private bool resizing = false;
-
-        private void Form2_Resize(object sender, EventArgs e)
-        {
-            if (Bitmapgraphic != null)
-            {
-                Spielfeldframe = new Bitmap(this.Width, this.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-
-                Bitmapgraphic.FillRectangle(new SolidBrush(this.BackColor), 0, 0, this.Width, this.Height);  // wenn das Spielfeld neugezogen wird, wird es weis
-            }
-            resizing = true;
-        }
-
-        private void Form2_ResizeEnd(object sender, EventArgs e)                                                // wenn das Spielfeld losgelassen wird, wird dass Spielfeld neu gezeichnet
-        {
-            if (resizing)
-            {
-                resizing = false;
-                iSpielfeldheightpx = this.Height - 200;
-                iSpielfeldwidthpx = this.Width - 50;
-                SpielfeldErstellen();
-                EckenBerechnen(0, 0, spielfelder[0, 0].iwidth, spielfelder[0, 0].iheight);
-
-                Spielfeldframe = new Bitmap(this.Width, this.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
-                Bitmapgraphic = Graphics.FromImage(Spielfeldframe);
-                spielfeldgraphic = this.CreateGraphics();
-
-                Bitmapgraphic.FillRectangle(new SolidBrush(this.BackColor), 0, 0, this.Width, this.Height);
-                SpielsteineZeichnen(Bitmapgraphic, 0);
-
-                SpielfeldZeichnen(Bitmapgraphic);
-
-                spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
-
-                //Bitmapgraphic.FillRectangle(new SolidBrush(this.BackColor), 0, 0, this.Width, this.Height);
-            }
         }
     }
 }
