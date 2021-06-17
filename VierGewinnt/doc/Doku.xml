@@ -138,6 +138,23 @@
             the contents of this method with the code editor.
             </summary>
         </member>
+        <member name="T:VierGewinnt.Form3">
+             <summary>
+            
+             Kann Nach Offen Servern Im Netzwerk Suchen (192.168)
+            
+             Man kann ein spiel auf machen auf das jemand conecten kann
+            
+             Mit einem offenen spiel connecten
+            
+             Der Code Fürs Game Ist der Gleiche Wie Im Lokalen (Form2)
+             Unterschiedlich ist nur das Alle Label Änderungen Mit invoke von einem anderen thread aufgerufen werden da diese meist nicht im main thread Aufgreiden werden
+             Block und MeinZug Blokieren am Anfang die spielfeld erstellung und dann immer wenn man nicht dran ist
+             Von der Click Event Funktion Gibt es eine Kopie Die Nur Dien Empfangenen zug übergeben bekommt und die gleiche logig mit diesem aus führt wie als häte man es selbst gemacht
+             Nach Dem man selbst Gecklickt hat wird der zug beendet und weggeschickt
+            
+             </summary>
+        </member>
         <member name="M:VierGewinnt.Form3.AllocConsole">
             <summary>
             Erlaubt Uns Zum Form eine console zu starten
@@ -223,8 +240,8 @@
             wennn er dies nich kann bricht er ab und meldet über das label das es nicht geklappt hat
             Wenn er eine verbindung hat beginnt der daten austauscht und es wird angefangen zu lauschen um die parameter fürs spiel zu empfangen
             </summary>
-            <param name="sender"></param>
-            <param name="e"></param>
+            <param name="sender">object sender</param>
+            <param name="e"> EventArgs</param>
         </member>
         <member name="M:VierGewinnt.Form3.backgroundWorker1_DoWork(System.Object,System.ComponentModel.DoWorkEventArgs)">
             <summary>
