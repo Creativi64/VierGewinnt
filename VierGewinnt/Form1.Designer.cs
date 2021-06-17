@@ -92,11 +92,11 @@ namespace VierGewinnt
             // trackBarX
             // 
             this.trackBarX.BackColor = System.Drawing.Color.White;
-            this.trackBarX.Location = new System.Drawing.Point(297, 309);
+            this.trackBarX.Location = new System.Drawing.Point(300, 309);
             this.trackBarX.Maximum = 16;
             this.trackBarX.Name = "trackBarX";
             this.trackBarX.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.trackBarX.Size = new System.Drawing.Size(176, 45);
+            this.trackBarX.Size = new System.Drawing.Size(185, 45);
             this.trackBarX.TabIndex = 7;
             this.trackBarX.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
             this.trackBarX.Scroll += new System.EventHandler(this.TrackBarX_Scroll);
@@ -110,7 +110,7 @@ namespace VierGewinnt
             this.trackBarY.Orientation = System.Windows.Forms.Orientation.Vertical;
             this.trackBarY.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.trackBarY.RightToLeftLayout = true;
-            this.trackBarY.Size = new System.Drawing.Size(45, 176);
+            this.trackBarY.Size = new System.Drawing.Size(45, 185);
             this.trackBarY.TabIndex = 8;
             this.trackBarY.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
             this.trackBarY.Scroll += new System.EventHandler(this.TrackBarY_Scroll);
@@ -118,9 +118,9 @@ namespace VierGewinnt
             // panel1
             // 
             this.panel1.Controls.Add(this.panel2);
-            this.panel1.Location = new System.Drawing.Point(512, 267);
+            this.panel1.Location = new System.Drawing.Point(512, 287);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(27, 56);
+            this.panel1.Size = new System.Drawing.Size(27, 26);
             this.panel1.TabIndex = 9;
             // 
             // panel2
@@ -133,9 +133,9 @@ namespace VierGewinnt
             // panel3
             // 
             this.panel3.Controls.Add(this.panel4);
-            this.panel3.Location = new System.Drawing.Point(468, 309);
+            this.panel3.Location = new System.Drawing.Point(488, 309);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(71, 29);
+            this.panel3.Size = new System.Drawing.Size(51, 34);
             this.panel3.TabIndex = 11;
             // 
             // panel4
