@@ -200,5 +200,12 @@ namespace VierGewinnt
             iYstart = iYstartMin + (iSpielfeldHeightMax - Form2.iSpielfeldHeight) * iSpielfeldFormat;
             SpielfeldZeichnen();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Form4 frm = new();
+            frm.Show();
+            this.Hide();
+        }
     }
 }

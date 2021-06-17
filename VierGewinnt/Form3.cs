@@ -353,6 +353,7 @@ namespace VierGewinnt
                 }
                 iPAustasuchen.Wait();
             } while (EmpfangeneIp == null);
+
             AndererSpieler = IPAddress.Parse(EmpfangeneIp);
             lab_VerbundenMit.Text = $"Verbunden Mit: {AndererSpieler}";
 
