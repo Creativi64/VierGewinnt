@@ -16,8 +16,8 @@ namespace VierGewinnt
     public partial class Form4 : Form
     {
         private string sBotColor = "red";
-        public static int iSpielfeldHeight = 4;//spielfeldhöhe in spielfeldern
-        public static int iSpielfeldWidth = 4; //spielfeldbreite in spielfeldern
+        public static int iSpielfeldHeight = Form2.iSpielfeldHeight;//spielfeldhöhe in spielfeldern
+        public static int iSpielfeldWidth = Form2.iSpielfeldHeight; //spielfeldbreite in spielfeldern
 
         public SpielfeldTile[,] Spielfelder;
         private PointF[,] DreiecksPunkte;
@@ -224,45 +224,189 @@ namespace VierGewinnt
 
         private void Botzug()
         {
-            int zuegmoeglichkeiten = 0;
+            Thread.Sleep(200);
 
-            Spielfeld[] allezuege = new Spielfeld[iSpielfeldWidth];
-            for (int i = 0; i < iSpielfeldWidth; i++)
+            int spalte = -1, reihe = -1;
+            bool gesetzt = false;
+            while (!gesetzt)
             {
-                allezuege[i].spielstein = new string[iSpielfeldWidth, iSpielfeldHeight];
+                Random rand = new Random();
+                spalte = rand.Next(0, iSpielfeldWidth);
+                for (int i = iSpielfeldHeight - 1; i >= 0; i--)                                                         //zählt von unten nach oben...
+                {
+                    if (Spielfelder[spalte, i].sFarbe == "white")                                                        //...Wenn die Farbe weis ist...
+                    {
+                        gesetzt = true;
+                        Spielfelder[spalte, i].sFarbe = sCurrentcolor;
+                        Hovereffekt(-1);                                                                                 //Hovereffekt wird während der Fallanimation entfernt
+                        KreiszeichnenAnimation(spalte, i + 1, sCurrentcolor, Bitmapgraphic);                              //...wird die animation abgespielt un das Feld Farbig
+                        reihe = i;
+                        i = 0;
+                    }
+                }
+            }
+
+
+            Point[] Gewinnerkoordinaten = new Point[iGewinnAnzahl];
+
+            bool gewonnen = false;
+            if (gesetzt && reihe != -1)                                                                             //wenn ein stein gesetzt wurde
+            {
+                //überprüfung ob jemand gewonne hat
+                int infolge = 0;
+                for (int x = 0; x < iSpielfeldWidth && !gewonnen; x++)
+                {
+                    if (Spielfelder[x, reihe].sFarbe == sCurrentcolor)
+                    {
+                        Gewinnerkoordinaten[infolge] = new Point(x, reihe);
+                        infolge++;
+                    }
+                    else
+                    {
+                        infolge = 0;
+                        for (int i = 0; i < iGewinnAnzahl; i++)
+                        {
+                            Gewinnerkoordinaten[i] = new Point(0, 0);
+                        }
+                    }
+                    if (infolge == iGewinnAnzahl)
+                    {
+                        gewonnen = true;
+                    }
+                }
+                infolge = 0;
+                for (int y = 0; y < iSpielfeldHeight && !gewonnen; y++)
+                {
+                    if (Spielfelder[spalte, y].sFarbe == sCurrentcolor)
+                    {
+                        Gewinnerkoordinaten[infolge] = new Point(spalte, y);
+                        Console.WriteLine("new Point[" + infolge + "]:" + Gewinnerkoordinaten[infolge]);
+
+                        infolge++;
+                    }
+                    else
+                    {
+                        Console.WriteLine("alle punkte löschen");
+                        infolge = 0;
+                        for (int i = 0; i < iGewinnAnzahl; i++)
+                        {
+                            Gewinnerkoordinaten[i] = new Point(0, 0);
+                        }
+                    }
+                    if (infolge == iGewinnAnzahl)
+                    {
+                        gewonnen = true;
+                    }
+                }
+
+                int xabstand;
+                int maxformat;
+                int widthheightdif;
+                xabstand = spalte - reihe;
+                widthheightdif = iSpielfeldWidth - iSpielfeldHeight;
+                if (iSpielfeldHeight > iSpielfeldWidth)
+                {
+                    maxformat = iSpielfeldHeight;
+                }
+                else
+                {
+                    maxformat = iSpielfeldWidth;
+                }
+                infolge = 0;
+                for (int xy = 0; xy < maxformat && !gewonnen; xy++)
+                {
+                    if (xy + xabstand < iSpielfeldWidth && xy + xabstand >= 0 && xy < iSpielfeldHeight && xy >= 0 && Spielfelder[xy + xabstand, xy].sFarbe == sCurrentcolor)
+                    {
+                        Gewinnerkoordinaten[infolge] = new Point(xy + xabstand, xy);
+                        infolge++;
+                    }
+                    else
+                    {
+                        infolge = 0;
+                    }
+                    if (infolge == iGewinnAnzahl)
+                    {
+                        gewonnen = true;
+                    }
+                }
+                xabstand = -1 + (spalte - reihe + (iSpielfeldHeight - (spalte * 2)));
+                infolge = 0;
+                for (int xy = 0; xy < maxformat + 1 && !gewonnen; xy++)
+                {
+                    if (iSpielfeldWidth - xy - xabstand - widthheightdif < iSpielfeldWidth && iSpielfeldWidth - xy - xabstand - widthheightdif >= 0 && xy - 1 < iSpielfeldHeight && xy - 1 >= 0 && Spielfelder[iSpielfeldWidth - xy - xabstand - widthheightdif, xy - 1].sFarbe == sCurrentcolor)
+                    {
+                        Gewinnerkoordinaten[infolge] = new Point(iSpielfeldWidth - xy - xabstand - widthheightdif, xy - 1);
+                        infolge++;
+                    }
+                    else
+                    {
+                        infolge = 0;
+                    }
+                    if (infolge == iGewinnAnzahl)
+                    {
+                        gewonnen = true;
+                    }
+                }
+
+                if (gewonnen)
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        Console.WriteLine(Gewinnerkoordinaten[i]);
+                    }
+                    KreisDrehen(Gewinnerkoordinaten, 5);
+                    for (int i = 0; i < 4; i++)
+                    {
+                        Console.WriteLine(Gewinnerkoordinaten[i]);
+                    }
+                    bAimationFlag = true;
+                    for (int i = 0; i < this.Width; i += 10)
+                    {
+                        Bitmapgraphic.FillRectangle(new SolidBrush(this.BackColor), 0, 0, this.Width, this.Height);
+                        SpielsteineZeichnen(Bitmapgraphic, i);
+                        SpielfeldZeichnen(Bitmapgraphic);
+                        Spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
+                    }
+                    bAimationFlag = false;
+
+                    if (sCurrentcolor == "red")
+                    {
+                        Gewonnen("Rot");
+                    }
+                    else
+                    {
+                        Gewonnen("Gelb");
+                    }
+                }
+
+                if (sCurrentcolor == "red")
+                {
+                    sCurrentcolor = "yellow";
+                    lab_Player.Text = "Player Yellow";
+                }
+                else
+                {
+                    sCurrentcolor = "red";
+                    lab_Player.Text = "Player Red";
+                }
+
+                //überpfrüfung ob noch einzug möglich ist
+                bool zugmöglich = false;
                 for (int x = 0; x < iSpielfeldWidth; x++)
                 {
                     for (int y = 0; y < iSpielfeldHeight; y++)
                     {
-                        allezuege[i].spielstein[x, y] = Spielfelder[x, y].sFarbe;
+                        if (Spielfelder[x, y].sFarbe == "white")             // wenn mindestens ein Feld weis ist, ist noch ein zug möglich
+                        {
+                            zugmöglich = true;
+                        }
                     }
                 }
-            }
-            for (int i = 0; i < iSpielfeldWidth; i++)
-            {
-                allezuege[i].spielstein = moeglicherzug(allezuege[i].spielstein, i);
-            }
-        }
-
-        private string[,] moeglicherzug(string[,] farben, int spalte)
-        {
-            int reihe = -1;
-            bool gesetzt = false;
-            for (int i = iSpielfeldHeight - 1; i >= 0 && !gesetzt; i--)                                                         //zählt von unten nach oben...
-            {
-                if (Spielfelder[spalte, i].sFarbe == "white")                                                        //...Wenn die Farbe weis ist...
+                if (!zugmöglich)
                 {
-                    gesetzt = true;
-                    farben[spalte, i] = sBotColor;
-                    reihe = i;
+                    Gewonnen("niemand");
                 }
             }
-            return farben;
-        }
-
-        private int zugbewertung(string[,] farben)
-        {
-           
         }
 
         private void Form2_Click(object sender, EventArgs e)
@@ -444,6 +588,10 @@ namespace VierGewinnt
                     {
                         Gewonnen("niemand");
                     }
+                }
+                if(gesetzt)
+                {
+                    Botzug();
                 }
             }
         }
