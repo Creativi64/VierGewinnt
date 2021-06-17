@@ -55,12 +55,12 @@ namespace VierGewinnt
         /// <summary>
         /// Signaliseirt Den Task/Threads ob was Empfangen wurde damit sie nicht mehr wartenüssen
         /// </summary>
-        public static ManualResetEvent EmpfangenSignal = new ManualResetEvent(false);
+        private static ManualResetEvent EmpfangenSignal = new(false);
 
         /// <summary>
         /// Mein Zug Signalisert wann Der Eigene Zug Zuendet ist undnicht mehr darauf gewartet werden muss Das man sein zug macht
         /// </summary>
-        public static ManualResetEvent MeinZugSignal = new ManualResetEvent(false);
+        private static ManualResetEvent MeinZugSignal = new(false);
 
         #region GameParams
 
@@ -82,7 +82,7 @@ namespace VierGewinnt
 
         private bool bAimationFlag = false;//Animationsflag wird angeschalten wenn eine Animation stattfindet, da in dieser zeit nicht Redrawt werden soll
         private bool bResizing = false;
-       
+
         private Bitmap Spielfeldframe;
 
         private Graphics Spielfeldgraphic;
@@ -189,7 +189,6 @@ namespace VierGewinnt
             });
         }
 
-
         /// <summary>
         /// Zeig Die Erste ip von einem selbst an
         /// </summary>
@@ -198,6 +197,7 @@ namespace VierGewinnt
             IPAddress[] ipv4Addresses = Array.FindAll(Dns.GetHostEntry(string.Empty).AddressList, a => a.AddressFamily == AddressFamily.InterNetwork);
             lab_MeineIp.Text = $"MeineIP: {ipv4Addresses[0]}";
         }
+
         /// <summary>
         /// zufällige farbewählen die dann als erste eine spielzug macht
         /// </summary>
@@ -321,7 +321,6 @@ namespace VierGewinnt
         /// <param name="e">EventArgs</param>
         private void ServerHosten_Click(object sender, EventArgs e)
         {
-         
             /// HOST IST IMMER RED
 
             btn_Suchen.Visible = false;
@@ -380,12 +379,12 @@ namespace VierGewinnt
             EmpfangenSignal.WaitOne();
 
             Console.WriteLine("Spieldaten ausgetauischt");
-           
+
             /// je nachdem welche Farbe Anfängt wird Ein Andere Spiel Verlauf Genutzt wenn die Farbe Rot ist wird 1. Genutzt
             /// wenn die farbe nicht so ist dann 2.
             /// <example>
             /// | = listen, - = Senden
-            /// 
+            ///
             /// 1.
             /// Es wird zuerst Selbst Gesendet und dann Empangen und wieder Gesendet
             /// - |
@@ -401,7 +400,7 @@ namespace VierGewinnt
             /// ...
             /// <example>
             /// Dies Muss immer mit der Gegen seite Syncron laufen
-      
+
             if (sCurrentcolor == "red")
             {
                 // eigenen Spiezugmachen
@@ -505,14 +504,14 @@ namespace VierGewinnt
         private void btn_ConnectTo_Click(object sender, EventArgs e)
         {
             /// CLIENT IST IMMER YELLOW
-            
+
             /// die Ip adresse prüfen
             if (IPAddress.TryParse(txB_VerbindenIP.Text, out IPAddress _IP))
             {
                 /// prüfen ob man sich auf die adresse verbidnen kann
-                Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                Socket s = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 IPAddress Ip = IPAddress.Parse(txB_VerbindenIP.Text);
-                IPEndPoint hostep = new IPEndPoint(Ip, 42069);
+                IPEndPoint hostep = new(Ip, 42069);
 
                 IAsyncResult result = s.BeginConnect(Ip, 42069, null, null);
 
@@ -567,7 +566,7 @@ namespace VierGewinnt
                     //this.Refresh();
                     //spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
                     Thread.Sleep(1000);
-                   
+
                     /// je nachdem welche Farbe Anfängt wird Ein Andere Spiel Verlauf Genutzt wenn die Farbe Rot ist wird 1. Genutzt
                     /// wenn die farbe nicht so ist dann 2.
                     /// <example>
@@ -694,7 +693,7 @@ namespace VierGewinnt
 
         private void btn_ZumMenue_Click(object sender, EventArgs e)
         {
-            Form1 frm = new Form1();
+            Form1 frm = new();
 
             frm.Show();
             this.Hide();
@@ -803,9 +802,9 @@ namespace VierGewinnt
                 {
                     if (!bw.CancellationPending)
                     {
-                        Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                        Socket s = new(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                         IPAddress Ip = IPAddress.Parse($"{NetzBereich1}{i}.{a}");
-                        IPEndPoint hostep = new IPEndPoint(Ip, 42069);
+                        IPEndPoint hostep = new(Ip, 42069);
 
                         IAsyncResult result = s.BeginConnect(Ip, 42069, null, null);
 
@@ -888,10 +887,10 @@ namespace VierGewinnt
 
             IPAddress[] ipv4Addresses = Array.FindAll(Dns.GetHostEntry(string.Empty).AddressList, a => a.AddressFamily == AddressFamily.InterNetwork);
 
-            IPEndPoint localEndPoint = new IPEndPoint(ipv4Addresses[0], PORT);
+            IPEndPoint localEndPoint = new(ipv4Addresses[0], PORT);
 
             // Create a TCP/IP socket.
-            Socket listener = new Socket(ipv4Addresses[0].AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            Socket listener = new(ipv4Addresses[0].AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
             // Bind the socket to the local endpoint and
             // listen for incoming connections.
@@ -948,6 +947,7 @@ namespace VierGewinnt
         #endregion Einfacher Server
 
         #region EinfacherClient
+
         /// <summary>
         /// Startet Einen Client der daten an einen Server sendet der am lauschen ist
         /// Encodeing und Decoding Leuft Über UTF8  es muss der zu sendende oder empfangende vorher nicht geändert werden
@@ -967,10 +967,10 @@ namespace VierGewinnt
                 // Establish the remote endpoint for the socket.
 
                 IPAddress ipAddress = AndererSpieler;
-                IPEndPoint remoteEP = new IPEndPoint(ipAddress, PORT);
+                IPEndPoint remoteEP = new(ipAddress, PORT);
 
                 // Create a TCP/IP  socket.
-                Socket sender = new Socket(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+                Socket sender = new(ipAddress.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 
                 // Connect the socket to the remote endpoint. Catch any errors.
                 try
@@ -1020,6 +1020,7 @@ namespace VierGewinnt
         /// <summary>
         /// Mehr Informationeen Zu dem Game In Form2
         /// </summary>
+
         #region Game
 
         private void SpielfeldErstellen()
@@ -1105,7 +1106,7 @@ namespace VierGewinnt
             PointF[] hilfsarray = new PointF[3];
 
             //int x = 50, y = 50, iwidth = 100, iheight = 100;
-            Task Feld = new Task(() =>
+            Task Feld = new(() =>
             {
                 for (int j = 0; j < 4; j++)
                 {
@@ -1201,6 +1202,7 @@ namespace VierGewinnt
                     if (infolge == iGewinnAnzahl)
                     {
                         gewonnen = true;
+                        bSpielEnde = true;
                     }
                 }
 
@@ -1250,11 +1252,13 @@ namespace VierGewinnt
                     if (infolge == iGewinnAnzahl)
                     {
                         gewonnen = true;
+                        bSpielEnde = true;
                     }
                 }
 
                 if (gewonnen)
                 {
+                    bSpielEnde = true;
                     for (int i = 0; i < 4; i++)
                     {
                         Console.WriteLine(Gewinnerkoordinaten[i]);
@@ -1287,12 +1291,10 @@ namespace VierGewinnt
                 if (sCurrentcolor == "red")
                 {
                     sCurrentcolor = "yellow";
-                    lab_Player.Text = "Player Yellow";
                 }
                 else
                 {
                     sCurrentcolor = "red";
-                    lab_Player.Text = "Player Red";
                 }
 
                 //überpfrüfung ob noch einzug möglich ist
@@ -1310,13 +1312,14 @@ namespace VierGewinnt
                 if (!zugmöglich)
                 {
                     Gewonnen("niemand");
+                    bSpielEnde = true;
                 }
             }
         }
 
         /// <summary>
         /// nach dem man gecklickt hat wird der zug gesendet und er dann Von GegnerZug Auch bei gegner gemacht
-        /// Die anzeige und Animation passiert Nahezu syncron bei beiden spielern 
+        /// Die anzeige und Animation passiert Nahezu syncron bei beiden spielern
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1329,6 +1332,12 @@ namespace VierGewinnt
                     int spalte, reihe = -1;
                     bool gesetzt = false;
                     spalte = (this.PointToClient(Cursor.Position).X - Spielfelder[0, 0].iX) / Spielfelder[0, 0].iWidth;      //berechnung der Spalte
+
+                    // zug wird Gesendet
+                    StartClient(spalte.ToString());
+                    MeinZugSignal.Set();
+                    bMeinZug = false;
+
                     for (int i = iSpielfeldHeight - 1; i >= 0; i--)                                                         //zählt von unten nach oben...
                     {
                         if (Spielfelder[spalte, i].sFarbe == "white")                                                        //...Wenn die Farbe weis ist...
@@ -1341,10 +1350,7 @@ namespace VierGewinnt
                             i = 0;
                         }
                     }
-                    // zug wird Gesendet
-                    StartClient(spalte.ToString());
-                    MeinZugSignal.Set();
-                    bMeinZug = false;
+
                     Point[] Gewinnerkoordinaten = new Point[iGewinnAnzahl];
 
                     bool gewonnen = false;
@@ -1448,6 +1454,7 @@ namespace VierGewinnt
 
                         if (gewonnen)
                         {
+                            bSpielEnde = true;
                             for (int i = 0; i < 4; i++)
                             {
                                 Console.WriteLine(Gewinnerkoordinaten[i]);
@@ -1503,6 +1510,7 @@ namespace VierGewinnt
                         if (!zugmöglich)
                         {
                             Gewonnen("niemand");
+                            bSpielEnde = true;
                         }
                     }
                 }
@@ -1514,7 +1522,7 @@ namespace VierGewinnt
             int iHilfszahl = 0;
             int iHilfszahl1 = 0;
             int multiplyer = (int)fDroptime; // durch 2 teil bare Zahlen funktionieren am besten da Dann Weniger Komma stellen Entstehen die Ignoriert werden
-            Task animation1 = new Task(() =>
+            Task animation1 = new(() =>
             {
                 bAimationFlag = true;
 
@@ -1545,7 +1553,7 @@ namespace VierGewinnt
                     }
                     else
                     {
-                        Task draw = new Task(() =>
+                        Task draw = new(() =>
                         {
                             iHilfszahl = i / multiplyer;
 
@@ -1636,7 +1644,7 @@ namespace VierGewinnt
             {
                 this.Invoke((MethodInvoker)delegate
                 {
-                    Form3 frm = new Form3();
+                    Form3 frm = new();
                     frm.Show();
 
                     this.Hide();
@@ -1646,7 +1654,7 @@ namespace VierGewinnt
             {
                 this.Invoke((MethodInvoker)delegate
                 {
-                    Form1 frm = new Form1();
+                    Form1 frm = new();
                     frm.Show();
                     this.Hide();
                 });
@@ -1675,28 +1683,31 @@ namespace VierGewinnt
 
         private void Hovereffekt(int iSpalte)
         {
-            if (iSpalte >= 0)
+            if (bMeinZug == true)
             {
-                if (iOldSpalte >= 0)
+                if (iSpalte >= 0)
                 {
-                    // hoverkreis entfernen:
-                    Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName("white")), Spielfelder[iOldSpalte, 0].iX + dKreisausgleich, Spielfelder[iOldSpalte, 0].iY - Spielfelder[0, 0].iHeight + dKreisausgleich - 2, Spielfelder[0, 0].iWidth - dKreisausgleich * 2, Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
-                }
+                    if (iOldSpalte >= 0)
+                    {
+                        // hoverkreis entfernen:
+                        Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName("white")), Spielfelder[iOldSpalte, 0].iX + dKreisausgleich, Spielfelder[iOldSpalte, 0].iY - Spielfelder[0, 0].iHeight + dKreisausgleich - 2, Spielfelder[0, 0].iWidth - dKreisausgleich * 2, Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
+                    }
 
-                // hoverkreis zeichnen:
-                Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName(sCurrentcolor)), Spielfelder[iSpalte, 0].iX + dKreisausgleich, Spielfelder[iSpalte, 0].iY - Spielfelder[0, 0].iHeight + dKreisausgleich - 2, Spielfelder[0, 0].iWidth - dKreisausgleich * 2, Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
-                iOldSpalte = iSpalte;
-            }
-            else        // wenn minus 1 übergeben wird
-            {
-                if (iOldSpalte >= 0)
-                {
-                    // hoverkreis entfernen:
-                    Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName("white")), Spielfelder[iOldSpalte, 0].iX + dKreisausgleich, Spielfelder[iOldSpalte, 0].iY - Spielfelder[0, 0].iHeight + dKreisausgleich - 2, Spielfelder[0, 0].iWidth - dKreisausgleich * 2, Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
+                    // hoverkreis zeichnen:
+                    Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName(sCurrentcolor)), Spielfelder[iSpalte, 0].iX + dKreisausgleich, Spielfelder[iSpalte, 0].iY - Spielfelder[0, 0].iHeight + dKreisausgleich - 2, Spielfelder[0, 0].iWidth - dKreisausgleich * 2, Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
+                    iOldSpalte = iSpalte;
                 }
-                iOldSpalte = iSpalte;
+                else        // wenn minus 1 übergeben wird
+                {
+                    if (iOldSpalte >= 0)
+                    {
+                        // hoverkreis entfernen:
+                        Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName("white")), Spielfelder[iOldSpalte, 0].iX + dKreisausgleich, Spielfelder[iOldSpalte, 0].iY - Spielfelder[0, 0].iHeight + dKreisausgleich - 2, Spielfelder[0, 0].iWidth - dKreisausgleich * 2, Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
+                    }
+                    iOldSpalte = iSpalte;
+                }
+                Spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
             }
-            Spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
         }
 
         private void KreisDrehen(Point[] KreisKoordinaten, int iDrehungen)
