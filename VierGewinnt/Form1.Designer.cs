@@ -54,12 +54,12 @@ namespace VierGewinnt
             this.btn_Play.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.btn_Play.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.btn_Play.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btn_Play.Location = new System.Drawing.Point(306, 360);
+            this.btn_Play.Location = new System.Drawing.Point(221, 357);
             this.btn_Play.Margin = new System.Windows.Forms.Padding(0);
             this.btn_Play.Name = "btn_Play";
-            this.btn_Play.Size = new System.Drawing.Size(200, 40);
+            this.btn_Play.Size = new System.Drawing.Size(174, 40);
             this.btn_Play.TabIndex = 0;
-            this.btn_Play.Text = "Play";
+            this.btn_Play.Text = "2 Player";
             this.btn_Play.UseVisualStyleBackColor = true;
             this.btn_Play.Click += new System.EventHandler(this.Btn_Play_Click);
             // 
@@ -68,9 +68,9 @@ namespace VierGewinnt
             this.btn_Network.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.btn_Network.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.btn_Network.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btn_Network.Location = new System.Drawing.Point(513, 360);
+            this.btn_Network.Location = new System.Drawing.Point(578, 357);
             this.btn_Network.Name = "btn_Network";
-            this.btn_Network.Size = new System.Drawing.Size(200, 40);
+            this.btn_Network.Size = new System.Drawing.Size(174, 40);
             this.btn_Network.TabIndex = 3;
             this.btn_Network.Text = "Übers Netzwerk Spielen";
             this.btn_Network.UseVisualStyleBackColor = true;
@@ -81,10 +81,10 @@ namespace VierGewinnt
             this.btn_Quit.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.btn_Quit.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.btn_Quit.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btn_Quit.Location = new System.Drawing.Point(99, 360);
+            this.btn_Quit.Location = new System.Drawing.Point(37, 357);
             this.btn_Quit.Margin = new System.Windows.Forms.Padding(10);
             this.btn_Quit.Name = "btn_Quit";
-            this.btn_Quit.Size = new System.Drawing.Size(200, 40);
+            this.btn_Quit.Size = new System.Drawing.Size(174, 40);
             this.btn_Quit.TabIndex = 4;
             this.btn_Quit.Text = "Quit";
             this.btn_Quit.UseVisualStyleBackColor = true;
@@ -175,11 +175,12 @@ namespace VierGewinnt
             // 
             this.button1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.button1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.button1.Enabled = false;
             this.button1.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button1.Location = new System.Drawing.Point(297, 195);
+            this.button1.Location = new System.Drawing.Point(401, 357);
             this.button1.Margin = new System.Windows.Forms.Padding(0);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(200, 40);
+            this.button1.Size = new System.Drawing.Size(174, 40);
             this.button1.TabIndex = 14;
             this.button1.Text = "1 Player";
             this.button1.UseVisualStyleBackColor = true;

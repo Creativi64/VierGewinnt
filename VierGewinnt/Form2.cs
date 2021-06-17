@@ -60,7 +60,7 @@ namespace VierGewinnt
             InitializeComponent();
             DoubleBuffered = true;
 
-            AllocConsole();
+            //AllocConsole();
 
             fDroptime = fDroptime / iSpielfeldHeight;   //die Fallgeschwindigkeit ist abhängik von der Spielfeldgröße
             VergangeneSekunden = new DateTime(1, 1, 1, 0, 0, 0);

@@ -260,10 +260,10 @@ namespace VierGewinnt
             return farben;
         }
 
-        private int zugbewertung(string[,] farben)
-        {
+        //private int zugbewertung(string[,] farben)
+        //{
            
-        }
+        //}
 
         private void Form2_Click(object sender, EventArgs e)
         {

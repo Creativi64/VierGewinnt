@@ -121,7 +121,7 @@ namespace VierGewinnt
         public Form3()
         {
             InitializeComponent();
-            AllocConsole();
+            //AllocConsole();
 
             GefundenEndpoints = new IPEndPoint[10]; // maximal 10  Vill. Variable, Je anch Anzahl, Aber Es Sollten Momentan Nicht mehr als 10 Geben
 

@@ -44,7 +44,7 @@ namespace VierGewinnt
         public Form1()
         {
             InitializeComponent();
-            AllocConsole();
+            //AllocConsole();
 
             spielfeldgraphic = this.CreateGraphics();
             Spielfeldframe = new Bitmap(this.Width, this.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
