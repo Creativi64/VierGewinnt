@@ -138,7 +138,7 @@ namespace VierGewinnt
                 Spielfelder[0, 0].iWidth = ispielfeldformat;
                 Spielfelder[0, 0].iHeight = ispielfeldformat;
 
-                EckenBerechnen(0, 0, Spielfelder[0, 0].iWidth, Spielfelder[0, 0].iHeight);
+                EckenBerechnen(Spielfelder[0, 0].iWidth, Spielfelder[0, 0].iHeight);
                 SpielfeldErstellen();
 
                 Spielfeldframe = new Bitmap(this.Width, this.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
@@ -194,9 +194,15 @@ namespace VierGewinnt
             frm.Show();
             this.Hide();
         }
-
-        private void EckenBerechnen(int iX, int iY, int iWidth, int iHeight)
+        /// <summary>
+        /// Diese Funktion Berechnet die Eckpunkte für ein Quadrat und speichert sie in dem Array Dreieckspunkte
+        /// </summary>
+        /// <param name="iWidth">Die Breite des Spielfeldes </param>
+        /// <param name="iHeight">Die Breite des Spielfeldes </param>
+        private void EckenBerechnen(int iWidth, int iHeight)
         {
+            int iX = 0;
+            int iY = 0;
             //Die koordinaten für die Polygone werden im bezug auf das Jeweilige Feld Berechnet
             float dDreieckkprozent = 0.3F;
             DreiecksPunkte = new PointF[4, 3];
@@ -444,7 +450,7 @@ namespace VierGewinnt
                 iSpielfeldHeightPx = this.Height - 200;
                 iSpielfeldWidthPx = this.Width - 50;
                 SpielfeldErstellen();
-                EckenBerechnen(0, 0, Spielfelder[0, 0].iWidth, Spielfelder[0, 0].iHeight);
+                EckenBerechnen(Spielfelder[0, 0].iWidth, Spielfelder[0, 0].iHeight);
 
                 Spielfeldframe = new Bitmap(this.Width, this.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
                 Bitmapgraphic = Graphics.FromImage(Spielfeldframe);
@@ -482,7 +488,10 @@ namespace VierGewinnt
                 this.Hide();
             }
         }
-
+        /// <summary>
+        /// Zeichnet einen Kreis über der Entsprechenden Zeile
+        /// </summary>
+        /// <param name="iSpalte">Die entsprechende spalte -1 heist, dass der Kreis auf keiner Zeile gedrawt werden soll</param>
         private void Hovereffekt(int iSpalte)
         {
             if (iSpalte >= 0)
@@ -509,6 +518,11 @@ namespace VierGewinnt
             Spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
         }
 
+        /// <summary>
+        /// lässt die Kreise mit den Entsprechenden Koordinaten eine bestimmte anzahl oft Drehen. Wird für die Gewinn Animation verwendet
+        /// </summary>
+        /// <param name="KreisKoordinaten">die Koordinaten der Kreise, die Gedreht werden sollen, auf dem Spielfeld</param>
+        /// <param name="iDrehungen">Die Anzahl der Drehungen</param>
         private void KreisDrehen(Point[] KreisKoordinaten, int iDrehungen)
         {
             int Drehgeschwindigkeit = 5;
@@ -685,6 +699,9 @@ namespace VierGewinnt
             bAimationFlag = false;
         }
 
+        /// <summary>
+        /// erstellt das Spielfeld mit pixelkoordinaten anhand der Spielfeldgröße zeichent dieses jedoch noch nicht.
+        /// </summary>
         private void SpielfeldErstellen()
         {
             int ispielfeldformat;
@@ -709,6 +726,14 @@ namespace VierGewinnt
             }
         }
 
+        /// <summary>
+        /// Zeichnet eine Spielfeldkachel für die angegebenen Parameter
+        /// </summary>
+        /// <param name="iX">X koordiante am oberen Rand in Pixeln</param>
+        /// <param name="iY">Y koordiante am linken Rand in Pixeln</param>
+        /// <param name="iWidth">Die Breite der Kachel</param>
+        /// <param name="iHeight">Die Breite der Kachel</param>
+        /// <param name="G">Graphic object auf das Gezeichnet werden soll</param>
         private void SpielfeldTileZeichnen(int iX, int iY, int iWidth, int iHeight, Graphics G)   //Methode um ein einzelnes Spielfeld-feld zu zeichnen
         {
             PointF[] hilfsarray = new PointF[3];
@@ -731,6 +756,10 @@ namespace VierGewinnt
             Feld.RunSynchronously();
         }
 
+        /// <summary>
+        /// Zeichnet das Spielfeld anhand des Structs Spielfelder
+        /// </summary>
+        /// <param name="G">Graphic object auf das Gezeichnet werden soll</param>
         private void SpielfeldZeichnen(Graphics G)
         {
             for (int x = 0; x < iSpielfeldWidth; x++)
@@ -744,6 +773,12 @@ namespace VierGewinnt
             //spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
         }
 
+
+        /// <summary>
+        /// Zeichnet die Bereits gelegten Spielsteine anhand des Structs Spielfelder.
+        /// </summary>
+        /// <param name="G">Graphic object auf das Gezeichnet werden soll</param>
+        /// <param name="iStartY"> die Obersten Y koordinaten. Normal 0 zum Steine gleichzeitig fallen lassen erhöhen.</param>
         private void SpielsteineZeichnen(Graphics G, int iStartY)
         {
             for (int x = 0; x < iSpielfeldWidth; x++)

@@ -17,8 +17,14 @@ namespace VierGewinnt
         public static string sGewinnAnzahl;
 
         private static PointF[,] Dreieckspunkte;
-        
-        private static int iSpielfeldWidthMax = 20, iSpielfeldHeightMax = 20, iXstartMin = 308, iYstartMin = 105, iXstart = 468, iYstart = 265, iSpielfeldFormat = 10;
+
+        private int iSpielfeldWidthMax = 20;     ///Maximal einstellbare Spielfeldbreite
+        private int iSpielfeldHeightMax = 20;    ///Maximal einstellbare Spielfeldhöhe
+        private int iXstartMin = 308;            ///Maximale startposition x des spielfeldes
+        private int iYstartMin = 105;            ///Maximale startposition y des spielfeldes
+        private int iXstart = 468;               ///aktuelle startposition X (damit es immer rechts ausgerichtet ist)
+        private int iYstart = 265;               ///aktuelle startposition Y (damit es immer unten ausgerichtet ist)
+        private int iSpielfeldFormat = 10;       ///die festgelegte größe der spielfeldKacheln
         
         private static Bitmap Spielfeldframe;
         
@@ -42,7 +48,7 @@ namespace VierGewinnt
             Spielfeldframe = new Bitmap(this.Width, this.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
             Bitmapgraphic = Graphics.FromImage(Spielfeldframe);
 
-            EckenBerechnen(0, 0, Form2.iSpielfeldWidth, Form2.iSpielfeldHeight);
+            EckenBerechnen(4, 4);
             SpielfeldZeichnen();
             textBox1.Text = "Vier";
             Form2.iSpielfeldHeight = 4;
@@ -60,8 +66,15 @@ namespace VierGewinnt
             Application.Exit();
         }
 
-        private static void EckenBerechnen(int iX, int iY, int iWidth, int iHeight)
+        /// <summary>
+        /// Diese Funktion Berechnet die Eckpunkte für ein Quadrat und speichert sie in dem Array Dreieckspunkte
+        /// </summary>
+        /// <param name="iWidth">Die Breite des Spielfeldes </param>
+        /// <param name="iHeight">Die Höhe des Spielfeldes </param>
+        private static void EckenBerechnen(int iWidth, int iHeight)
         {
+            int iX = 0;
+            int iY = 0;
             double dDreieckkprozent = 0.3;
             Dreieckspunkte = new PointF[4, 3];
             Dreieckspunkte[0, 0] = new PointF(iX, iY);
@@ -107,6 +120,13 @@ namespace VierGewinnt
             SpielfeldZeichnen();
         }
 
+        /// <summary>
+        /// Zeichnet eine Spielfeldkachel für die angegebenen Parameter
+        /// </summary>
+        /// <param name="iX">X koordiante am oberen Rand in Pixeln</param>
+        /// <param name="iY">Y koordiante am linken Rand in Pixeln</param>
+        /// <param name="iWidth">Die Breite der Kachel</param>
+        /// <param name="iHeight">Die Breite der Kachel</param>
         private void SpielfeldTileZeichnen(int iX, int iY, int iWidth, int iHeight)
         {
             PointF[] hilfsarray = new PointF[3];
@@ -128,6 +148,9 @@ namespace VierGewinnt
             Feld.RunSynchronously();
         }
 
+        /// <summary>
+        /// Zeichnet die Gesamte Spielfeld vorschau
+        /// </summary>
         private void SpielfeldZeichnen()
         {
             Bitmapgraphic.FillRectangle(new SolidBrush(Color.White), 0, 0, this.Width, this.Height);
