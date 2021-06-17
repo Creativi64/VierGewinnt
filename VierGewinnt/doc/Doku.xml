@@ -4,9 +4,51 @@
         <name>VierGewinnt</name>
     </assembly>
     <members>
+        <member name="F:VierGewinnt.Form1.iSpielfeldHeightMax">
+            Maximal einstellbare Spielfeldbreite
+        </member>
+        <member name="F:VierGewinnt.Form1.iXstartMin">
+            Maximal einstellbare Spielfeldhöhe
+        </member>
+        <member name="F:VierGewinnt.Form1.iYstartMin">
+            Maximale startposition x des spielfeldes
+        </member>
+        <member name="F:VierGewinnt.Form1.iXstart">
+            Maximale startposition y des spielfeldes
+        </member>
+        <member name="F:VierGewinnt.Form1.iYstart">
+            aktuelle startposition X (damit es immer rechts ausgerichtet ist)
+        </member>
+        <member name="F:VierGewinnt.Form1.iSpielfeldFormat">
+            aktuelle startposition Y (damit es immer unten ausgerichtet ist)
+        </member>
+        <member name="F:VierGewinnt.Form1.Spielfeldframe">
+            die festgelegte größe der spielfeldKacheln
+        </member>
         <member name="M:VierGewinnt.Form1.AllocConsole">
             <summary>
             Erlaubt Uns Zum Form eine console zu starten
+            </summary>
+        </member>
+        <member name="M:VierGewinnt.Form1.EckenBerechnen(System.Int32,System.Int32)">
+            <summary>
+            Diese Funktion Berechnet die Eckpunkte für ein Quadrat und speichert sie in dem Array Dreieckspunkte
+            </summary>
+            <param name="iWidth">Die Breite des Spielfeldes </param>
+            <param name="iHeight">Die Höhe des Spielfeldes </param>
+        </member>
+        <member name="M:VierGewinnt.Form1.SpielfeldTileZeichnen(System.Int32,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Zeichnet eine Spielfeldkachel für die angegebenen Parameter
+            </summary>
+            <param name="iX">X koordiante am oberen Rand in Pixeln</param>
+            <param name="iY">Y koordiante am linken Rand in Pixeln</param>
+            <param name="iWidth">Die Breite der Kachel</param>
+            <param name="iHeight">Die Breite der Kachel</param>
+        </member>
+        <member name="M:VierGewinnt.Form1.SpielfeldZeichnen">
+            <summary>
+            Zeichnet die Gesamte Spielfeld vorschau
             </summary>
         </member>
         <member name="F:VierGewinnt.Form1.components">
@@ -30,6 +72,54 @@
             <summary>
             Erlaubt Uns Zum Form eine console zu starten
             </summary>
+        </member>
+        <member name="M:VierGewinnt.Form2.EckenBerechnen(System.Int32,System.Int32)">
+            <summary>
+            Diese Funktion Berechnet die Eckpunkte für ein Quadrat und speichert sie in dem Array Dreieckspunkte
+            </summary>
+            <param name="iWidth">Die Breite des Spielfeldes </param>
+            <param name="iHeight">Die Breite des Spielfeldes </param>
+        </member>
+        <member name="M:VierGewinnt.Form2.Hovereffekt(System.Int32)">
+            <summary>
+            Zeichnet einen Kreis über der Entsprechenden Zeile
+            </summary>
+            <param name="iSpalte">Die entsprechende spalte -1 heist, dass der Kreis auf keiner Zeile gedrawt werden soll</param>
+        </member>
+        <member name="M:VierGewinnt.Form2.KreisDrehen(System.Drawing.Point[],System.Int32)">
+            <summary>
+            lässt die Kreise mit den Entsprechenden Koordinaten eine bestimmte anzahl oft Drehen. Wird für die Gewinn Animation verwendet
+            </summary>
+            <param name="KreisKoordinaten">die Koordinaten der Kreise, die Gedreht werden sollen, auf dem Spielfeld</param>
+            <param name="iDrehungen">Die Anzahl der Drehungen</param>
+        </member>
+        <member name="M:VierGewinnt.Form2.SpielfeldErstellen">
+            <summary>
+            erstellt das Spielfeld mit pixelkoordinaten anhand der Spielfeldgröße zeichent dieses jedoch noch nicht.
+            </summary>
+        </member>
+        <member name="M:VierGewinnt.Form2.SpielfeldTileZeichnen(System.Int32,System.Int32,System.Int32,System.Int32,System.Drawing.Graphics)">
+            <summary>
+            Zeichnet eine Spielfeldkachel für die angegebenen Parameter
+            </summary>
+            <param name="iX">X koordiante am oberen Rand in Pixeln</param>
+            <param name="iY">Y koordiante am linken Rand in Pixeln</param>
+            <param name="iWidth">Die Breite der Kachel</param>
+            <param name="iHeight">Die Breite der Kachel</param>
+            <param name="G">Graphic object auf das Gezeichnet werden soll</param>
+        </member>
+        <member name="M:VierGewinnt.Form2.SpielfeldZeichnen(System.Drawing.Graphics)">
+            <summary>
+            Zeichnet das Spielfeld anhand des Structs Spielfelder
+            </summary>
+            <param name="G">Graphic object auf das Gezeichnet werden soll</param>
+        </member>
+        <member name="M:VierGewinnt.Form2.SpielsteineZeichnen(System.Drawing.Graphics,System.Int32)">
+            <summary>
+            Zeichnet die Bereits gelegten Spielsteine anhand des Structs Spielfelder.
+            </summary>
+            <param name="G">Graphic object auf das Gezeichnet werden soll</param>
+            <param name="iStartY"> die Obersten Y koordinaten. Normal 0 zum Steine gleichzeitig fallen lassen erhöhen.</param>
         </member>
         <member name="F:VierGewinnt.Form2.components">
             <summary>
