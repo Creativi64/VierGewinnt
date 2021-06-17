@@ -1,0 +1,305 @@
+\hypertarget{class_vier_gewinnt_1_1_form1}{}\doxysection{Vier\+Gewinnt.\+Form1 Klassenreferenz}
+\label{class_vier_gewinnt_1_1_form1}\index{VierGewinnt.Form1@{VierGewinnt.Form1}}
+Klassendiagramm für Vier\+Gewinnt.\+Form1\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_vier_gewinnt_1_1_form1}
+\end{center}
+\end{figure}
+\doxysubsection*{Öffentliche Methoden}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_vier_gewinnt_1_1_form1_a2dd41cb81acd48138aac0d98bd84eee2}{Form1}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Statische öffentliche Attribute}
+\begin{DoxyCompactItemize}
+\item 
+static string \mbox{\hyperlink{class_vier_gewinnt_1_1_form1_a337e2296f79bf42f057b89e480c3842a}{s\+Gewinn\+Anzahl}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Geschützte Methoden}
+\begin{DoxyCompactItemize}
+\item 
+override void \mbox{\hyperlink{class_vier_gewinnt_1_1_form1_afd19f86c635026310aa67de167cf284d}{On\+Closed}} (Event\+Args e)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Methoden}
+\begin{DoxyCompactItemize}
+\item 
+static bool \mbox{\hyperlink{class_vier_gewinnt_1_1_form1_ad54a86171bc96a07a62a31ddfb20f27c}{Alloc\+Console}} ()
+\begin{DoxyCompactList}\small\item\em Erlaubt Uns Zum Form eine console zu starten \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form1_a36b011c5547cd55d5c16173870eae76e}{Btn\+\_\+\+Network\+\_\+\+Click}} (object sender, Event\+Args e)
+\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form1_a6c906b4648420a7de56a9d758c25e5c9}{Btn\+\_\+\+Play\+\_\+\+Click}} (object sender, Event\+Args e)
+\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form1_a1a3f5e7bc293ec8407264762df9f985b}{Btn\+\_\+\+Quit\+\_\+\+Click}} (object sender, Event\+Args e)
+\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form1_a3894c4cdd36930fd0c26fb3a9b4f2e3c}{Form1\+\_\+\+Paint}} (object sender, Paint\+Event\+Args e)
+\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form1_a4ac65adad7acc75d917c331804b6990a}{Spielfeld\+Tile\+Zeichnen}} (int iX, int iY, int i\+Width, int i\+Height)
+\begin{DoxyCompactList}\small\item\em Zeichnet eine Spielfeldkachel für die angegebenen Parameter \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form1_a227de9b229f183ae38c4ad5c53040311}{Spielfeld\+Zeichnen}} ()
+\begin{DoxyCompactList}\small\item\em Zeichnet die Gesamte Spielfeld vorschau \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form1_aa1cd952ce853243fad62c697ab822ddb}{Text\+Box1\+\_\+\+Text\+Changed}} (object sender, Event\+Args e)
+\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form1_a0acef878273c93ea72cf2f11c94b76fc}{Track\+Bar\+X\+\_\+\+Scroll}} (object sender, Event\+Args e)
+\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form1_a795260ee58629f395b1311e32672ba45}{Track\+Bar\+Y\+\_\+\+Scroll}} (object sender, Event\+Args e)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private, statische Methoden}
+\begin{DoxyCompactItemize}
+\item 
+static void \mbox{\hyperlink{class_vier_gewinnt_1_1_form1_ab6a8c6ae8102a6590008f603d0f00425}{Ecken\+Berechnen}} (int i\+Width, int i\+Height)
+\begin{DoxyCompactList}\small\item\em Diese Funktion Berechnet die Eckpunkte für ein Quadrat und speichert sie in dem Array Dreieckspunkte \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Attribute}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{class_vier_gewinnt_1_1_form1_a87979e43a5eb15b168409b72a26900d6}{i\+Spielfeld\+Width\+Max}} = 20
+\item 
+int \mbox{\hyperlink{class_vier_gewinnt_1_1_form1_afadc25d695713fbf5f8733fab8d2af3d}{i\+Spielfeld\+Height\+Max}} = 20
+\begin{DoxyCompactList}\small\item\em Maximal einstellbare Spielfeldbreite. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_vier_gewinnt_1_1_form1_a378aa78491ba1740d2637d5dd9a9a158}{i\+Xstart\+Min}} = 308
+\begin{DoxyCompactList}\small\item\em Maximal einstellbare Spielfeldhöhe. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_vier_gewinnt_1_1_form1_ac2c6e3b5e3188143c837a7f3e68dac5e}{i\+Ystart\+Min}} = 105
+\begin{DoxyCompactList}\small\item\em Maximale startposition x des spielfeldes. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_vier_gewinnt_1_1_form1_acdbd5de296735df73b7cedddc64c9fd1}{i\+Xstart}} = 468
+\begin{DoxyCompactList}\small\item\em Maximale startposition y des spielfeldes. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_vier_gewinnt_1_1_form1_ab991b7516727a6f77d05ba44c8f684d2}{i\+Ystart}} = 265
+\begin{DoxyCompactList}\small\item\em aktuelle startposition X (damit es immer rechts ausgerichtet ist) \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{class_vier_gewinnt_1_1_form1_a5878e2761e33fb2f36089219545c1c87}{i\+Spielfeld\+Format}} = 10
+\begin{DoxyCompactList}\small\item\em aktuelle startposition Y (damit es immer unten ausgerichtet ist) \end{DoxyCompactList}\item 
+Graphics \mbox{\hyperlink{class_vier_gewinnt_1_1_form1_a2d5fab78b6c6f4581090efc786a9bf3b}{Bitmapgraphic}}
+\item 
+Graphics \mbox{\hyperlink{class_vier_gewinnt_1_1_form1_a69c325a0c374ea74fe27b8022528f8d8}{spielfeldgraphic}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Statische, private Attribute}
+\begin{DoxyCompactItemize}
+\item 
+static PointF\mbox{[},\mbox{]} \mbox{\hyperlink{class_vier_gewinnt_1_1_form1_ab4f25fceab274245efc6725b9b0af67e}{Dreieckspunkte}}
+\item 
+static Bitmap \mbox{\hyperlink{class_vier_gewinnt_1_1_form1_aadd9420ab1612ca4a44fd8d0e64a2194}{Spielfeldframe}}
+\begin{DoxyCompactList}\small\item\em die festgelegte größe der spielfeld\+Kacheln \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Beschreibung der Konstruktoren und Destruktoren}
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form1_a2dd41cb81acd48138aac0d98bd84eee2}\label{class_vier_gewinnt_1_1_form1_a2dd41cb81acd48138aac0d98bd84eee2}} 
+\index{VierGewinnt.Form1@{VierGewinnt.Form1}!Form1@{Form1}}
+\index{Form1@{Form1}!VierGewinnt.Form1@{VierGewinnt.Form1}}
+\doxysubsubsection{\texorpdfstring{Form1()}{Form1()}}
+{\footnotesize\ttfamily Vier\+Gewinnt.\+Form1.\+Form1 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+\doxysubsection{Dokumentation der Elementfunktionen}
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form1_ad54a86171bc96a07a62a31ddfb20f27c}\label{class_vier_gewinnt_1_1_form1_ad54a86171bc96a07a62a31ddfb20f27c}} 
+\index{VierGewinnt.Form1@{VierGewinnt.Form1}!AllocConsole@{AllocConsole}}
+\index{AllocConsole@{AllocConsole}!VierGewinnt.Form1@{VierGewinnt.Form1}}
+\doxysubsubsection{\texorpdfstring{AllocConsole()}{AllocConsole()}}
+{\footnotesize\ttfamily static bool Vier\+Gewinnt.\+Form1.\+Alloc\+Console (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Erlaubt Uns Zum Form eine console zu starten 
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form1_a36b011c5547cd55d5c16173870eae76e}\label{class_vier_gewinnt_1_1_form1_a36b011c5547cd55d5c16173870eae76e}} 
+\index{VierGewinnt.Form1@{VierGewinnt.Form1}!Btn\_Network\_Click@{Btn\_Network\_Click}}
+\index{Btn\_Network\_Click@{Btn\_Network\_Click}!VierGewinnt.Form1@{VierGewinnt.Form1}}
+\doxysubsubsection{\texorpdfstring{Btn\_Network\_Click()}{Btn\_Network\_Click()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form1.\+Btn\+\_\+\+Network\+\_\+\+Click (\begin{DoxyParamCaption}\item[{object}]{sender,  }\item[{Event\+Args}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form1_a6c906b4648420a7de56a9d758c25e5c9}\label{class_vier_gewinnt_1_1_form1_a6c906b4648420a7de56a9d758c25e5c9}} 
+\index{VierGewinnt.Form1@{VierGewinnt.Form1}!Btn\_Play\_Click@{Btn\_Play\_Click}}
+\index{Btn\_Play\_Click@{Btn\_Play\_Click}!VierGewinnt.Form1@{VierGewinnt.Form1}}
+\doxysubsubsection{\texorpdfstring{Btn\_Play\_Click()}{Btn\_Play\_Click()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form1.\+Btn\+\_\+\+Play\+\_\+\+Click (\begin{DoxyParamCaption}\item[{object}]{sender,  }\item[{Event\+Args}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form1_a1a3f5e7bc293ec8407264762df9f985b}\label{class_vier_gewinnt_1_1_form1_a1a3f5e7bc293ec8407264762df9f985b}} 
+\index{VierGewinnt.Form1@{VierGewinnt.Form1}!Btn\_Quit\_Click@{Btn\_Quit\_Click}}
+\index{Btn\_Quit\_Click@{Btn\_Quit\_Click}!VierGewinnt.Form1@{VierGewinnt.Form1}}
+\doxysubsubsection{\texorpdfstring{Btn\_Quit\_Click()}{Btn\_Quit\_Click()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form1.\+Btn\+\_\+\+Quit\+\_\+\+Click (\begin{DoxyParamCaption}\item[{object}]{sender,  }\item[{Event\+Args}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form1_ab6a8c6ae8102a6590008f603d0f00425}\label{class_vier_gewinnt_1_1_form1_ab6a8c6ae8102a6590008f603d0f00425}} 
+\index{VierGewinnt.Form1@{VierGewinnt.Form1}!EckenBerechnen@{EckenBerechnen}}
+\index{EckenBerechnen@{EckenBerechnen}!VierGewinnt.Form1@{VierGewinnt.Form1}}
+\doxysubsubsection{\texorpdfstring{EckenBerechnen()}{EckenBerechnen()}}
+{\footnotesize\ttfamily static void Vier\+Gewinnt.\+Form1.\+Ecken\+Berechnen (\begin{DoxyParamCaption}\item[{int}]{i\+Width,  }\item[{int}]{i\+Height }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+Diese Funktion Berechnet die Eckpunkte für ein Quadrat und speichert sie in dem Array Dreieckspunkte 
+
+
+\begin{DoxyParams}{Parameter}
+{\em i\+Width} & Die Breite des Spielfeldes \\
+\hline
+{\em i\+Height} & Die Höhe des Spielfeldes \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form1_a3894c4cdd36930fd0c26fb3a9b4f2e3c}\label{class_vier_gewinnt_1_1_form1_a3894c4cdd36930fd0c26fb3a9b4f2e3c}} 
+\index{VierGewinnt.Form1@{VierGewinnt.Form1}!Form1\_Paint@{Form1\_Paint}}
+\index{Form1\_Paint@{Form1\_Paint}!VierGewinnt.Form1@{VierGewinnt.Form1}}
+\doxysubsubsection{\texorpdfstring{Form1\_Paint()}{Form1\_Paint()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form1.\+Form1\+\_\+\+Paint (\begin{DoxyParamCaption}\item[{object}]{sender,  }\item[{Paint\+Event\+Args}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form1_afd19f86c635026310aa67de167cf284d}\label{class_vier_gewinnt_1_1_form1_afd19f86c635026310aa67de167cf284d}} 
+\index{VierGewinnt.Form1@{VierGewinnt.Form1}!OnClosed@{OnClosed}}
+\index{OnClosed@{OnClosed}!VierGewinnt.Form1@{VierGewinnt.Form1}}
+\doxysubsubsection{\texorpdfstring{OnClosed()}{OnClosed()}}
+{\footnotesize\ttfamily override void Vier\+Gewinnt.\+Form1.\+On\+Closed (\begin{DoxyParamCaption}\item[{Event\+Args}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form1_a4ac65adad7acc75d917c331804b6990a}\label{class_vier_gewinnt_1_1_form1_a4ac65adad7acc75d917c331804b6990a}} 
+\index{VierGewinnt.Form1@{VierGewinnt.Form1}!SpielfeldTileZeichnen@{SpielfeldTileZeichnen}}
+\index{SpielfeldTileZeichnen@{SpielfeldTileZeichnen}!VierGewinnt.Form1@{VierGewinnt.Form1}}
+\doxysubsubsection{\texorpdfstring{SpielfeldTileZeichnen()}{SpielfeldTileZeichnen()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form1.\+Spielfeld\+Tile\+Zeichnen (\begin{DoxyParamCaption}\item[{int}]{iX,  }\item[{int}]{iY,  }\item[{int}]{i\+Width,  }\item[{int}]{i\+Height }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Zeichnet eine Spielfeldkachel für die angegebenen Parameter 
+
+
+\begin{DoxyParams}{Parameter}
+{\em iX} & X koordiante am oberen Rand in Pixeln\\
+\hline
+{\em iY} & Y koordiante am linken Rand in Pixeln\\
+\hline
+{\em i\+Width} & Die Breite der Kachel\\
+\hline
+{\em i\+Height} & Die Breite der Kachel\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form1_a227de9b229f183ae38c4ad5c53040311}\label{class_vier_gewinnt_1_1_form1_a227de9b229f183ae38c4ad5c53040311}} 
+\index{VierGewinnt.Form1@{VierGewinnt.Form1}!SpielfeldZeichnen@{SpielfeldZeichnen}}
+\index{SpielfeldZeichnen@{SpielfeldZeichnen}!VierGewinnt.Form1@{VierGewinnt.Form1}}
+\doxysubsubsection{\texorpdfstring{SpielfeldZeichnen()}{SpielfeldZeichnen()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form1.\+Spielfeld\+Zeichnen (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Zeichnet die Gesamte Spielfeld vorschau 
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form1_aa1cd952ce853243fad62c697ab822ddb}\label{class_vier_gewinnt_1_1_form1_aa1cd952ce853243fad62c697ab822ddb}} 
+\index{VierGewinnt.Form1@{VierGewinnt.Form1}!TextBox1\_TextChanged@{TextBox1\_TextChanged}}
+\index{TextBox1\_TextChanged@{TextBox1\_TextChanged}!VierGewinnt.Form1@{VierGewinnt.Form1}}
+\doxysubsubsection{\texorpdfstring{TextBox1\_TextChanged()}{TextBox1\_TextChanged()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form1.\+Text\+Box1\+\_\+\+Text\+Changed (\begin{DoxyParamCaption}\item[{object}]{sender,  }\item[{Event\+Args}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form1_a0acef878273c93ea72cf2f11c94b76fc}\label{class_vier_gewinnt_1_1_form1_a0acef878273c93ea72cf2f11c94b76fc}} 
+\index{VierGewinnt.Form1@{VierGewinnt.Form1}!TrackBarX\_Scroll@{TrackBarX\_Scroll}}
+\index{TrackBarX\_Scroll@{TrackBarX\_Scroll}!VierGewinnt.Form1@{VierGewinnt.Form1}}
+\doxysubsubsection{\texorpdfstring{TrackBarX\_Scroll()}{TrackBarX\_Scroll()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form1.\+Track\+Bar\+X\+\_\+\+Scroll (\begin{DoxyParamCaption}\item[{object}]{sender,  }\item[{Event\+Args}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form1_a795260ee58629f395b1311e32672ba45}\label{class_vier_gewinnt_1_1_form1_a795260ee58629f395b1311e32672ba45}} 
+\index{VierGewinnt.Form1@{VierGewinnt.Form1}!TrackBarY\_Scroll@{TrackBarY\_Scroll}}
+\index{TrackBarY\_Scroll@{TrackBarY\_Scroll}!VierGewinnt.Form1@{VierGewinnt.Form1}}
+\doxysubsubsection{\texorpdfstring{TrackBarY\_Scroll()}{TrackBarY\_Scroll()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form1.\+Track\+Bar\+Y\+\_\+\+Scroll (\begin{DoxyParamCaption}\item[{object}]{sender,  }\item[{Event\+Args}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+\doxysubsection{Dokumentation der Felder}
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form1_a2d5fab78b6c6f4581090efc786a9bf3b}\label{class_vier_gewinnt_1_1_form1_a2d5fab78b6c6f4581090efc786a9bf3b}} 
+\index{VierGewinnt.Form1@{VierGewinnt.Form1}!Bitmapgraphic@{Bitmapgraphic}}
+\index{Bitmapgraphic@{Bitmapgraphic}!VierGewinnt.Form1@{VierGewinnt.Form1}}
+\doxysubsubsection{\texorpdfstring{Bitmapgraphic}{Bitmapgraphic}}
+{\footnotesize\ttfamily Graphics Vier\+Gewinnt.\+Form1.\+Bitmapgraphic\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form1_ab4f25fceab274245efc6725b9b0af67e}\label{class_vier_gewinnt_1_1_form1_ab4f25fceab274245efc6725b9b0af67e}} 
+\index{VierGewinnt.Form1@{VierGewinnt.Form1}!Dreieckspunkte@{Dreieckspunkte}}
+\index{Dreieckspunkte@{Dreieckspunkte}!VierGewinnt.Form1@{VierGewinnt.Form1}}
+\doxysubsubsection{\texorpdfstring{Dreieckspunkte}{Dreieckspunkte}}
+{\footnotesize\ttfamily PointF \mbox{[},\mbox{]} Vier\+Gewinnt.\+Form1.\+Dreieckspunkte\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form1_a5878e2761e33fb2f36089219545c1c87}\label{class_vier_gewinnt_1_1_form1_a5878e2761e33fb2f36089219545c1c87}} 
+\index{VierGewinnt.Form1@{VierGewinnt.Form1}!iSpielfeldFormat@{iSpielfeldFormat}}
+\index{iSpielfeldFormat@{iSpielfeldFormat}!VierGewinnt.Form1@{VierGewinnt.Form1}}
+\doxysubsubsection{\texorpdfstring{iSpielfeldFormat}{iSpielfeldFormat}}
+{\footnotesize\ttfamily int Vier\+Gewinnt.\+Form1.\+i\+Spielfeld\+Format = 10\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+aktuelle startposition Y (damit es immer unten ausgerichtet ist) 
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form1_afadc25d695713fbf5f8733fab8d2af3d}\label{class_vier_gewinnt_1_1_form1_afadc25d695713fbf5f8733fab8d2af3d}} 
+\index{VierGewinnt.Form1@{VierGewinnt.Form1}!iSpielfeldHeightMax@{iSpielfeldHeightMax}}
+\index{iSpielfeldHeightMax@{iSpielfeldHeightMax}!VierGewinnt.Form1@{VierGewinnt.Form1}}
+\doxysubsubsection{\texorpdfstring{iSpielfeldHeightMax}{iSpielfeldHeightMax}}
+{\footnotesize\ttfamily int Vier\+Gewinnt.\+Form1.\+i\+Spielfeld\+Height\+Max = 20\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Maximal einstellbare Spielfeldbreite. 
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form1_a87979e43a5eb15b168409b72a26900d6}\label{class_vier_gewinnt_1_1_form1_a87979e43a5eb15b168409b72a26900d6}} 
+\index{VierGewinnt.Form1@{VierGewinnt.Form1}!iSpielfeldWidthMax@{iSpielfeldWidthMax}}
+\index{iSpielfeldWidthMax@{iSpielfeldWidthMax}!VierGewinnt.Form1@{VierGewinnt.Form1}}
+\doxysubsubsection{\texorpdfstring{iSpielfeldWidthMax}{iSpielfeldWidthMax}}
+{\footnotesize\ttfamily int Vier\+Gewinnt.\+Form1.\+i\+Spielfeld\+Width\+Max = 20\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form1_acdbd5de296735df73b7cedddc64c9fd1}\label{class_vier_gewinnt_1_1_form1_acdbd5de296735df73b7cedddc64c9fd1}} 
+\index{VierGewinnt.Form1@{VierGewinnt.Form1}!iXstart@{iXstart}}
+\index{iXstart@{iXstart}!VierGewinnt.Form1@{VierGewinnt.Form1}}
+\doxysubsubsection{\texorpdfstring{iXstart}{iXstart}}
+{\footnotesize\ttfamily int Vier\+Gewinnt.\+Form1.\+i\+Xstart = 468\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Maximale startposition y des spielfeldes. 
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form1_a378aa78491ba1740d2637d5dd9a9a158}\label{class_vier_gewinnt_1_1_form1_a378aa78491ba1740d2637d5dd9a9a158}} 
+\index{VierGewinnt.Form1@{VierGewinnt.Form1}!iXstartMin@{iXstartMin}}
+\index{iXstartMin@{iXstartMin}!VierGewinnt.Form1@{VierGewinnt.Form1}}
+\doxysubsubsection{\texorpdfstring{iXstartMin}{iXstartMin}}
+{\footnotesize\ttfamily int Vier\+Gewinnt.\+Form1.\+i\+Xstart\+Min = 308\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Maximal einstellbare Spielfeldhöhe. 
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form1_ab991b7516727a6f77d05ba44c8f684d2}\label{class_vier_gewinnt_1_1_form1_ab991b7516727a6f77d05ba44c8f684d2}} 
+\index{VierGewinnt.Form1@{VierGewinnt.Form1}!iYstart@{iYstart}}
+\index{iYstart@{iYstart}!VierGewinnt.Form1@{VierGewinnt.Form1}}
+\doxysubsubsection{\texorpdfstring{iYstart}{iYstart}}
+{\footnotesize\ttfamily int Vier\+Gewinnt.\+Form1.\+i\+Ystart = 265\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+aktuelle startposition X (damit es immer rechts ausgerichtet ist) 
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form1_ac2c6e3b5e3188143c837a7f3e68dac5e}\label{class_vier_gewinnt_1_1_form1_ac2c6e3b5e3188143c837a7f3e68dac5e}} 
+\index{VierGewinnt.Form1@{VierGewinnt.Form1}!iYstartMin@{iYstartMin}}
+\index{iYstartMin@{iYstartMin}!VierGewinnt.Form1@{VierGewinnt.Form1}}
+\doxysubsubsection{\texorpdfstring{iYstartMin}{iYstartMin}}
+{\footnotesize\ttfamily int Vier\+Gewinnt.\+Form1.\+i\+Ystart\+Min = 105\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Maximale startposition x des spielfeldes. 
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form1_a337e2296f79bf42f057b89e480c3842a}\label{class_vier_gewinnt_1_1_form1_a337e2296f79bf42f057b89e480c3842a}} 
+\index{VierGewinnt.Form1@{VierGewinnt.Form1}!sGewinnAnzahl@{sGewinnAnzahl}}
+\index{sGewinnAnzahl@{sGewinnAnzahl}!VierGewinnt.Form1@{VierGewinnt.Form1}}
+\doxysubsubsection{\texorpdfstring{sGewinnAnzahl}{sGewinnAnzahl}}
+{\footnotesize\ttfamily string Vier\+Gewinnt.\+Form1.\+s\+Gewinn\+Anzahl\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form1_aadd9420ab1612ca4a44fd8d0e64a2194}\label{class_vier_gewinnt_1_1_form1_aadd9420ab1612ca4a44fd8d0e64a2194}} 
+\index{VierGewinnt.Form1@{VierGewinnt.Form1}!Spielfeldframe@{Spielfeldframe}}
+\index{Spielfeldframe@{Spielfeldframe}!VierGewinnt.Form1@{VierGewinnt.Form1}}
+\doxysubsubsection{\texorpdfstring{Spielfeldframe}{Spielfeldframe}}
+{\footnotesize\ttfamily Bitmap Vier\+Gewinnt.\+Form1.\+Spielfeldframe\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+die festgelegte größe der spielfeld\+Kacheln 
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form1_a69c325a0c374ea74fe27b8022528f8d8}\label{class_vier_gewinnt_1_1_form1_a69c325a0c374ea74fe27b8022528f8d8}} 
+\index{VierGewinnt.Form1@{VierGewinnt.Form1}!spielfeldgraphic@{spielfeldgraphic}}
+\index{spielfeldgraphic@{spielfeldgraphic}!VierGewinnt.Form1@{VierGewinnt.Form1}}
+\doxysubsubsection{\texorpdfstring{spielfeldgraphic}{spielfeldgraphic}}
+{\footnotesize\ttfamily Graphics Vier\+Gewinnt.\+Form1.\+spielfeldgraphic\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Die Dokumentation für diese Klasse wurde erzeugt aufgrund der Datei\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/\+Kreuzerphilipp/\+One\+Drive -\/ Staatliches berufliches Schulzentrum Roth/\+Projekt\+Woche/\+Vier\+Gewinnt/\+Vier\+Gewinnt/\mbox{\hyperlink{_form1_8cs}{Form1.\+cs}}\end{DoxyCompactItemize}

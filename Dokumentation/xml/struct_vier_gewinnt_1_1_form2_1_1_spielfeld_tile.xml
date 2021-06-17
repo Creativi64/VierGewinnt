@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="de">
+  <compounddef id="struct_vier_gewinnt_1_1_form2_1_1_spielfeld_tile" kind="struct" language="C#" prot="public">
+    <compoundname>VierGewinnt::Form2::SpielfeldTile</compoundname>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="struct_vier_gewinnt_1_1_form2_1_1_spielfeld_tile_1aa44c6318023d8b5f2e40d36bb93c0ec3" prot="public" static="no" mutable="no">
+        <type>string</type>
+        <definition>string VierGewinnt.Form2.SpielfeldTile.sFarbe</definition>
+        <argsstring></argsstring>
+        <name>sFarbe</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form2.cs" line="42" column="27" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form2.cs" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_vier_gewinnt_1_1_form2_1_1_spielfeld_tile_1ab5009cc37207eb3d7a9b57c3c9c93316" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int VierGewinnt.Form2.SpielfeldTile.iX</definition>
+        <argsstring></argsstring>
+        <name>iX</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form2.cs" line="43" column="24" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form2.cs" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_vier_gewinnt_1_1_form2_1_1_spielfeld_tile_1a664e38c978792eae0beef954520f85ee" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int VierGewinnt.Form2.SpielfeldTile.iY</definition>
+        <argsstring></argsstring>
+        <name>iY</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form2.cs" line="43" column="27" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form2.cs" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_vier_gewinnt_1_1_form2_1_1_spielfeld_tile_1a4ab16a4fbaad9e201a6ef2311c7a8810" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int VierGewinnt.Form2.SpielfeldTile.iWidth</definition>
+        <argsstring></argsstring>
+        <name>iWidth</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form2.cs" line="43" column="30" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form2.cs" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="struct_vier_gewinnt_1_1_form2_1_1_spielfeld_tile_1adbe099d212018811f77d78fd64d3f481" prot="public" static="no" mutable="no">
+        <type>int</type>
+        <definition>int VierGewinnt.Form2.SpielfeldTile.iHeight</definition>
+        <argsstring></argsstring>
+        <name>iHeight</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form2.cs" line="43" column="37" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form2.cs" bodystart="43" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form2.cs" line="40" column="15" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form2.cs" bodystart="41" bodyend="44"/>
+    <listofallmembers>
+      <member refid="struct_vier_gewinnt_1_1_form2_1_1_spielfeld_tile_1adbe099d212018811f77d78fd64d3f481" prot="public" virt="non-virtual"><scope>VierGewinnt::Form2::SpielfeldTile</scope><name>iHeight</name></member>
+      <member refid="struct_vier_gewinnt_1_1_form2_1_1_spielfeld_tile_1a4ab16a4fbaad9e201a6ef2311c7a8810" prot="public" virt="non-virtual"><scope>VierGewinnt::Form2::SpielfeldTile</scope><name>iWidth</name></member>
+      <member refid="struct_vier_gewinnt_1_1_form2_1_1_spielfeld_tile_1ab5009cc37207eb3d7a9b57c3c9c93316" prot="public" virt="non-virtual"><scope>VierGewinnt::Form2::SpielfeldTile</scope><name>iX</name></member>
+      <member refid="struct_vier_gewinnt_1_1_form2_1_1_spielfeld_tile_1a664e38c978792eae0beef954520f85ee" prot="public" virt="non-virtual"><scope>VierGewinnt::Form2::SpielfeldTile</scope><name>iY</name></member>
+      <member refid="struct_vier_gewinnt_1_1_form2_1_1_spielfeld_tile_1aa44c6318023d8b5f2e40d36bb93c0ec3" prot="public" virt="non-virtual"><scope>VierGewinnt::Form2::SpielfeldTile</scope><name>sFarbe</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
