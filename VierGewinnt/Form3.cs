@@ -321,7 +321,8 @@ namespace VierGewinnt
         /// <param name="e">EventArgs</param>
         private void ServerHosten_Click(object sender, EventArgs e)
         {
-         
+            SpielHosten.Visible = false;
+            lab_Info.Text = "Spiel wird gehostet";
             /// HOST IST IMMER RED
 
             btn_Suchen.Visible = false;
@@ -333,6 +334,8 @@ namespace VierGewinnt
             SpielHosten.Enabled = false;
 
             string EmpfangeneIp = null;
+
+            
 
             /// Empfängt die Ip Des Zu verbindenden
             EmpfangenSignal.Reset();
@@ -530,6 +533,8 @@ namespace VierGewinnt
                     SpielHosten.Visible = false;
                     txB_VerbindenIP.ReadOnly = true;
                     btn_ConnectTo.Visible = false;
+                    txB_VerbindenIP.Visible = false;
+                    lab_IPeingabeHier.Visible = false;
 
                     AndererSpieler = IPAddress.Parse(txB_VerbindenIP.Text);
                     lab_VerbundenMit.Text = $"Verbunden mit {AndererSpieler}";
@@ -876,7 +881,6 @@ namespace VierGewinnt
         {
             this.Invoke((MethodInvoker)delegate
            {
-               lab_NotResponding.Visible = true;
            });
 
             string sEmpfangen = null;
@@ -940,7 +944,6 @@ namespace VierGewinnt
             listener.Close();
             this.Invoke((MethodInvoker)delegate
             {
-                this.lab_NotResponding.Visible = false;
             });
             return sEmpfangen;
         }
@@ -1287,12 +1290,10 @@ namespace VierGewinnt
                 if (sCurrentcolor == "red")
                 {
                     sCurrentcolor = "yellow";
-                    lab_Player.Text = "Player Yellow";
                 }
                 else
                 {
                     sCurrentcolor = "red";
-                    lab_Player.Text = "Player Red";
                 }
 
                 //überpfrüfung ob noch einzug möglich ist
@@ -1794,6 +1795,16 @@ namespace VierGewinnt
         }
 
         #endregion Game
+
+        private void progressBar1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lab_Info_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
 

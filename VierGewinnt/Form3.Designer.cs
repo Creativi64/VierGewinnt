@@ -44,16 +44,15 @@ namespace VierGewinnt
             this.lab_Player = new System.Windows.Forms.Label();
             this.lab_VerbundenMit = new System.Windows.Forms.Label();
             this.lab_MeineIp = new System.Windows.Forms.Label();
-            this.lab_NotResponding = new System.Windows.Forms.Label();
             this.lab_Info = new System.Windows.Forms.Label();
             this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // btn_Suchen
             // 
-            this.btn_Suchen.Location = new System.Drawing.Point(2, 36);
+            this.btn_Suchen.Location = new System.Drawing.Point(260, 358);
             this.btn_Suchen.Name = "btn_Suchen";
-            this.btn_Suchen.Size = new System.Drawing.Size(75, 23);
+            this.btn_Suchen.Size = new System.Drawing.Size(281, 30);
             this.btn_Suchen.TabIndex = 3;
             this.btn_Suchen.Text = "Serach";
             this.btn_Suchen.UseVisualStyleBackColor = true;
@@ -77,12 +76,13 @@ namespace VierGewinnt
             this.progressBar1.TabIndex = 4;
             this.progressBar1.UseWaitCursor = true;
             this.progressBar1.Visible = false;
+            this.progressBar1.Click += new System.EventHandler(this.progressBar1_Click);
             // 
             // btn_cancel
             // 
-            this.btn_cancel.Location = new System.Drawing.Point(83, 36);
+            this.btn_cancel.Location = new System.Drawing.Point(260, 394);
             this.btn_cancel.Name = "btn_cancel";
-            this.btn_cancel.Size = new System.Drawing.Size(75, 23);
+            this.btn_cancel.Size = new System.Drawing.Size(281, 27);
             this.btn_cancel.TabIndex = 5;
             this.btn_cancel.Text = "Cancel";
             this.btn_cancel.UseVisualStyleBackColor = true;
@@ -93,19 +93,19 @@ namespace VierGewinnt
             // 
             this.LiB_GefundenenEndPoints.FormattingEnabled = true;
             this.LiB_GefundenenEndPoints.ItemHeight = 15;
-            this.LiB_GefundenenEndPoints.Location = new System.Drawing.Point(178, 10);
+            this.LiB_GefundenenEndPoints.Location = new System.Drawing.Point(260, 430);
             this.LiB_GefundenenEndPoints.Margin = new System.Windows.Forms.Padding(1);
             this.LiB_GefundenenEndPoints.Name = "LiB_GefundenenEndPoints";
-            this.LiB_GefundenenEndPoints.Size = new System.Drawing.Size(164, 79);
+            this.LiB_GefundenenEndPoints.Size = new System.Drawing.Size(281, 34);
             this.LiB_GefundenenEndPoints.TabIndex = 6;
             this.LiB_GefundenenEndPoints.Visible = false;
             // 
             // SpielHosten
             // 
-            this.SpielHosten.Location = new System.Drawing.Point(2, 68);
+            this.SpielHosten.Location = new System.Drawing.Point(260, 190);
             this.SpielHosten.Margin = new System.Windows.Forms.Padding(1);
             this.SpielHosten.Name = "SpielHosten";
-            this.SpielHosten.Size = new System.Drawing.Size(97, 21);
+            this.SpielHosten.Size = new System.Drawing.Size(281, 31);
             this.SpielHosten.TabIndex = 7;
             this.SpielHosten.Text = "ServerHosten";
             this.SpielHosten.UseVisualStyleBackColor = true;
@@ -113,10 +113,10 @@ namespace VierGewinnt
             // 
             // btn_ConnectTo
             // 
-            this.btn_ConnectTo.Location = new System.Drawing.Point(2, 141);
+            this.btn_ConnectTo.Location = new System.Drawing.Point(260, 243);
             this.btn_ConnectTo.Margin = new System.Windows.Forms.Padding(1);
             this.btn_ConnectTo.Name = "btn_ConnectTo";
-            this.btn_ConnectTo.Size = new System.Drawing.Size(79, 21);
+            this.btn_ConnectTo.Size = new System.Drawing.Size(281, 33);
             this.btn_ConnectTo.TabIndex = 8;
             this.btn_ConnectTo.Text = "Connect";
             this.btn_ConnectTo.UseVisualStyleBackColor = true;
@@ -124,16 +124,16 @@ namespace VierGewinnt
             // 
             // txB_VerbindenIP
             // 
-            this.txB_VerbindenIP.Location = new System.Drawing.Point(2, 116);
+            this.txB_VerbindenIP.Location = new System.Drawing.Point(260, 293);
             this.txB_VerbindenIP.Margin = new System.Windows.Forms.Padding(1);
             this.txB_VerbindenIP.Name = "txB_VerbindenIP";
-            this.txB_VerbindenIP.Size = new System.Drawing.Size(147, 23);
+            this.txB_VerbindenIP.Size = new System.Drawing.Size(281, 23);
             this.txB_VerbindenIP.TabIndex = 9;
             // 
             // lab_IPeingabeHier
             // 
             this.lab_IPeingabeHier.AutoSize = true;
-            this.lab_IPeingabeHier.Location = new System.Drawing.Point(2, 100);
+            this.lab_IPeingabeHier.Location = new System.Drawing.Point(260, 277);
             this.lab_IPeingabeHier.Name = "lab_IPeingabeHier";
             this.lab_IPeingabeHier.Size = new System.Drawing.Size(147, 15);
             this.lab_IPeingabeHier.TabIndex = 13;
@@ -186,27 +186,16 @@ namespace VierGewinnt
             this.lab_MeineIp.TabIndex = 19;
             this.lab_MeineIp.Text = "MeineIP:";
             // 
-            // lab_NotResponding
-            // 
-            this.lab_NotResponding.AutoSize = true;
-            this.lab_NotResponding.BackColor = System.Drawing.Color.DarkRed;
-            this.lab_NotResponding.Font = new System.Drawing.Font("Cascadia Code", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.lab_NotResponding.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.lab_NotResponding.Location = new System.Drawing.Point(256, 498);
-            this.lab_NotResponding.Name = "lab_NotResponding";
-            this.lab_NotResponding.Size = new System.Drawing.Size(223, 35);
-            this.lab_NotResponding.TabIndex = 20;
-            this.lab_NotResponding.Text = "It still runs";
-            this.lab_NotResponding.Visible = false;
-            // 
             // lab_Info
             // 
             this.lab_Info.AutoSize = true;
-            this.lab_Info.Location = new System.Drawing.Point(2, 167);
+            this.lab_Info.Location = new System.Drawing.Point(174, 6);
             this.lab_Info.Name = "lab_Info";
             this.lab_Info.Size = new System.Drawing.Size(26, 15);
             this.lab_Info.TabIndex = 21;
             this.lab_Info.Text = "idel";
+            this.lab_Info.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lab_Info.Click += new System.EventHandler(this.lab_Info_Click);
             // 
             // Form3
             // 
@@ -215,7 +204,6 @@ namespace VierGewinnt
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(784, 561);
             this.Controls.Add(this.lab_Info);
-            this.Controls.Add(this.lab_NotResponding);
             this.Controls.Add(this.lab_MeineIp);
             this.Controls.Add(this.lab_VerbundenMit);
             this.Controls.Add(this.lab_Timer);
@@ -259,7 +247,6 @@ namespace VierGewinnt
         private System.Windows.Forms.Label lab_Player;
         private System.Windows.Forms.Label lab_VerbundenMit;
         private System.Windows.Forms.Label lab_MeineIp;
-        private System.Windows.Forms.Label lab_NotResponding;
         private System.Windows.Forms.Label lab_Info;
         private System.ComponentModel.BackgroundWorker backgroundWorker2;
     }

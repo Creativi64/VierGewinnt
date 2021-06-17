@@ -210,10 +210,21 @@
         </member>
         <member name="M:VierGewinnt.Form3.ServerHosten_Click(System.Object,System.EventArgs)">
             <summary>
-            Startet bei Einem Den Listening prozess der Darauf wartet das sich jemand
+            Hostet ein spiel, Bezieht sich aber nur darauf wer die parameter am spiel anfang festlegt
+            Startet bei Einem Den Listening prozess der Darauf wartet das sich jemand verbindet
+            nach der Verbindung werden die spiel daten ausgetauscht
             </summary>
             <param name="sender">Sender object</param>
             <param name="e">EventArgs</param>
+        </member>
+        <member name="M:VierGewinnt.Form3.btn_ConnectTo_Click(System.Object,System.EventArgs)">
+            <summary>
+            Versicht sich zu der in txB_VerbindenIP Eingegeben ip zu verbinden
+            wennn er dies nich kann bricht er ab und meldet über das label das es nicht geklappt hat
+            Wenn er eine verbindung hat beginnt der daten austauscht und es wird angefangen zu lauschen um die parameter fürs spiel zu empfangen
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
         </member>
         <member name="M:VierGewinnt.Form3.backgroundWorker1_DoWork(System.Object,System.ComponentModel.DoWorkEventArgs)">
             <summary>
@@ -253,6 +264,25 @@
             </summary>
             <param name="Senden">der zu sendende string</param>
             <returns>Gibt zürück was es von server als antwort auf das erhaltenn von den daten bekommt</returns>
+        </member>
+        <member name="M:VierGewinnt.Form3.SpielfeldErstellen">
+            <summary>
+            Mehr Informationeen Zu dem Game In Form2
+            </summary>
+        </member>
+        <member name="M:VierGewinnt.Form3.GegnerZug(System.Int32)">
+            <summary>
+            macht in eigene Spielfend den zug der Empfangen wurde
+            </summary>
+            <param name="Spalte">Die Spalte in der Der Zug gemacht werden soll</param>
+        </member>
+        <member name="M:VierGewinnt.Form3.Form3_Click(System.Object,System.EventArgs)">
+            <summary>
+            nach dem man gecklickt hat wird der zug gesendet und er dann Von GegnerZug Auch bei gegner gemacht
+            Die anzeige und Animation passiert Nahezu syncron bei beiden spielern 
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
         </member>
         <member name="F:VierGewinnt.Form3.components">
             <summary>
