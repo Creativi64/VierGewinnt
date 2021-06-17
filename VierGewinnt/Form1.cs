@@ -96,6 +96,7 @@ namespace VierGewinnt
             this.Hide();
 
         }
+       
         private void Btn_Quit_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -148,19 +149,21 @@ namespace VierGewinnt
         {
             sGewinnAnzahl = textBox1.Text;
         }
+        
         private void TrackBarX_Scroll(object sender, EventArgs e)
         {
             //spielfeldgraphic.FillRectangle(new SolidBrush(Color.White), 0, 0, this.Width , this.Height);
             Form2.iSpielfeldWidth = trackBarX.Value + 4;
-            Form3.iSpielfeldwidth = trackBarX.Value + 4;
+            Form3.iSpielfeldWidth = trackBarX.Value + 4;
             iXstart = iXstartMin + (iSpielfeldWidthMax - Form2.iSpielfeldWidth) * iSpielfeldFormat;
             SpielfeldZeichnen();
         }
+        
         private void TrackBarY_Scroll(object sender, EventArgs e)
         {
             //spielfeldgraphic.FillRectangle(new SolidBrush(Color.White), 0, 0, this.Width, this.Height);
             Form2.iSpielfeldHeight = trackBarY.Value + 4;
-            Form3.iSpielfeldheight = trackBarY.Value + 4;
+            Form3.iSpielfeldHeight = trackBarY.Value + 4;
             iYstart = iYstartMin + (iSpielfeldHeightMax - Form2.iSpielfeldHeight) * iSpielfeldFormat;
             SpielfeldZeichnen();
         }

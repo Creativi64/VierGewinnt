@@ -30,6 +30,7 @@ namespace VierGewinnt
         /// </summary>
 
         #region Console
+
         /// <summary>
         /// Erlaubt Uns Zum Form eine console zu starten
         /// </summary>
@@ -42,16 +43,14 @@ namespace VierGewinnt
         private const int PORT = 42069;
 
         private IPEndPoint[] GefundenEndpoints;
-
-        private int iLezztesGefundene = 0;
+        private int iLetzterGefundeneEndpoint = 0;
 
         private IPAddress AndererSpieler;
 
-        private bool Block = true;
-
-        private bool MeinZug = false;
-
-        private bool SpielEnde = false;
+        private bool bBlock = true;
+        private bool bMeinZug = false;
+        private bool bSpielEnde = false;
+        private bool bInizialisiertFlag = false;
 
         /// <summary>
         /// Signaliseirt Den Task/Threads ob was Empfangen wurde damit sie nicht mehr wartenüssen
@@ -65,58 +64,35 @@ namespace VierGewinnt
 
         #region GameParams
 
-        private string currentcolor;
+        public static int iSpielfeldHeight = 4;//spielfeldhöhe in spielfeldern
+        public static int iSpielfeldWidth = 4; //spielfeldbreite in spielfeldern
 
-        private float kreisausgleich;
+        public SpielfeldTile[,] Spielfelder;
+        private PointF[,] DreiecksPunkte;
 
-        private float droptime = 50; //geschwindigkeit beim runterfallen
+        private string sCurrentcolor;//Farbe die am Zug ist
 
-        private int gewinnnummer;
+        private float dKreisausgleich;// zahl die die Kreisdicke ausgleichen soll
+        private float fDroptime = 50;//wie langsam der stein fällt
 
-        /// <summary>
-        /// Struct woraus das spielfeld erstellt wird mit den posotionen und der Frabe Des dort liegenden steins
-        /// </summary>
-        public struct Spielfeldtile
-        {
-            /// <summary>
-            /// Die X und Y achsen Und Die Pixel Hühe und Breite Des Steins
-            /// </summary>
-            public int x, y, iwidth, iheight;
+        private int iGewinnAnzahl; // anzahl zum Gewinnen nötiger steine in einer reihe
+        private int iOldSpalte = 0; //Für hover effekt letzte spalte, damit nicht redrawt wird wenn es die gleiche Zeile ist
+        private int iSpielfeldHeightPx;//höhe des Spielfeldes in Pixel
+        private int iSpielfeldWidthPx;//breite des Spielfeldes in Pixel
 
-            /// <summary>
-            /// Farbe des Steins Weis -> Nix
-            /// </summary>
-            public string farbe;
-        }
-
-        private int iSpielfeldheightpx;
-
-        private int iSpielfeldwidthpx;
-
-        /// <summary>
-        /// Die Spielfeld Höhe Standart ist Vier Wird Vor Aufruf Von Form3 Von Form1 Festgelget
-        /// </summary>
-        public static int iSpielfeldheight = 4;         //spielfeldhöhe in spielfeldern
-
-        /// <summary>
-        /// Die Spielfeld breite Standart ist Vier Wird Vor Aufruf Von Form3 Von Form1 Festgelget
-        /// </summary>
-        public static int iSpielfeldwidth = 4;          //spielfeldbreite in spielfeldern
-
-        private Graphics spielfeldgraphic;
-
+        private bool bAimationFlag = false;//Animationsflag wird angeschalten wenn eine Animation stattfindet, da in dieser zeit nicht Redrawt werden soll
+        private bool bResizing = false;
+       
         private Bitmap Spielfeldframe;
 
+        private Graphics Spielfeldgraphic;
         private Graphics Bitmapgraphic;
 
-        private PointF[,] Dreieckspunkte;
-
-        private bool AimationFlag = true;
-
-        /// <summary>
-        /// Erstellt aus dem struct Spielfeldtile ein
-        /// </summary>
-        public Spielfeldtile[,] spielfelder;
+        public struct SpielfeldTile                     //representiert die einzelnen Felder mit position und Farbe
+        {
+            public string sFarbe;
+            public int iX, iY, iWidth, iHeight;
+        }
 
         #endregion GameParams
 
@@ -153,10 +129,10 @@ namespace VierGewinnt
             this.WindowState = FormWindowState.Normal;
             this.MaximizeBox = true;
 
-            iSpielfeldheightpx = this.Height - 150;
-            iSpielfeldwidthpx = this.Width - 150;
+            iSpielfeldHeightPx = this.Height - 150;
+            iSpielfeldWidthPx = this.Width - 50;
 
-            spielfeldgraphic = this.CreateGraphics();
+            Spielfeldgraphic = this.CreateGraphics();
             SpielfeldErstellen();
             Spielfeldframe = new Bitmap(this.Width, this.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
             Bitmapgraphic = Graphics.FromImage(Spielfeldframe);
@@ -166,43 +142,43 @@ namespace VierGewinnt
             switch (Form1.sGewinnAnzahl)
             {
                 case ("Zwei"):
-                    gewinnnummer = 2;
+                    iGewinnAnzahl = 2;
                     break;
 
                 case ("Drei"):
-                    gewinnnummer = 3;
+                    iGewinnAnzahl = 3;
                     break;
 
                 case ("Vier"):
-                    gewinnnummer = 4;
+                    iGewinnAnzahl = 4;
                     break;
 
                 case ("Fünf"):
-                    gewinnnummer = 5;
+                    iGewinnAnzahl = 5;
                     break;
 
                 case ("Sechs"):
-                    gewinnnummer = 6;
+                    iGewinnAnzahl = 6;
                     break;
 
                 case ("Sieben"):
-                    gewinnnummer = 7;
+                    iGewinnAnzahl = 7;
                     break;
 
                 case ("Acht"):
-                    gewinnnummer = 8;
+                    iGewinnAnzahl = 8;
                     break;
 
                 case ("Neun"):
-                    gewinnnummer = 9;
+                    iGewinnAnzahl = 9;
                     break;
 
                 case ("Zehn"):
-                    gewinnnummer = 10;
+                    iGewinnAnzahl = 10;
                     break;
 
                 default:
-                    gewinnnummer = 4;
+                    iGewinnAnzahl = 4;
                     break;
             }
 
@@ -213,76 +189,84 @@ namespace VierGewinnt
             });
         }
 
+
+        /// <summary>
+        /// Zeig Die Erste ip von einem selbst an
+        /// </summary>
         private void MeineIP()
         {
             IPAddress[] ipv4Addresses = Array.FindAll(Dns.GetHostEntry(string.Empty).AddressList, a => a.AddressFamily == AddressFamily.InterNetwork);
             lab_MeineIp.Text = $"MeineIP: {ipv4Addresses[0]}";
         }
-
+        /// <summary>
+        /// zufällige farbewählen die dann als erste eine spielzug macht
+        /// </summary>
         private void SpielerWählen()
         {
-            // zufällige start Fahrbe Wählen
             if ((new Random()).Next(0, 2) == 0)
             {
-                currentcolor = "red";
+                sCurrentcolor = "red";
                 lab_Player.Text = "Player Red";
             }
             else
             {
-                currentcolor = "yellow";
+                sCurrentcolor = "yellow";
                 lab_Player.Text = "Player Yellow";
             }
         }
 
-        bool Inizialisiertflag = false;
-
+        /// <summary>
+        /// Wird aufgerufen vom server bevor der die daten Sendet und vom Client nachtdem er alle Daten bekommen hat
+        /// Es Fängt dann an das spielfeld zu zeichn
+        /// </summary>
         private void SpielFelInizialisieren()
         {
-            Inizialisiertflag = true;
+            bInizialisiertFlag = true;
             Console.WriteLine("Spielfeld");
-            droptime = droptime / iSpielfeldheight;
-            Block = false;
-            spielfelder = new Spielfeldtile[iSpielfeldwidth, iSpielfeldheight];
+            fDroptime = fDroptime / iSpielfeldHeight;
+            bBlock = false;
+            Spielfelder = new SpielfeldTile[iSpielfeldWidth, iSpielfeldHeight];
             Thread.Sleep(400);
 
             //Erste Ecken Berechnen
             int ispielfeldformat;
-            if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)
+            if (iSpielfeldHeightPx / iSpielfeldHeight <= iSpielfeldWidthPx / iSpielfeldWidth)                               //spielfeldformat wird so gewählt, dass das Spielfeld immer in das Fenster passt
             {
-                ispielfeldformat = iSpielfeldheightpx / iSpielfeldheight;
+                ispielfeldformat = iSpielfeldHeightPx / iSpielfeldHeight;
             }
             else
             {
-                ispielfeldformat = iSpielfeldwidthpx / iSpielfeldwidth;
+                ispielfeldformat = iSpielfeldWidthPx / iSpielfeldWidth;
             }
-            spielfelder[0, 0].x = (this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2) + 0 * ispielfeldformat;
-            spielfelder[0, 0].y = (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2) + 0 * ispielfeldformat;
-            spielfelder[0, 0].iwidth = ispielfeldformat;
-            spielfelder[0, 0].iheight = ispielfeldformat;
+            Spielfelder[0, 0].iX = (this.Width / 2) - (ispielfeldformat * iSpielfeldWidth / 2) + 0 * ispielfeldformat;      //Spielfelder werden erstmals erstellt
+            Spielfelder[0, 0].iY = (this.Height / 2) - (ispielfeldformat * iSpielfeldHeight / 2) + 0 * ispielfeldformat;
+            Spielfelder[0, 0].iWidth = ispielfeldformat;
+            Spielfelder[0, 0].iHeight = ispielfeldformat;
 
-            EckenBerechnen(0, 0, spielfelder[0, 0].iwidth, spielfelder[0, 0].iheight);
-
-            //Spielfeldzeichen
+            EckenBerechnen(0, 0, Spielfelder[0, 0].iWidth, Spielfelder[0, 0].iHeight);
             SpielfeldErstellen();
+
+            Spielfeldframe = new Bitmap(this.Width, this.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+            Bitmapgraphic = Graphics.FromImage(Spielfeldframe);
+
+            Bitmapgraphic.FillRectangle(new SolidBrush(this.BackColor), 0, 0, this.Width, this.Height);
             SpielfeldZeichnen(Bitmapgraphic);
 
-            // Im array alle Farben Auf Weiß zu setzen
-            for (int x = 0; x < iSpielfeldwidth; x++)
+            for (int x = 0; x < iSpielfeldWidth; x++)       // Im array alle Farben Auf Weiß setzen
             {
-                for (int y = 0; y < iSpielfeldheight; y++)
+                for (int y = 0; y < iSpielfeldHeight; y++)
                 {
-                    spielfelder[x, y].farbe = "white";
+                    Spielfelder[x, y].sFarbe = "white";
                 }
             }
-            Thread.Sleep(10);
 
-            spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
+            Spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
         }
 
         /// <summary>
         /// Wenn Man Das Fenster Schliest Sorgt dies Dafür das Alles geschlossen wird auch wenn noch die suche läuft oder ein Task/Thread hintergrund wartet und diese auch beendet werden
         /// Es wird eine message box Angezeigt die sagt das Das Programm beendet wurde
-        /// 
+        ///
         /// </summary>
         protected override void OnClosed(EventArgs e)
         {
@@ -302,6 +286,11 @@ namespace VierGewinnt
             Environment.Exit(0);
         }
 
+        /// <summary>
+        /// Startet den Background worker der dann nach Offenen Ports Im Lokalen Netzwerk sucht
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">EventArgs</param>
         private void btn_Suchen_Click(object sender, EventArgs e)
         {
             Console.WriteLine("Suchen");
@@ -323,9 +312,17 @@ namespace VierGewinnt
             }
         }
 
+        /// <summary>
+        /// Hostet ein spiel, Bezieht sich aber nur darauf wer die parameter am spiel anfang festlegt
+        /// Startet bei Einem Den Listening prozess der Darauf wartet das sich jemand verbindet
+        /// nach der Verbindung werden die spiel daten ausgetauscht
+        /// </summary>
+        /// <param name="sender">Sender object</param>
+        /// <param name="e">EventArgs</param>
         private void ServerHosten_Click(object sender, EventArgs e)
         {
-            // HOST IST IMMER RED
+         
+            /// HOST IST IMMER RED
 
             btn_Suchen.Visible = false;
             btn_cancel.Visible = false;
@@ -337,7 +334,7 @@ namespace VierGewinnt
 
             string EmpfangeneIp = null;
 
-            // Empfängt die Ip Des Zu verbindenden
+            /// Empfängt die Ip Des Zu verbindenden
             EmpfangenSignal.Reset();
             do
             {
@@ -359,54 +356,58 @@ namespace VierGewinnt
             AndererSpieler = IPAddress.Parse(EmpfangeneIp);
             lab_VerbundenMit.Text = $"Verbunden Mit: {AndererSpieler}";
 
-            // Feld Inizialisieren und Spieler Wählen
+            /// Feld Inizialisieren und Spieler Wählen
             SpielFelInizialisieren();
 
             Thread.Sleep(1000);
             SpielerWählen();
 
-            // Feld Höhe, Breite , Farbe und Gewinnnummer werden Übertragen
+            /// Feld Höhe, Breite , Farbe und Gewinnnummer werden Übertragen
             EmpfangenSignal.Reset();
-            StartClient(iSpielfeldheight.ToString());
+            StartClient(iSpielfeldHeight.ToString());
             EmpfangenSignal.WaitOne();
 
             EmpfangenSignal.Reset();
-            StartClient(iSpielfeldwidth.ToString());
+            StartClient(iSpielfeldWidth.ToString());
             EmpfangenSignal.WaitOne();
 
             EmpfangenSignal.Reset();
-            StartClient(currentcolor.ToString());
+            StartClient(sCurrentcolor.ToString());
             EmpfangenSignal.WaitOne();
 
             EmpfangenSignal.Reset();
-            StartClient(gewinnnummer.ToString());
+            StartClient(iGewinnAnzahl.ToString());
             EmpfangenSignal.WaitOne();
 
             Console.WriteLine("Spieldaten ausgetauischt");
-            // je nachdem welche Farbe Anfängt wird Ein Andere Spiel Verlauf Genutzt wenn die Farbe Rot ist wird 1. Genutzt
-            // wenn die farbe nicht so ist dann 2.
-            /*
+           
+            /// je nachdem welche Farbe Anfängt wird Ein Andere Spiel Verlauf Genutzt wenn die Farbe Rot ist wird 1. Genutzt
+            /// wenn die farbe nicht so ist dann 2.
+            /// <example>
+            /// | = listen, - = Senden
+            /// 
+            /// 1.
+            /// Es wird zuerst Selbst Gesendet und dann Empangen und wieder Gesendet
+            /// - |
+            /// | -
+            /// - |
+            /// ...
 
-            1.
-            Es wird zuerst Selbst Gesendet und dann Empangen und wieder Gesendet
-            -> |
-            | <-
-            -> |
-
-            2.
-            es wird Zuerst Empfangen und dann gesenter und dann Empfangen
-            | <-
-            -> |
-            | <-
-
-             Dies Muss immer mit der Gegen seite Syncron laufen
-             */
-            if (currentcolor == "red")
+            /// 2.
+            /// es wird Zuerst Empfangen und dann gesenter und dann Empfangen
+            /// | -
+            /// - |
+            /// | -
+            /// ...
+            /// <example>
+            /// Dies Muss immer mit der Gegen seite Syncron laufen
+      
+            if (sCurrentcolor == "red")
             {
                 // eigenen Spiezugmachen
                 Task warten2 = Task.Run(() =>
                 {
-                    MeinZug = true;
+                    bMeinZug = true;
                     while (!MeinZugSignal.WaitOne())
                     {
                         Application.DoEvents();
@@ -435,7 +436,7 @@ namespace VierGewinnt
                     // eigenen Spiezugmachen
                     Task warten1 = Task.Run(() =>
                     {
-                        MeinZug = true;
+                        bMeinZug = true;
                         while (!MeinZugSignal.WaitOne())
                         {
                             Application.DoEvents();
@@ -446,7 +447,7 @@ namespace VierGewinnt
                         Application.DoEvents();
                     }
                     MeinZugSignal.Reset();
-                } while (SpielEnde == false);
+                } while (bSpielEnde == false);
             }
             else
             {
@@ -466,7 +467,7 @@ namespace VierGewinnt
                     // eigenen Spiezugmachen
                     Task warten2 = Task.Run(() =>
                     {
-                        MeinZug = true;
+                        bMeinZug = true;
                         while (!MeinZugSignal.WaitOne())
                         {
                             Application.DoEvents();
@@ -488,20 +489,27 @@ namespace VierGewinnt
                     {
                         Application.DoEvents();
                     }
-                } while (SpielEnde == false);
+                } while (bSpielEnde == false);
             }
 
             Console.WriteLine("Ende");
         }
 
+        /// <summary>
+        /// Versicht sich zu der in txB_VerbindenIP Eingegeben ip zu verbinden
+        /// wennn er dies nich kann bricht er ab und meldet über das label das es nicht geklappt hat
+        /// Wenn er eine verbindung hat beginnt der daten austauscht und es wird angefangen zu lauschen um die parameter fürs spiel zu empfangen
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btn_ConnectTo_Click(object sender, EventArgs e)
         {
-            // CLIENT IST IMMER YELLOW
-
-            // die Ip adresse prüfen
+            /// CLIENT IST IMMER YELLOW
+            
+            /// die Ip adresse prüfen
             if (IPAddress.TryParse(txB_VerbindenIP.Text, out IPAddress _IP))
             {
-                // prüfen ob man sich auf die adresse verbidnen kann
+                /// prüfen ob man sich auf die adresse verbidnen kann
                 Socket s = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 IPAddress Ip = IPAddress.Parse(txB_VerbindenIP.Text);
                 IPEndPoint hostep = new IPEndPoint(Ip, 42069);
@@ -511,7 +519,7 @@ namespace VierGewinnt
                 bool success = result.AsyncWaitHandle.WaitOne(1, true);
                 if (s.Connected)
                 {
-                    // wemm man sich verbinden kann wird sie wieder getrennt und Die Richtige erstellt
+                    /// wemm man sich mit dem Endpoint verbinden kann wird die verbindung wieder getrennt und danacht die Richtige verbindung erstellt
                     s.EndConnect(result);
                     s.Send(Encoding.UTF8.GetBytes("Ping"));
                     s.Close();
@@ -526,11 +534,11 @@ namespace VierGewinnt
                     AndererSpieler = IPAddress.Parse(txB_VerbindenIP.Text);
                     lab_VerbundenMit.Text = $"Verbunden mit {AndererSpieler}";
 
-                    // sendet Seine Ip An Den server
+                    /// sendet Seine Ip An Den server
                     IPAddress[] ipv4Addresses = Array.FindAll(Dns.GetHostEntry(string.Empty).AddressList, a => a.AddressFamily == AddressFamily.InterNetwork);
                     StartClient(ipv4Addresses[0].ToString());
 
-                    //empängt Spielfeld Höhe, breite, gewinnummer und Die farbe
+                    ///empängt Spielfeld Höhe, breite, gewinnummer und Die farbe
                     EmpfangenSignal.Reset();
                     string sSpielfeldHöhe = StartListening("Empfangen");
                     EmpfangenSignal.WaitOne();
@@ -548,10 +556,10 @@ namespace VierGewinnt
                     EmpfangenSignal.WaitOne();
 
                     // parameter wqerden Gesetzt
-                    iSpielfeldheight = Convert.ToInt32(sSpielfeldHöhe);
-                    gewinnnummer = Convert.ToInt32(sGewinnummer);
-                    iSpielfeldwidth = Convert.ToInt32(sSpielfeldBreite);
-                    currentcolor = sFarbe;
+                    iSpielfeldHeight = Convert.ToInt32(sSpielfeldHöhe);
+                    iGewinnAnzahl = Convert.ToInt32(sGewinnummer);
+                    iSpielfeldWidth = Convert.ToInt32(sSpielfeldBreite);
+                    sCurrentcolor = sFarbe;
 
                     Console.WriteLine("Spieldaten ausgetauischt");
 
@@ -559,25 +567,26 @@ namespace VierGewinnt
                     //this.Refresh();
                     //spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
                     Thread.Sleep(1000);
-                    // je nachdem welche Farbe Anfängt wird Ein Andere Spiel Verlauf Genutzt wenn die Farbe Rot ist wird 1. Genutzt
-                    // wenn die farbe nicht so ist dann 2.
-                    /*
+                   
+                    /// je nachdem welche Farbe Anfängt wird Ein Andere Spiel Verlauf Genutzt wenn die Farbe Rot ist wird 1. Genutzt
+                    /// wenn die farbe nicht so ist dann 2.
+                    /// <example>
+                    /// | = listen, - = Senden
+                    ///1.
+                    ///es wird Zuerst Empfangen und dann gesenter und dann Empfangen
+                    ///| -
+                    ///- |
+                    ///| -
 
-                    1.
-                    es wird Zuerst Empfangen und dann gesenter und dann Empfangen
-                    | <-
-                    -> |
-                    | <-
+                    ///2.
+                    ///Es wird zuerst Selbst Gesendet und dann Empangen und wieder Gesendet
+                    ///- |
+                    ///| -
+                    ///- |
+                    /// <example>
+                    /// Dies Muss immer mit der Gegen seite Syncron laufen
 
-                    2.
-                    Es wird zuerst Selbst Gesendet und dann Empangen und wieder Gesendet
-                    -> |
-                    | <-
-                    -> |
-
-                     Dies Muss immer mit der Gegen seite Syncron laufen
-                     */
-                    if (currentcolor == "red")
+                    if (sCurrentcolor == "red")
                     {
                         //auf zug warten
                         Task warten = Task.Run(() =>
@@ -595,7 +604,7 @@ namespace VierGewinnt
                             // eigenen Spiezugmachen
                             Task warten2 = Task.Run(() =>
                             {
-                                MeinZug = true;
+                                bMeinZug = true;
                                 while (!MeinZugSignal.WaitOne())
                                 {
                                     ;
@@ -617,7 +626,7 @@ namespace VierGewinnt
                             {
                                 Application.DoEvents();
                             }
-                        } while (SpielEnde == false);
+                        } while (bSpielEnde == false);
                     }
                     else
                     {
@@ -625,7 +634,7 @@ namespace VierGewinnt
 
                         Task warten1 = Task.Run(() =>
                         {
-                            MeinZug = true;
+                            bMeinZug = true;
                             while (!MeinZugSignal.WaitOne())
                             {
                                 Application.DoEvents();
@@ -653,7 +662,7 @@ namespace VierGewinnt
                             // eigenen Spiezugmachen
                             Task warten2 = Task.Run(() =>
                             {
-                                MeinZug = true;
+                                bMeinZug = true;
                                 while (!MeinZugSignal.WaitOne())
                                 {
                                     Application.DoEvents();
@@ -664,7 +673,7 @@ namespace VierGewinnt
                                 Application.DoEvents();
                             }
                             MeinZugSignal.Reset();
-                        } while (SpielEnde == false);
+                        } while (bSpielEnde == false);
                     }
 
                     Console.WriteLine("Ende");
@@ -693,6 +702,11 @@ namespace VierGewinnt
 
         #region NachConnectionsSuchen
 
+        /// <summary>
+        /// Startet den such prozess als BackgroundWorker im Hintergrund
+        /// </summary>
+        /// <param name="sender"> sender Objekt Vom aufrufer</param>
+        /// <param name="e"> DoWorkEventArgs um die Events zu verarbeiten wird nur für Cancel Genutzt</param>
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             // Do not access the form's BackgroundWorker reference directly.
@@ -712,6 +726,14 @@ namespace VierGewinnt
             }
         }
 
+        /// <summary>
+        /// Wird Vom BackgroundWorker nach beendigung aufgerufen
+        /// sotiert nach Canceled
+        /// Error wenn ein Fehler Passiert ist
+        /// Normaler Durchlauf Hier nach werden die Ergebnise in der LiB_GefundenenEndPoints Aufgelistet
+        /// </summary>
+        /// <param name="sender">sender Objekt Vom aufrufer</param>
+        /// <param name="e"> die RunWorkerCompletedEventArgs die dann den beendigungs grund mitliefern </param>
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             if (e.Cancelled)
@@ -757,6 +779,10 @@ namespace VierGewinnt
             }
         }
 
+        /// <summary>
+        /// Wird vom BackgroundWorker aufgerufen um nach den Endpoints zu sichen
+        /// </summary>
+        /// <param name="bw"> der BackgroundWorker wird übergeben um zu wissen welcher status er hat und Den prozess vortschritt zurück zu geben</param>
         private void ConnectionSuchen(BackgroundWorker bw)
         {
             for (int i = 0; i < GefundenEndpoints.Length; i++)
@@ -792,7 +818,7 @@ namespace VierGewinnt
                             s.Close();
                             Console.WriteLine($"gefunden auf {hostep}");
 
-                            GefundenEndpoints[iLezztesGefundene] = hostep;
+                            GefundenEndpoints[iLetzterGefundeneEndpoint] = hostep;
                         }
                         else
                         {
@@ -842,7 +868,7 @@ namespace VierGewinnt
 
         /// <summary>
         /// Startet Ein Listening Prozzess um daten entegen zu nehmen
-        /// Encodeing und Decoding Leuft Über UTF8
+        /// Encodeing und Decoding Leuft gleich Über UTF8 es muss der zu sendende oder empfangende vorher nicht geändert werden
         /// </summary>
         /// <param name="Senden">Es wird Ein String Übergeben der nach den empfangen von etwas zurück gesendet wird</param>
         /// <returns>Gibt das empfangenen als string zurück</returns>
@@ -922,7 +948,12 @@ namespace VierGewinnt
         #endregion Einfacher Server
 
         #region EinfacherClient
-
+        /// <summary>
+        /// Startet Einen Client der daten an einen Server sendet der am lauschen ist
+        /// Encodeing und Decoding Leuft Über UTF8  es muss der zu sendende oder empfangende vorher nicht geändert werden
+        /// </summary>
+        /// <param name="Senden">der zu sendende string</param>
+        /// <returns>Gibt zürück was es von server als antwort auf das erhaltenn von den daten bekommt</returns>
         public string StartClient(string Senden)
         {
             string sEmpfangen = null;
@@ -986,29 +1017,33 @@ namespace VierGewinnt
 
         #endregion EinfacherClient
 
+        /// <summary>
+        /// Mehr Informationeen Zu dem Game In Form2
+        /// </summary>
         #region Game
 
         private void SpielfeldErstellen()
         {
-            if (Inizialisiertflag)
+            if (bInizialisiertFlag)
             {
                 int ispielfeldformat;
-                if (iSpielfeldheightpx / iSpielfeldheight <= iSpielfeldwidthpx / iSpielfeldwidth)
+                if (iSpielfeldHeightPx / iSpielfeldHeight <= iSpielfeldWidthPx / iSpielfeldWidth)               //spielfeldformat wird so gewählt, dass das Spielfeld immer in das Fenster passt
+
                 {
-                    ispielfeldformat = iSpielfeldheightpx / iSpielfeldheight;
+                    ispielfeldformat = iSpielfeldHeightPx / iSpielfeldHeight;
                 }
                 else
                 {
-                    ispielfeldformat = iSpielfeldwidthpx / iSpielfeldwidth;
+                    ispielfeldformat = iSpielfeldWidthPx / iSpielfeldWidth;
                 }
-                for (int x = 0; x < iSpielfeldwidth; x++)
+                for (int x = 0; x < iSpielfeldWidth; x++)
                 {
-                    for (int y = 0; y < iSpielfeldheight; y++)
+                    for (int y = 0; y < iSpielfeldHeight; y++)
                     {
-                        spielfelder[x, y].x = (this.Width / 2) - (ispielfeldformat * iSpielfeldwidth / 2) + x * ispielfeldformat;
-                        spielfelder[x, y].y = (this.Height / 2) - (ispielfeldformat * iSpielfeldheight / 2) + y * ispielfeldformat;
-                        spielfelder[x, y].iwidth = ispielfeldformat;
-                        spielfelder[x, y].iheight = ispielfeldformat;
+                        Spielfelder[x, y].iX = (this.Width / 2) - (ispielfeldformat * iSpielfeldWidth / 2) + x * ispielfeldformat;        //Struct wird angelegt
+                        Spielfelder[x, y].iY = (this.Height / 2) - (ispielfeldformat * iSpielfeldHeight / 2) + y * ispielfeldformat;
+                        Spielfelder[x, y].iWidth = ispielfeldformat;
+                        Spielfelder[x, y].iHeight = ispielfeldformat;
                     }
                 }
             }
@@ -1016,52 +1051,56 @@ namespace VierGewinnt
 
         private void SpielfeldZeichnen(Graphics G)
         {
-            for (int x = 0; x < iSpielfeldwidth; x++)
+            for (int x = 0; x < iSpielfeldWidth; x++)
             {
-                for (int y = 0; y < iSpielfeldheight; y++)
+                for (int y = 0; y < iSpielfeldHeight; y++)
                 {
-                    spielfeldtilezeichnen(spielfelder[x, y].x, spielfelder[x, y].y, spielfelder[x, y].iwidth, spielfelder[x, y].iheight, G);       //Struct wird benutzt um Das Spielfeld zu Zeichnen
+                    SpielfeldTileZeichnen(Spielfelder[x, y].iX, Spielfelder[x, y].iY, Spielfelder[x, y].iWidth, Spielfelder[x, y].iHeight, G);       //Struct wird benutzt um Das Spielfeld zu Zeichnen
                 }
             }
-        }
 
-        private void SpielsteineZeichnen(Graphics G, int starty)
-        {
-            for (int x = 0; x < iSpielfeldwidth; x++)
-            {
-                for (int y = 0; y < iSpielfeldheight; y++)
-                {
-                    if (spielfelder[x, y].farbe != "white" && spielfelder[x, y].farbe != null)                                                  //wenn die Farbe des Kreises Nicht weis ist wird er auch noch gezeichnet
-                    {
-                        Kreiszeichnen(x, y, spielfelder[x, y].farbe, Bitmapgraphic, starty);
-                    }
-                }
-            }
             //spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
         }
 
-        private void EckenBerechnen(int x, int y, int iwidth, int iheight)
+        private void SpielsteineZeichnen(Graphics G, int iStartY)
         {
-            double dDreieckkprozent = 0.3;
-            Dreieckspunkte = new PointF[4, 3];
-            Dreieckspunkte[0, 0] = new PointF(x, y);
-            Dreieckspunkte[0, 1] = new PointF((float)(x + (iwidth * dDreieckkprozent)), y);
-            Dreieckspunkte[0, 2] = new PointF((x), (float)(y + (iheight * dDreieckkprozent)));
+            for (int x = 0; x < iSpielfeldWidth; x++)
+            {
+                for (int y = 0; y < iSpielfeldHeight; y++)
+                {
+                    if (Spielfelder[x, y].sFarbe != "white" && Spielfelder[x, y].sFarbe != null)                                                  //wenn die Farbe des Kreises Nicht weis ist wird er auch noch gezeichnet
+                    {
+                        Kreiszeichnen(x, y, Spielfelder[x, y].sFarbe, Bitmapgraphic, iStartY);
+                    }
+                }
+            }
 
-            Dreieckspunkte[1, 0] = new PointF(x + iwidth, y);
-            Dreieckspunkte[1, 1] = new PointF((float)(x + iwidth - (iwidth * dDreieckkprozent)), y);
-            Dreieckspunkte[1, 2] = new PointF((x + iwidth), (float)(y + (iheight * dDreieckkprozent)));
-
-            Dreieckspunkte[2, 0] = new PointF(x, y + iheight);
-            Dreieckspunkte[2, 1] = new PointF((float)(x + (iwidth * dDreieckkprozent)), y + iheight);
-            Dreieckspunkte[2, 2] = new PointF((x), (float)(y + iheight - (iheight * dDreieckkprozent)));
-
-            Dreieckspunkte[3, 0] = new PointF(x + iwidth, y + iheight);
-            Dreieckspunkte[3, 1] = new PointF((float)(x + iwidth - (iwidth * dDreieckkprozent)), y + iheight);
-            Dreieckspunkte[3, 2] = new PointF((x + iwidth), (float)(y + iheight - (iheight * dDreieckkprozent)));
+            //spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
         }
 
-        private void spielfeldtilezeichnen(int x, int y, int iwidth, int iheight, Graphics G)   //Methode um ein einzelnes Spielfeld-feld zu zeichnen
+        private void EckenBerechnen(int iX, int iY, int iWidth, int iHeight)
+        {
+            //Die koordinaten für die Polygone werden im bezug auf das Jeweilige Feld Berechnet
+            float dDreieckkprozent = 0.3F;
+            DreiecksPunkte = new PointF[4, 3];
+            DreiecksPunkte[0, 0] = new PointF(iX, iY);
+            DreiecksPunkte[0, 1] = new PointF((float)(iX + (iWidth * dDreieckkprozent)), iY);
+            DreiecksPunkte[0, 2] = new PointF((iX), (float)(iY + (iHeight * dDreieckkprozent)));
+
+            DreiecksPunkte[1, 0] = new PointF(iX + iWidth, iY);
+            DreiecksPunkte[1, 1] = new PointF((float)(iX + iWidth - (iWidth * dDreieckkprozent)), iY);
+            DreiecksPunkte[1, 2] = new PointF((iX + iWidth), (float)(iY + (iHeight * dDreieckkprozent)));
+
+            DreiecksPunkte[2, 0] = new PointF(iX, iY + iHeight);
+            DreiecksPunkte[2, 1] = new PointF((float)(iX + (iWidth * dDreieckkprozent)), iY + iHeight);
+            DreiecksPunkte[2, 2] = new PointF((iX), (float)(iY + iHeight - (iHeight * dDreieckkprozent)));
+
+            DreiecksPunkte[3, 0] = new PointF(iX + iWidth, iY + iHeight);
+            DreiecksPunkte[3, 1] = new PointF((float)(iX + iWidth - (iWidth * dDreieckkprozent)), iY + iHeight);
+            DreiecksPunkte[3, 2] = new PointF((iX + iWidth), (float)(iY + iHeight - (iHeight * dDreieckkprozent)));
+        }
+
+        private void SpielfeldTileZeichnen(int iX, int iY, int iWidth, int iHeight, Graphics G)   //Methode um ein einzelnes Spielfeld-feld zu zeichnen
         {
             PointF[] hilfsarray = new PointF[3];
 
@@ -1072,53 +1111,57 @@ namespace VierGewinnt
                 {
                     for (int i = 0; i < 3; i++)
                     {
-                        hilfsarray[i] = new PointF(Dreieckspunkte[j, i].X + x, Dreieckspunkte[j, i].Y + y);
+                        hilfsarray[i] = new PointF(DreiecksPunkte[j, i].X + iX, DreiecksPunkte[j, i].Y + iY);
                     }
                     G.FillPolygon(new SolidBrush(Color.Blue), hilfsarray);
                 }
-                G.DrawEllipse(new Pen(Color.Blue, spielfelder[0, 0].iwidth / 22 + 1.8f), x, y, iwidth, iheight);
-                G.DrawRectangle(new Pen(Color.Blue, spielfelder[0, 0].iwidth / 22 + 1.8f), x, y, iwidth, iheight);
-                kreisausgleich = Convert.ToSingle(Math.Pow(spielfelder[0, 0].iwidth / 32f, 0.88f));
+                G.DrawEllipse(new Pen(Color.Blue, Spielfelder[0, 0].iWidth / 22 + 1.8f), iX, iY, iWidth, iHeight);
+                G.DrawRectangle(new Pen(Color.Blue, Spielfelder[0, 0].iWidth / 22 + 1.8f), iX, iY, iWidth, iHeight);
+                dKreisausgleich = Convert.ToSingle(Math.Pow(Spielfelder[0, 0].iWidth / 32f, 0.88f));
             });
             Feld.RunSynchronously();
         }
 
         private void Form3_Paint(object sender, PaintEventArgs e)
         {
-            if (!AimationFlag && !resizing)
+            if (!bAimationFlag && !bResizing)
             {
-                spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
+                Spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
             }
         }
 
+        /// <summary>
+        /// macht in eigene Spielfend den zug der Empfangen wurde
+        /// </summary>
+        /// <param name="Spalte">Die Spalte in der Der Zug gemacht werden soll</param>
         private void GegnerZug(int Spalte)
         {
-            int spalte = -1, reihe = -1;
+            int spalte, reihe = -1;
             bool gesetzt = false;
-            spalte = Spalte;
-
-            for (int i = iSpielfeldheight - 1; i >= 0; i--)
+            spalte = Spalte;   //berechnung der Spalte
+            for (int i = iSpielfeldHeight - 1; i >= 0; i--)                                                         //zählt von unten nach oben...
             {
-                if (spielfelder[spalte, i].farbe == "white")
+                if (Spielfelder[spalte, i].sFarbe == "white")                                                        //...Wenn die Farbe weis ist...
                 {
                     gesetzt = true;
-                    spielfelder[spalte, i].farbe = currentcolor;
-                    Hovereffekt(-1);
-                    KreiszeichnenAnimation(spalte, i + 1, currentcolor, Bitmapgraphic);
+                    Spielfelder[spalte, i].sFarbe = sCurrentcolor;
+                    Hovereffekt(-1);                                                                                 //Hovereffekt wird während der Fallanimation entfernt
+                    KreiszeichnenAnimation(spalte, i + 1, sCurrentcolor, Bitmapgraphic);                              //...wird die animation abgespielt un das Feld Farbig
                     reihe = i;
                     i = 0;
                 }
             }
 
-            Point[] Gewinnerkoordinaten = new Point[gewinnnummer];
+            Point[] Gewinnerkoordinaten = new Point[iGewinnAnzahl];
 
             bool gewonnen = false;
-            if (gesetzt && reihe != -1)
+            if (gesetzt && reihe != -1)                                                                             //wenn ein stein gesetzt wurde
             {
+                //überprüfung ob jemand gewonne hat
                 int infolge = 0;
-                for (int x = 0; x < iSpielfeldwidth && !gewonnen; x++)
+                for (int x = 0; x < iSpielfeldWidth && !gewonnen; x++)
                 {
-                    if (spielfelder[x, reihe].farbe == currentcolor)
+                    if (Spielfelder[x, reihe].sFarbe == sCurrentcolor)
                     {
                         Gewinnerkoordinaten[infolge] = new Point(x, reihe);
                         infolge++;
@@ -1126,32 +1169,36 @@ namespace VierGewinnt
                     else
                     {
                         infolge = 0;
-                        for (int i = 0; i < gewinnnummer; i++)
+                        for (int i = 0; i < iGewinnAnzahl; i++)
                         {
                             Gewinnerkoordinaten[i] = new Point(0, 0);
                         }
                     }
-                    if (infolge == gewinnnummer)
+                    if (infolge == iGewinnAnzahl)
                     {
                         gewonnen = true;
                     }
                 }
-                for (int y = 0; y < iSpielfeldheight && !gewonnen; y++)
+                infolge = 0;
+                for (int y = 0; y < iSpielfeldHeight && !gewonnen; y++)
                 {
-                    if (spielfelder[spalte, y].farbe == currentcolor)
+                    if (Spielfelder[spalte, y].sFarbe == sCurrentcolor)
                     {
                         Gewinnerkoordinaten[infolge] = new Point(spalte, y);
+                        Console.WriteLine("new Point[" + infolge + "]:" + Gewinnerkoordinaten[infolge]);
+
                         infolge++;
                     }
                     else
                     {
+                        Console.WriteLine("alle punkte löschen");
                         infolge = 0;
-                        for (int i = 0; i < gewinnnummer; i++)
+                        for (int i = 0; i < iGewinnAnzahl; i++)
                         {
                             Gewinnerkoordinaten[i] = new Point(0, 0);
                         }
                     }
-                    if (infolge == gewinnnummer)
+                    if (infolge == iGewinnAnzahl)
                     {
                         gewonnen = true;
                     }
@@ -1161,18 +1208,19 @@ namespace VierGewinnt
                 int maxformat;
                 int widthheightdif;
                 xabstand = spalte - reihe;
-                widthheightdif = iSpielfeldwidth - iSpielfeldheight;
-                if (iSpielfeldheight > iSpielfeldwidth)
+                widthheightdif = iSpielfeldWidth - iSpielfeldHeight;
+                if (iSpielfeldHeight > iSpielfeldWidth)
                 {
-                    maxformat = iSpielfeldheight;
+                    maxformat = iSpielfeldHeight;
                 }
                 else
                 {
-                    maxformat = iSpielfeldwidth;
+                    maxformat = iSpielfeldWidth;
                 }
+                infolge = 0;
                 for (int xy = 0; xy < maxformat && !gewonnen; xy++)
                 {
-                    if (xy + xabstand < iSpielfeldwidth && xy + xabstand >= 0 && xy < iSpielfeldheight && xy >= 0 && spielfelder[xy + xabstand, xy].farbe == currentcolor)
+                    if (xy + xabstand < iSpielfeldWidth && xy + xabstand >= 0 && xy < iSpielfeldHeight && xy >= 0 && Spielfelder[xy + xabstand, xy].sFarbe == sCurrentcolor)
                     {
                         Gewinnerkoordinaten[infolge] = new Point(xy + xabstand, xy);
                         infolge++;
@@ -1181,25 +1229,25 @@ namespace VierGewinnt
                     {
                         infolge = 0;
                     }
-                    if (infolge == gewinnnummer)
+                    if (infolge == iGewinnAnzahl)
                     {
                         gewonnen = true;
                     }
                 }
-                xabstand = -1 + (spalte - reihe + (iSpielfeldheight - (spalte * 2)));
-
+                xabstand = -1 + (spalte - reihe + (iSpielfeldHeight - (spalte * 2)));
+                infolge = 0;
                 for (int xy = 0; xy < maxformat + 1 && !gewonnen; xy++)
                 {
-                    if (iSpielfeldwidth - xy - xabstand - widthheightdif < iSpielfeldwidth && iSpielfeldwidth - xy - xabstand - widthheightdif >= 0 && xy - 1 < iSpielfeldheight && xy - 1 >= 0 && spielfelder[iSpielfeldwidth - xy - xabstand - widthheightdif, xy - 1].farbe == currentcolor)
+                    if (iSpielfeldWidth - xy - xabstand - widthheightdif < iSpielfeldWidth && iSpielfeldWidth - xy - xabstand - widthheightdif >= 0 && xy - 1 < iSpielfeldHeight && xy - 1 >= 0 && Spielfelder[iSpielfeldWidth - xy - xabstand - widthheightdif, xy - 1].sFarbe == sCurrentcolor)
                     {
-                        Gewinnerkoordinaten[infolge] = new Point(iSpielfeldwidth - xy - xabstand - widthheightdif, xy - 1);
+                        Gewinnerkoordinaten[infolge] = new Point(iSpielfeldWidth - xy - xabstand - widthheightdif, xy - 1);
                         infolge++;
                     }
                     else
                     {
                         infolge = 0;
                     }
-                    if (infolge == gewinnnummer)
+                    if (infolge == iGewinnAnzahl)
                     {
                         gewonnen = true;
                     }
@@ -1207,21 +1255,26 @@ namespace VierGewinnt
 
                 if (gewonnen)
                 {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        Console.WriteLine(Gewinnerkoordinaten[i]);
+                    }
                     KreisDrehen(Gewinnerkoordinaten, 5);
                     for (int i = 0; i < 4; i++)
                     {
+                        Console.WriteLine(Gewinnerkoordinaten[i]);
                     }
-                    AimationFlag = true;
+                    bAimationFlag = true;
                     for (int i = 0; i < this.Width; i += 10)
                     {
                         Bitmapgraphic.FillRectangle(new SolidBrush(this.BackColor), 0, 0, this.Width, this.Height);
                         SpielsteineZeichnen(Bitmapgraphic, i);
                         SpielfeldZeichnen(Bitmapgraphic);
-                        spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
+                        Spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
                     }
-                    AimationFlag = false;
+                    bAimationFlag = false;
 
-                    if (currentcolor == "red")
+                    if (sCurrentcolor == "red")
                     {
                         Gewonnen("Rot");
                     }
@@ -1231,22 +1284,24 @@ namespace VierGewinnt
                     }
                 }
 
-                if (currentcolor == "red")
+                if (sCurrentcolor == "red")
                 {
-                    currentcolor = "yellow";
+                    sCurrentcolor = "yellow";
+                    lab_Player.Text = "Player Yellow";
                 }
                 else
                 {
-                    currentcolor = "red";
+                    sCurrentcolor = "red";
+                    lab_Player.Text = "Player Red";
                 }
 
                 //überpfrüfung ob noch einzug möglich ist
                 bool zugmöglich = false;
-                for (int x = 0; x < iSpielfeldwidth; x++)
+                for (int x = 0; x < iSpielfeldWidth; x++)
                 {
-                    for (int y = 0; y < iSpielfeldheight; y++)
+                    for (int y = 0; y < iSpielfeldHeight; y++)
                     {
-                        if (spielfelder[x, y].farbe == "white")             // wenn mindestens ein Feld weis ist, ist noch ein zug möglich
+                        if (Spielfelder[x, y].sFarbe == "white")             // wenn mindestens ein Feld weis ist, ist noch ein zug möglich
                         {
                             zugmöglich = true;
                         }
@@ -1259,43 +1314,47 @@ namespace VierGewinnt
             }
         }
 
+        /// <summary>
+        /// nach dem man gecklickt hat wird der zug gesendet und er dann Von GegnerZug Auch bei gegner gemacht
+        /// Die anzeige und Animation passiert Nahezu syncron bei beiden spielern 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Form3_Click(object sender, EventArgs e)
         {
-            if (!Block && MeinZug == true)
+            if (!bBlock && bMeinZug == true)
             {
-                if (this.PointToClient(Cursor.Position).X > spielfelder[0, 0].x && this.PointToClient(Cursor.Position).X < spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].x + spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].iwidth && this.PointToClient(Cursor.Position).Y > spielfelder[0, 0].y && this.PointToClient(Cursor.Position).Y < spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].y + spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].iheight)
+                if (this.PointToClient(Cursor.Position).X > Spielfelder[0, 0].iX && this.PointToClient(Cursor.Position).X < Spielfelder[iSpielfeldWidth - 1, iSpielfeldHeight - 1].iX + Spielfelder[iSpielfeldWidth - 1, iSpielfeldHeight - 1].iWidth && this.PointToClient(Cursor.Position).Y > Spielfelder[0, 0].iY && this.PointToClient(Cursor.Position).Y < Spielfelder[iSpielfeldWidth - 1, iSpielfeldHeight - 1].iY + Spielfelder[iSpielfeldWidth - 1, iSpielfeldHeight - 1].iHeight)    //abfrage ob klick auf Spielfeld ist
                 {
-                    int spalte = -1, reihe = -1;
+                    int spalte, reihe = -1;
                     bool gesetzt = false;
-                    spalte = (this.PointToClient(Cursor.Position).X - spielfelder[0, 0].x) / spielfelder[0, 0].iwidth;
-
-                    // zug wird Gesendet
-                    StartClient(spalte.ToString());
-                    MeinZugSignal.Set();
-                    MeinZug = false;
-
-                    for (int i = iSpielfeldheight - 1; i >= 0; i--)
+                    spalte = (this.PointToClient(Cursor.Position).X - Spielfelder[0, 0].iX) / Spielfelder[0, 0].iWidth;      //berechnung der Spalte
+                    for (int i = iSpielfeldHeight - 1; i >= 0; i--)                                                         //zählt von unten nach oben...
                     {
-                        if (spielfelder[spalte, i].farbe == "white")
+                        if (Spielfelder[spalte, i].sFarbe == "white")                                                        //...Wenn die Farbe weis ist...
                         {
                             gesetzt = true;
-                            spielfelder[spalte, i].farbe = currentcolor;
-                            Hovereffekt(-1);
-                            KreiszeichnenAnimation(spalte, i + 1, currentcolor, Bitmapgraphic);
+                            Spielfelder[spalte, i].sFarbe = sCurrentcolor;
+                            Hovereffekt(-1);                                                                                 //Hovereffekt wird während der Fallanimation entfernt
+                            KreiszeichnenAnimation(spalte, i + 1, sCurrentcolor, Bitmapgraphic);                              //...wird die animation abgespielt un das Feld Farbig
                             reihe = i;
                             i = 0;
                         }
                     }
-
-                    Point[] Gewinnerkoordinaten = new Point[gewinnnummer];
+                    // zug wird Gesendet
+                    StartClient(spalte.ToString());
+                    MeinZugSignal.Set();
+                    bMeinZug = false;
+                    Point[] Gewinnerkoordinaten = new Point[iGewinnAnzahl];
 
                     bool gewonnen = false;
-                    if (gesetzt && reihe != -1)
+                    if (gesetzt && reihe != -1)                                                                             //wenn ein stein gesetzt wurde
                     {
+                        //überprüfung ob jemand gewonne hat
                         int infolge = 0;
-                        for (int x = 0; x < iSpielfeldwidth && !gewonnen; x++)
+                        for (int x = 0; x < iSpielfeldWidth && !gewonnen; x++)
                         {
-                            if (spielfelder[x, reihe].farbe == currentcolor)
+                            if (Spielfelder[x, reihe].sFarbe == sCurrentcolor)
                             {
                                 Gewinnerkoordinaten[infolge] = new Point(x, reihe);
                                 infolge++;
@@ -1303,32 +1362,36 @@ namespace VierGewinnt
                             else
                             {
                                 infolge = 0;
-                                for (int i = 0; i < gewinnnummer; i++)
+                                for (int i = 0; i < iGewinnAnzahl; i++)
                                 {
                                     Gewinnerkoordinaten[i] = new Point(0, 0);
                                 }
                             }
-                            if (infolge == gewinnnummer)
+                            if (infolge == iGewinnAnzahl)
                             {
                                 gewonnen = true;
                             }
                         }
-                        for (int y = 0; y < iSpielfeldheight && !gewonnen; y++)
+                        infolge = 0;
+                        for (int y = 0; y < iSpielfeldHeight && !gewonnen; y++)
                         {
-                            if (spielfelder[spalte, y].farbe == currentcolor)
+                            if (Spielfelder[spalte, y].sFarbe == sCurrentcolor)
                             {
                                 Gewinnerkoordinaten[infolge] = new Point(spalte, y);
+                                Console.WriteLine("new Point[" + infolge + "]:" + Gewinnerkoordinaten[infolge]);
+
                                 infolge++;
                             }
                             else
                             {
+                                Console.WriteLine("alle punkte löschen");
                                 infolge = 0;
-                                for (int i = 0; i < gewinnnummer; i++)
+                                for (int i = 0; i < iGewinnAnzahl; i++)
                                 {
                                     Gewinnerkoordinaten[i] = new Point(0, 0);
                                 }
                             }
-                            if (infolge == gewinnnummer)
+                            if (infolge == iGewinnAnzahl)
                             {
                                 gewonnen = true;
                             }
@@ -1338,18 +1401,19 @@ namespace VierGewinnt
                         int maxformat;
                         int widthheightdif;
                         xabstand = spalte - reihe;
-                        widthheightdif = iSpielfeldwidth - iSpielfeldheight;
-                        if (iSpielfeldheight > iSpielfeldwidth)
+                        widthheightdif = iSpielfeldWidth - iSpielfeldHeight;
+                        if (iSpielfeldHeight > iSpielfeldWidth)
                         {
-                            maxformat = iSpielfeldheight;
+                            maxformat = iSpielfeldHeight;
                         }
                         else
                         {
-                            maxformat = iSpielfeldwidth;
+                            maxformat = iSpielfeldWidth;
                         }
+                        infolge = 0;
                         for (int xy = 0; xy < maxformat && !gewonnen; xy++)
                         {
-                            if (xy + xabstand < iSpielfeldwidth && xy + xabstand >= 0 && xy < iSpielfeldheight && xy >= 0 && spielfelder[xy + xabstand, xy].farbe == currentcolor)
+                            if (xy + xabstand < iSpielfeldWidth && xy + xabstand >= 0 && xy < iSpielfeldHeight && xy >= 0 && Spielfelder[xy + xabstand, xy].sFarbe == sCurrentcolor)
                             {
                                 Gewinnerkoordinaten[infolge] = new Point(xy + xabstand, xy);
                                 infolge++;
@@ -1358,25 +1422,25 @@ namespace VierGewinnt
                             {
                                 infolge = 0;
                             }
-                            if (infolge == gewinnnummer)
+                            if (infolge == iGewinnAnzahl)
                             {
                                 gewonnen = true;
                             }
                         }
-                        xabstand = -1 + (spalte - reihe + (iSpielfeldheight - (spalte * 2)));
-
+                        xabstand = -1 + (spalte - reihe + (iSpielfeldHeight - (spalte * 2)));
+                        infolge = 0;
                         for (int xy = 0; xy < maxformat + 1 && !gewonnen; xy++)
                         {
-                            if (iSpielfeldwidth - xy - xabstand - widthheightdif < iSpielfeldwidth && iSpielfeldwidth - xy - xabstand - widthheightdif >= 0 && xy - 1 < iSpielfeldheight && xy - 1 >= 0 && spielfelder[iSpielfeldwidth - xy - xabstand - widthheightdif, xy - 1].farbe == currentcolor)
+                            if (iSpielfeldWidth - xy - xabstand - widthheightdif < iSpielfeldWidth && iSpielfeldWidth - xy - xabstand - widthheightdif >= 0 && xy - 1 < iSpielfeldHeight && xy - 1 >= 0 && Spielfelder[iSpielfeldWidth - xy - xabstand - widthheightdif, xy - 1].sFarbe == sCurrentcolor)
                             {
-                                Gewinnerkoordinaten[infolge] = new Point(iSpielfeldwidth - xy - xabstand - widthheightdif, xy - 1);
+                                Gewinnerkoordinaten[infolge] = new Point(iSpielfeldWidth - xy - xabstand - widthheightdif, xy - 1);
                                 infolge++;
                             }
                             else
                             {
                                 infolge = 0;
                             }
-                            if (infolge == gewinnnummer)
+                            if (infolge == iGewinnAnzahl)
                             {
                                 gewonnen = true;
                             }
@@ -1384,22 +1448,26 @@ namespace VierGewinnt
 
                         if (gewonnen)
                         {
+                            for (int i = 0; i < 4; i++)
+                            {
+                                Console.WriteLine(Gewinnerkoordinaten[i]);
+                            }
                             KreisDrehen(Gewinnerkoordinaten, 5);
                             for (int i = 0; i < 4; i++)
                             {
                                 Console.WriteLine(Gewinnerkoordinaten[i]);
                             }
-                            AimationFlag = true;
+                            bAimationFlag = true;
                             for (int i = 0; i < this.Width; i += 10)
                             {
                                 Bitmapgraphic.FillRectangle(new SolidBrush(this.BackColor), 0, 0, this.Width, this.Height);
                                 SpielsteineZeichnen(Bitmapgraphic, i);
                                 SpielfeldZeichnen(Bitmapgraphic);
-                                spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
+                                Spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
                             }
-                            AimationFlag = false;
+                            bAimationFlag = false;
 
-                            if (currentcolor == "red")
+                            if (sCurrentcolor == "red")
                             {
                                 Gewonnen("Rot");
                             }
@@ -1409,24 +1477,24 @@ namespace VierGewinnt
                             }
                         }
 
-                        if (currentcolor == "red")
+                        if (sCurrentcolor == "red")
                         {
-                            currentcolor = "yellow";
+                            sCurrentcolor = "yellow";
                             lab_Player.Text = "Player Yellow";
                         }
                         else
                         {
-                            currentcolor = "red";
+                            sCurrentcolor = "red";
                             lab_Player.Text = "Player Red";
                         }
 
                         //überpfrüfung ob noch einzug möglich ist
                         bool zugmöglich = false;
-                        for (int x = 0; x < iSpielfeldwidth; x++)
+                        for (int x = 0; x < iSpielfeldWidth; x++)
                         {
-                            for (int y = 0; y < iSpielfeldheight; y++)
+                            for (int y = 0; y < iSpielfeldHeight; y++)
                             {
-                                if (spielfelder[x, y].farbe == "white")             // wenn mindestens ein Feld weis ist, ist noch ein zug möglich
+                                if (Spielfelder[x, y].sFarbe == "white")             // wenn mindestens ein Feld weis ist, ist noch ein zug möglich
                                 {
                                     zugmöglich = true;
                                 }
@@ -1441,37 +1509,37 @@ namespace VierGewinnt
             }
         }
 
-        private void KreiszeichnenAnimation(int X, int Y, string farbe, Graphics G)
+        private void KreiszeichnenAnimation(int iX, int iY, string sFarbe, Graphics G)
         {
             int iHilfszahl = 0;
             int iHilfszahl1 = 0;
-            int multiplyer = (int)droptime; // durch 2 teil bare Zahlen funktionieren am besten da Dann Weniger Komma stellen Entstehen die Ignoriert werden
+            int multiplyer = (int)fDroptime; // durch 2 teil bare Zahlen funktionieren am besten da Dann Weniger Komma stellen Entstehen die Ignoriert werden
             Task animation1 = new Task(() =>
             {
-                AimationFlag = true;
+                bAimationFlag = true;
 
-                for (int i = -multiplyer; i < Y * multiplyer; i++)
+                for (int i = -multiplyer; i < iY * multiplyer; i++)
                 {
-                    if (i == -multiplyer || i + 1 == Y * multiplyer || Convert.ToInt32((i / multiplyer) + 1) >= Y)
+                    if (i == -multiplyer || i + 1 == iY * multiplyer || Convert.ToInt32((i / multiplyer) + 1) >= iY)
                     {
                         G.FillEllipse(new SolidBrush(this.BackColor),
-                        spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
-                        spielfelder[0, 0].y + ((i - 1) / multiplyer) * spielfelder[0, 0].iheight + kreisausgleich,
-                        spielfelder[0, 0].iwidth - kreisausgleich * 2,
-                        spielfelder[0, 0].iheight - kreisausgleich * 2);
+                        Spielfelder[0, 0].iX + iX * Spielfelder[0, 0].iWidth + dKreisausgleich,
+                        Spielfelder[0, 0].iY + ((i - 1) / multiplyer) * Spielfelder[0, 0].iHeight + dKreisausgleich,
+                        Spielfelder[0, 0].iWidth - dKreisausgleich * 2,
+                        Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
 
-                        G.FillEllipse(new SolidBrush(Color.FromName(farbe)),
-                         spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
-                         spielfelder[0, 0].y + (i / multiplyer) * spielfelder[0, 0].iheight + kreisausgleich,
-                         spielfelder[0, 0].iwidth - kreisausgleich * 2,
-                         spielfelder[0, 0].iheight - kreisausgleich * 2);
-                        if (i + 1 == Y * multiplyer && i / multiplyer > 0)
+                        G.FillEllipse(new SolidBrush(Color.FromName(sFarbe)),
+                         Spielfelder[0, 0].iX + iX * Spielfelder[0, 0].iWidth + dKreisausgleich,
+                         Spielfelder[0, 0].iY + (i / multiplyer) * Spielfelder[0, 0].iHeight + dKreisausgleich,
+                         Spielfelder[0, 0].iWidth - dKreisausgleich * 2,
+                         Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
+                        if (i + 1 == iY * multiplyer && i / multiplyer > 0)
                         {
-                            spielfeldtilezeichnen(
-                                spielfelder[X, iHilfszahl].x,
-                                spielfelder[X, i / multiplyer - 1].y,
-                                spielfelder[X, iHilfszahl].iwidth,
-                                spielfelder[X, iHilfszahl].iheight,
+                            SpielfeldTileZeichnen(
+                                Spielfelder[iX, iHilfszahl].iX,
+                                Spielfelder[iX, i / multiplyer - 1].iY,
+                                Spielfelder[iX, iHilfszahl].iWidth,
+                                Spielfelder[iX, iHilfszahl].iHeight,
                                 Bitmapgraphic);
                         }
                     }
@@ -1481,7 +1549,7 @@ namespace VierGewinnt
                         {
                             iHilfszahl = i / multiplyer;
 
-                            if (i / multiplyer + 1 < Y)
+                            if (i / multiplyer + 1 < iY)
                             {
                                 iHilfszahl1 = i / multiplyer + 1;
                             }
@@ -1493,51 +1561,52 @@ namespace VierGewinnt
                             if (i <= 0)
                             {
                                 G.FillRectangle(new SolidBrush(this.BackColor),
-                                 spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
-                                 spielfelder[0, 0].y + (((i - 1) * spielfelder[0, 0].iheight) / multiplyer) + kreisausgleich,
-                                 spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
+                                 Spielfelder[0, 0].iX + iX * Spielfelder[0, 0].iWidth + dKreisausgleich,
+                                 Spielfelder[0, 0].iY + (((i - 1) * Spielfelder[0, 0].iHeight) / multiplyer) + dKreisausgleich,
+                                 Spielfelder[0, 0].iWidth - dKreisausgleich * 2, Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
                             }
                             else
                             {
                                 G.FillRectangle(new SolidBrush(this.BackColor),
-                                 spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
-                                 spielfelder[0, 0].y + ((i - 1) / multiplyer) * spielfelder[0, 0].iheight + kreisausgleich,
-                                 spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
+                                 Spielfelder[0, 0].iX + iX * Spielfelder[0, 0].iWidth + dKreisausgleich,
+                                 Spielfelder[0, 0].iY + ((i - 1) / multiplyer) * Spielfelder[0, 0].iHeight + dKreisausgleich,
+                                 Spielfelder[0, 0].iWidth - dKreisausgleich * 2, Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
                             }
 
-                            G.FillEllipse(new SolidBrush(Color.FromName(farbe)),
-                             spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
-                             spielfelder[0, 0].y + ((i * spielfelder[0, 0].iheight) / multiplyer) + kreisausgleich,
-                             spielfelder[0, 0].iwidth - kreisausgleich * 2,
-                             spielfelder[0, 0].iheight - kreisausgleich * 2);
+                            G.FillEllipse(new SolidBrush(Color.FromName(sFarbe)),
+                             Spielfelder[0, 0].iX + iX * Spielfelder[0, 0].iWidth + dKreisausgleich,
+                             Spielfelder[0, 0].iY + ((i * Spielfelder[0, 0].iHeight) / multiplyer) + dKreisausgleich,
+                             Spielfelder[0, 0].iWidth - dKreisausgleich * 2,
+                             Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
 
-                            spielfeldtilezeichnen(
-                                spielfelder[X, iHilfszahl].x,
-                                spielfelder[X, iHilfszahl + 1].y,
-                                spielfelder[X, iHilfszahl].iwidth,
-                                spielfelder[X, iHilfszahl].iheight,
-                                G);
+                            SpielfeldTileZeichnen(
+                                Spielfelder[iX, iHilfszahl].iX,
+                                Spielfelder[iX, iHilfszahl + 1].iY,
+                                Spielfelder[iX, iHilfszahl].iWidth,
+                                Spielfelder[iX, iHilfszahl].iHeight,
+                                Bitmapgraphic);
 
-                            spielfeldtilezeichnen(
-                              spielfelder[X, iHilfszahl].x,
-                              spielfelder[X, iHilfszahl].y,
-                              spielfelder[X, iHilfszahl].iwidth,
-                              spielfelder[X, iHilfszahl].iheight,
-                              G);
+                            SpielfeldTileZeichnen(
+                              Spielfelder[iX, iHilfszahl].iX,
+                              Spielfelder[iX, iHilfszahl].iY,
+                              Spielfelder[iX, iHilfszahl].iWidth,
+                              Spielfelder[iX, iHilfszahl].iHeight,
+                              Bitmapgraphic);
                             if (iHilfszahl - 1 >= 0)
                             {
-                                spielfeldtilezeichnen(
-                              spielfelder[X, iHilfszahl].x,
-                              spielfelder[X, iHilfszahl - 1].y,
-                              spielfelder[X, iHilfszahl].iwidth,
-                              spielfelder[X, iHilfszahl].iheight,
-                              G);
+                                SpielfeldTileZeichnen(
+                              Spielfelder[iX, iHilfszahl].iX,
+                              Spielfelder[iX, iHilfszahl - 1].iY,
+                              Spielfelder[iX, iHilfszahl].iWidth,
+                              Spielfelder[iX, iHilfszahl].iHeight,
+                              Bitmapgraphic);
                             }
 
-                            spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
+                            Spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
                         });
                         draw.RunSynchronously();
                     }
+
                     //Thread.Sleep((int)(100 / dropspeed));
                 }
             }
@@ -1545,17 +1614,17 @@ namespace VierGewinnt
             animation1.RunSynchronously();
 
             SpielsteineZeichnen(Bitmapgraphic, 0);
-            spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
+            Spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
 
-            AimationFlag = false;
+            bAimationFlag = false;
         }
 
-        private void Kreiszeichnen(int X, int Y, string farbe, Graphics G, int starty)
+        private void Kreiszeichnen(int iX, int iY, string sFarbe, Graphics G, int iStartY)
         {
-            G.FillEllipse(new SolidBrush(Color.FromName(farbe)),
-             spielfelder[0, 0].x + X * spielfelder[0, 0].iwidth + kreisausgleich,
-             spielfelder[0, 0].y + Y * spielfelder[0, 0].iheight + kreisausgleich + starty,
-             spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
+            G.FillEllipse(new SolidBrush(Color.FromName(sFarbe)),
+             Spielfelder[0, 0].iX + iX * Spielfelder[0, 0].iWidth + dKreisausgleich,
+             Spielfelder[0, 0].iY + iY * Spielfelder[0, 0].iHeight + dKreisausgleich + iStartY,
+             Spielfelder[0, 0].iWidth - dKreisausgleich * 2, Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
         }
 
         private void Gewonnen(string Gewinner)
@@ -1586,139 +1655,139 @@ namespace VierGewinnt
 
         private void Form3_MouseMove(object sender, MouseEventArgs e)
         {
-            if (!Block && MeinZug == true)
+            if (!bBlock && bMeinZug == true)
             {
                 int spalte = -1;
-                if (this.PointToClient(Cursor.Position).X > spielfelder[0, 0].x && this.PointToClient(Cursor.Position).X < spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].x + spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].iwidth && this.PointToClient(Cursor.Position).Y > spielfelder[0, 0].y && this.PointToClient(Cursor.Position).Y < spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].y + spielfelder[iSpielfeldwidth - 1, iSpielfeldheight - 1].iheight)
+                if (this.PointToClient(Cursor.Position).X > Spielfelder[0, 0].iX && this.PointToClient(Cursor.Position).X < Spielfelder[iSpielfeldWidth - 1, iSpielfeldHeight - 1].iX + Spielfelder[iSpielfeldWidth - 1, iSpielfeldHeight - 1].iWidth && this.PointToClient(Cursor.Position).Y > Spielfelder[0, 0].iY && this.PointToClient(Cursor.Position).Y < Spielfelder[iSpielfeldWidth - 1, iSpielfeldHeight - 1].iY + Spielfelder[iSpielfeldWidth - 1, iSpielfeldHeight - 1].iHeight)    //überprüfung ob die Maus auf dem Spielfeld hovert
                 {
-                    if (oldspalte != (this.PointToClient(Cursor.Position).X - spielfelder[0, 0].x) / spielfelder[0, 0].iwidth)
+                    if (iOldSpalte != (this.PointToClient(Cursor.Position).X - Spielfelder[0, 0].iX) / Spielfelder[0, 0].iWidth)      //überprüfung ob die maus über einem anderen fällt ist als bei der Letzten abfrage
                     {
-                        spalte = (this.PointToClient(Cursor.Position).X - spielfelder[0, 0].x) / spielfelder[0, 0].iwidth;
+                        spalte = (this.PointToClient(Cursor.Position).X - Spielfelder[0, 0].iX) / Spielfelder[0, 0].iWidth;
                         Hovereffekt(spalte);
                     }
                 }
                 else
                 {
-                    Hovereffekt(-1);
+                    Hovereffekt(-1);        //wenn die Maus nichtmehr auf dem Feld ist wird der Hovereffekt aufgehoben
                 }
             }
         }
 
-        private int oldspalte = 0;
-
-        private void Hovereffekt(int spalte)
+        private void Hovereffekt(int iSpalte)
         {
-            if (spalte >= 0)
+            if (iSpalte >= 0)
             {
-                if (oldspalte >= 0)
+                if (iOldSpalte >= 0)
                 {
-                    Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName("white")), spielfelder[oldspalte, 0].x + kreisausgleich, spielfelder[oldspalte, 0].y - spielfelder[0, 0].iheight + kreisausgleich - 2, spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
+                    // hoverkreis entfernen:
+                    Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName("white")), Spielfelder[iOldSpalte, 0].iX + dKreisausgleich, Spielfelder[iOldSpalte, 0].iY - Spielfelder[0, 0].iHeight + dKreisausgleich - 2, Spielfelder[0, 0].iWidth - dKreisausgleich * 2, Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
                 }
-                Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName(currentcolor)), spielfelder[spalte, 0].x + kreisausgleich, spielfelder[spalte, 0].y - spielfelder[0, 0].iheight + kreisausgleich - 2, spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
-                oldspalte = spalte;
+
+                // hoverkreis zeichnen:
+                Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName(sCurrentcolor)), Spielfelder[iSpalte, 0].iX + dKreisausgleich, Spielfelder[iSpalte, 0].iY - Spielfelder[0, 0].iHeight + dKreisausgleich - 2, Spielfelder[0, 0].iWidth - dKreisausgleich * 2, Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
+                iOldSpalte = iSpalte;
             }
-            else
+            else        // wenn minus 1 übergeben wird
             {
-                if (oldspalte >= 0)
+                if (iOldSpalte >= 0)
                 {
-                    Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName("white")), spielfelder[oldspalte, 0].x + kreisausgleich, spielfelder[oldspalte, 0].y - spielfelder[0, 0].iheight + kreisausgleich - 2, spielfelder[0, 0].iwidth - kreisausgleich * 2, spielfelder[0, 0].iheight - kreisausgleich * 2);
+                    // hoverkreis entfernen:
+                    Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName("white")), Spielfelder[iOldSpalte, 0].iX + dKreisausgleich, Spielfelder[iOldSpalte, 0].iY - Spielfelder[0, 0].iHeight + dKreisausgleich - 2, Spielfelder[0, 0].iWidth - dKreisausgleich * 2, Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
                 }
-                oldspalte = spalte;
+                iOldSpalte = iSpalte;
             }
-            spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
+            Spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
         }
 
-        private void KreisDrehen(Point[] Kreiskoordinaten, int Drehungen)
+        private void KreisDrehen(Point[] KreisKoordinaten, int iDrehungen)
         {
             int Drehgeschwindigkeit = 5;
-            for (int k = 0; k < Drehungen; k++)                         //schleife pro Drehung
+            for (int k = 0; k < iDrehungen; k++)                         //schleife pro Drehung
             {
-                for (int j = spielfelder[0, 0].iwidth; j >= 0; j -= Drehgeschwindigkeit)       //schleife für halbe umdrehung
+                for (int j = Spielfelder[0, 0].iWidth; j >= 0; j -= Drehgeschwindigkeit)       //schleife für halbe umdrehung
                 {
-                    for (int i = 0; i < Kreiskoordinaten.Length; i++)   //schleife für jeden Kreis
+                    for (int i = 0; i < KreisKoordinaten.Length; i++)   //schleife für jeden Kreis
                     {
                         Bitmapgraphic.FillEllipse(new SolidBrush(this.BackColor),
-                            spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].x + kreisausgleich,
-                            spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].y + kreisausgleich,
-                            spielfelder[0, 0].iwidth - kreisausgleich * 2,
-                            spielfelder[0, 0].iheight - kreisausgleich * 2);
+                            Spielfelder[KreisKoordinaten[i].X, KreisKoordinaten[i].Y].iX + dKreisausgleich,
+                            Spielfelder[KreisKoordinaten[i].X, KreisKoordinaten[i].Y].iY + dKreisausgleich,
+                            Spielfelder[0, 0].iWidth - dKreisausgleich * 2,
+                            Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
 
-                        Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName(spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].farbe)),
-                            spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].x + kreisausgleich + ((spielfelder[0, 0].iwidth - j) / 2),
-                            spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].y + kreisausgleich,
+                        Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName(Spielfelder[KreisKoordinaten[i].X, KreisKoordinaten[i].Y].sFarbe)),
+                            Spielfelder[KreisKoordinaten[i].X, KreisKoordinaten[i].Y].iX + dKreisausgleich + ((Spielfelder[0, 0].iWidth - j) / 2),
+                            Spielfelder[KreisKoordinaten[i].X, KreisKoordinaten[i].Y].iY + dKreisausgleich,
                             j,
-                            spielfelder[0, 0].iheight - kreisausgleich * 2);
+                            Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
 
-                        spielfeldtilezeichnen(
-                            spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].x,
-                            spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].y,
-                            spielfelder[0, 0].iwidth,
-                            spielfelder[0, 0].iheight,
+                        SpielfeldTileZeichnen(
+                            Spielfelder[KreisKoordinaten[i].X, KreisKoordinaten[i].Y].iX,
+                            Spielfelder[KreisKoordinaten[i].X, KreisKoordinaten[i].Y].iY,
+                            Spielfelder[0, 0].iWidth,
+                            Spielfelder[0, 0].iHeight,
                             Bitmapgraphic);
                     }
-                    spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
+                    Spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
                 }
-                for (int j = 0; j <= spielfelder[0, 0].iwidth; j += Drehgeschwindigkeit)      //schleife für andere hälfte
+                for (int j = 0; j <= Spielfelder[0, 0].iWidth; j += Drehgeschwindigkeit)      //schleife für andere hälfte
                 {
-                    for (int i = 0; i < Kreiskoordinaten.Length; i++)   //schleife für jeden Kreis
+                    for (int i = 0; i < KreisKoordinaten.Length; i++)   //schleife für jeden Kreis
                     {
                         Bitmapgraphic.FillEllipse(new SolidBrush(this.BackColor),
-                            spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].x + kreisausgleich,
-                            spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].y + kreisausgleich,
-                            spielfelder[0, 0].iwidth - kreisausgleich * 2,
-                            spielfelder[0, 0].iheight - kreisausgleich * 2);
+                            Spielfelder[KreisKoordinaten[i].X, KreisKoordinaten[i].Y].iX + dKreisausgleich,
+                            Spielfelder[KreisKoordinaten[i].X, KreisKoordinaten[i].Y].iY + dKreisausgleich,
+                            Spielfelder[0, 0].iWidth - dKreisausgleich * 2,
+                            Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
 
-                        Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName(spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].farbe)),
-                            spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].x + kreisausgleich + ((spielfelder[0, 0].iwidth - j) / 2),
-                            spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].y + kreisausgleich,
+                        Bitmapgraphic.FillEllipse(new SolidBrush(Color.FromName(Spielfelder[KreisKoordinaten[i].X, KreisKoordinaten[i].Y].sFarbe)),
+                            Spielfelder[KreisKoordinaten[i].X, KreisKoordinaten[i].Y].iX + dKreisausgleich + ((Spielfelder[0, 0].iWidth - j) / 2),
+                            Spielfelder[KreisKoordinaten[i].X, KreisKoordinaten[i].Y].iY + dKreisausgleich,
                             j,
-                            spielfelder[0, 0].iheight - kreisausgleich * 2);
+                            Spielfelder[0, 0].iHeight - dKreisausgleich * 2);
 
-                        spielfeldtilezeichnen(
-                            spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].x,
-                            spielfelder[Kreiskoordinaten[i].X, Kreiskoordinaten[i].Y].y,
-                            spielfelder[0, 0].iwidth,
-                            spielfelder[0, 0].iheight,
+                        SpielfeldTileZeichnen(
+                            Spielfelder[KreisKoordinaten[i].X, KreisKoordinaten[i].Y].iX,
+                            Spielfelder[KreisKoordinaten[i].X, KreisKoordinaten[i].Y].iY,
+                            Spielfelder[0, 0].iWidth,
+                            Spielfelder[0, 0].iHeight,
                             Bitmapgraphic);
                     }
-                    spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
+                    Spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
                 }
             }
         }
-
-        private bool resizing = false;
 
         private void Form3_Resize(object sender, EventArgs e)
         {
-            if (Bitmapgraphic != null && !Block)
+            if (Bitmapgraphic != null && !bBlock)
             {
                 Spielfeldframe = new Bitmap(this.Width, this.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
 
                 Bitmapgraphic.FillRectangle(new SolidBrush(this.BackColor), 0, 0, this.Width, this.Height);  // wenn das Spielfeld neugezogen wird, wird es weis
             }
-            resizing = true;
+            bResizing = true;
         }
 
-        private void Form3_ResizeEnd(object sender, EventArgs e)                                                // wenn das Spielfeld losgelassen wird, wird dass Spielfeld neu gezeichnet
+        private void Form3_ResizeEnd(object sender, EventArgs e)// wenn das Spielfeld losgelassen wird, wird dass Spielfeld neu gezeichnet
         {
-            if (resizing && !Block)
+            if (bResizing && !bBlock)
             {
-                resizing = false;
-                iSpielfeldheightpx = this.Height - 200;
-                iSpielfeldwidthpx = this.Width - 50;
+                bResizing = false;
+                iSpielfeldHeightPx = this.Height - 200;
+                iSpielfeldWidthPx = this.Width - 50;
                 SpielfeldErstellen();
-                EckenBerechnen(0, 0, spielfelder[0, 0].iwidth, spielfelder[0, 0].iheight);
+                EckenBerechnen(0, 0, Spielfelder[0, 0].iWidth, Spielfelder[0, 0].iHeight);
 
                 Spielfeldframe = new Bitmap(this.Width, this.Height, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
                 Bitmapgraphic = Graphics.FromImage(Spielfeldframe);
-                spielfeldgraphic = this.CreateGraphics();
+                Spielfeldgraphic = this.CreateGraphics();
 
                 Bitmapgraphic.FillRectangle(new SolidBrush(this.BackColor), 0, 0, this.Width, this.Height);
                 SpielsteineZeichnen(Bitmapgraphic, 0);
 
                 SpielfeldZeichnen(Bitmapgraphic);
 
-                spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
+                Spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
 
                 //Bitmapgraphic.FillRectangle(new SolidBrush(this.BackColor), 0, 0, this.Width, this.Height);
             }
