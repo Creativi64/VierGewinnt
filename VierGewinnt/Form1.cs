@@ -17,7 +17,9 @@ namespace VierGewinnt
         public static string sGewinnAnzahl;
 
         private static PointF[,] Dreieckspunkte;
+        
         private static int iSpielfeldWidthMax = 20, iSpielfeldHeightMax = 20, iXstartMin = 308, iYstartMin = 105, iXstart = 468, iYstart = 265, iSpielfeldFormat = 10;
+        
         private static Bitmap Spielfeldframe;
         
         private Graphics Bitmapgraphic;
