@@ -1,0 +1,194 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygenindex xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="index.xsd" version="1.9.1" xml:lang="de">
+  <compound refid="class_vier_gewinnt_1_1_form1" kind="class"><name>VierGewinnt::Form1</name>
+    <member refid="class_vier_gewinnt_1_1_form1_1a337e2296f79bf42f057b89e480c3842a" kind="variable"><name>sGewinnAnzahl</name></member>
+    <member refid="class_vier_gewinnt_1_1_form1_1ab4f25fceab274245efc6725b9b0af67e" kind="variable"><name>Dreieckspunkte</name></member>
+    <member refid="class_vier_gewinnt_1_1_form1_1aadd9420ab1612ca4a44fd8d0e64a2194" kind="variable"><name>Spielfeldframe</name></member>
+    <member refid="class_vier_gewinnt_1_1_form1_1a87979e43a5eb15b168409b72a26900d6" kind="variable"><name>iSpielfeldWidthMax</name></member>
+    <member refid="class_vier_gewinnt_1_1_form1_1afadc25d695713fbf5f8733fab8d2af3d" kind="variable"><name>iSpielfeldHeightMax</name></member>
+    <member refid="class_vier_gewinnt_1_1_form1_1a378aa78491ba1740d2637d5dd9a9a158" kind="variable"><name>iXstartMin</name></member>
+    <member refid="class_vier_gewinnt_1_1_form1_1ac2c6e3b5e3188143c837a7f3e68dac5e" kind="variable"><name>iYstartMin</name></member>
+    <member refid="class_vier_gewinnt_1_1_form1_1acdbd5de296735df73b7cedddc64c9fd1" kind="variable"><name>iXstart</name></member>
+    <member refid="class_vier_gewinnt_1_1_form1_1ab991b7516727a6f77d05ba44c8f684d2" kind="variable"><name>iYstart</name></member>
+    <member refid="class_vier_gewinnt_1_1_form1_1a5878e2761e33fb2f36089219545c1c87" kind="variable"><name>iSpielfeldFormat</name></member>
+    <member refid="class_vier_gewinnt_1_1_form1_1a2d5fab78b6c6f4581090efc786a9bf3b" kind="variable"><name>Bitmapgraphic</name></member>
+    <member refid="class_vier_gewinnt_1_1_form1_1a69c325a0c374ea74fe27b8022528f8d8" kind="variable"><name>spielfeldgraphic</name></member>
+    <member refid="class_vier_gewinnt_1_1_form1_1ad54a86171bc96a07a62a31ddfb20f27c" kind="function"><name>AllocConsole</name></member>
+    <member refid="class_vier_gewinnt_1_1_form1_1a36b011c5547cd55d5c16173870eae76e" kind="function"><name>Btn_Network_Click</name></member>
+    <member refid="class_vier_gewinnt_1_1_form1_1a6c906b4648420a7de56a9d758c25e5c9" kind="function"><name>Btn_Play_Click</name></member>
+    <member refid="class_vier_gewinnt_1_1_form1_1a1a3f5e7bc293ec8407264762df9f985b" kind="function"><name>Btn_Quit_Click</name></member>
+    <member refid="class_vier_gewinnt_1_1_form1_1a3894c4cdd36930fd0c26fb3a9b4f2e3c" kind="function"><name>Form1_Paint</name></member>
+    <member refid="class_vier_gewinnt_1_1_form1_1a4ac65adad7acc75d917c331804b6990a" kind="function"><name>SpielfeldTileZeichnen</name></member>
+    <member refid="class_vier_gewinnt_1_1_form1_1a227de9b229f183ae38c4ad5c53040311" kind="function"><name>SpielfeldZeichnen</name></member>
+    <member refid="class_vier_gewinnt_1_1_form1_1aa1cd952ce853243fad62c697ab822ddb" kind="function"><name>TextBox1_TextChanged</name></member>
+    <member refid="class_vier_gewinnt_1_1_form1_1a0acef878273c93ea72cf2f11c94b76fc" kind="function"><name>TrackBarX_Scroll</name></member>
+    <member refid="class_vier_gewinnt_1_1_form1_1a795260ee58629f395b1311e32672ba45" kind="function"><name>TrackBarY_Scroll</name></member>
+    <member refid="class_vier_gewinnt_1_1_form1_1a2dd41cb81acd48138aac0d98bd84eee2" kind="function"><name>Form1</name></member>
+    <member refid="class_vier_gewinnt_1_1_form1_1afd19f86c635026310aa67de167cf284d" kind="function"><name>OnClosed</name></member>
+    <member refid="class_vier_gewinnt_1_1_form1_1ab6a8c6ae8102a6590008f603d0f00425" kind="function"><name>EckenBerechnen</name></member>
+  </compound>
+  <compound refid="class_vier_gewinnt_1_1_form2" kind="class"><name>VierGewinnt::Form2</name>
+    <member refid="class_vier_gewinnt_1_1_form2_1aa63e501f2833072904a459180aa98960" kind="variable"><name>iSpielfeldHeight</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1ade99c9fa95ea948d2ca179ad1ca28b01" kind="variable"><name>iSpielfeldWidth</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1a8c076429db3d35f04e83192f40d5ba3f" kind="variable"><name>Spielfelder</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1a2ecd618bc4987536591c9a78b02bc039" kind="variable"><name>DreiecksPunkte</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1afa9435ee3013c9cb61e0de99d2d036b8" kind="variable"><name>sCurrentcolor</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1ae41a6b17a6f9a6cf5c518ceee67f5f41" kind="variable"><name>dKreisausgleich</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1a863c90319c2cadf632998e00630af91d" kind="variable"><name>fDroptime</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1a881b3ddaf16be8166203d2ed6c5d4b0d" kind="variable"><name>iGewinnAnzahl</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1ac81818783f5e51f8725d1cf5f0b9ff4c" kind="variable"><name>iOldSpalte</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1a6d35450de24fc406a15a4661a2732a8c" kind="variable"><name>iSpielfeldHeightPx</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1a9455ef01358ba595660cdb956f9181cc" kind="variable"><name>iSpielfeldWidthPx</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1a55a9db337928018b14a5408fb7e606bb" kind="variable"><name>bAimationFlag</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1acc39ce07cc833eeb6b3e8730a45437cb" kind="variable"><name>bResizing</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1a12ebeaa2f3d72f9d4562bd5d55f440ca" kind="variable"><name>Spielfeldframe</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1a93cbd99f32126da3bb6a5403d50185db" kind="variable"><name>Spielfeldgraphic</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1ae76ff5c92201063801e278b8c4cb8d27" kind="variable"><name>Bitmapgraphic</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1ad07a06db1c33e442c7c08d155898c5fc" kind="variable"><name>VergangeneSekunden</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1a70505c62b056c429463d7175e0ca7515" kind="function"><name>AllocConsole</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1aa198a78532e940a61dd0d531ef7513b5" kind="function"><name>Button1_Click</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1a76af01d9279dffe80a8114192758b53d" kind="function"><name>EckenBerechnen</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1a62b44f66d863fc19a251c7dadf066160" kind="function"><name>Form2_Click</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1a3fa56f8233931ded7573e2d694b3d86f" kind="function"><name>Form2_MouseMove</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1a9dc5d7659d03ea6342b70a5a7d1abe5d" kind="function"><name>Form2_Paint</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1a2375e7a9f9c588ca943688fa81472d43" kind="function"><name>Form2_Resize</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1a724dc9fedccb44b4af9dcd7bda10a708" kind="function"><name>Form2_ResizeEnd</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1aedff821bc1c469279c42b781379cc272" kind="function"><name>Gewonnen</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1aca39f0f23c74770993654d240a6ca746" kind="function"><name>Hovereffekt</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1a072b6850e1f2f96d63504e8a9b0e0f22" kind="function"><name>KreisDrehen</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1a239a56f5cfe068b491f0f3fa4b783266" kind="function"><name>Kreiszeichnen</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1a93bc8b5cf4357a45d20b3718af266ffe" kind="function"><name>KreiszeichnenAnimation</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1a293314f1964cbb564ed00ebad6caf2ec" kind="function"><name>SpielfeldErstellen</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1abf5403323f1ff991dcf6e2e825ba1d2d" kind="function"><name>SpielfeldTileZeichnen</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1a3eff692504e917f509e29a8f978630ea" kind="function"><name>SpielfeldZeichnen</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1a197da3beb00051ece94150c7856aa399" kind="function"><name>SpielsteineZeichnen</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1affaf902de65c8b530f5b88b2cf6dab5c" kind="function"><name>UhrStarten</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1a41c9c19bd15f1090f409eb790e336114" kind="function"><name>UhrUpdate</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1a8cf99ed2e5696d660d90ccd5942d5d82" kind="function"><name>Form2</name></member>
+    <member refid="class_vier_gewinnt_1_1_form2_1af72f967d19305be8513f66268702dd33" kind="function"><name>OnClosed</name></member>
+  </compound>
+  <compound refid="class_vier_gewinnt_1_1_form3" kind="class"><name>VierGewinnt::Form3</name>
+    <member refid="class_vier_gewinnt_1_1_form3_1a72b86c2f686ccd41bf5b6626a1cf84cc" kind="variable"><name>PORT</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1ab61d8b200e2c524d0384605a8efa85d4" kind="variable"><name>EmpfangenSignal</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a6351c481df15e85e4147a70a69e3af7f" kind="variable"><name>MeinZugSignal</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a21a07186d3eecfa85ff1724076e01e15" kind="variable"><name>GefundenEndpoints</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a7808739648dae9a83777a51ae2e16d94" kind="variable"><name>iLetzterGefundeneEndpoint</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a0f12311643359151f28f341684f96d1e" kind="variable"><name>AndererSpieler</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a9556ec327d5cf02b8baac6836203c936" kind="variable"><name>bBlock</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a49867996a693ca2505e690b0ce9fae70" kind="variable"><name>bMeinZug</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1adf0b1ebdee3c7ea19f297459a883595c" kind="variable"><name>bSpielEnde</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1aa15c3a57f752f4b458bbcc722bf89059" kind="variable"><name>bInizialisiertFlag</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a2e7bb6c697fed4d929a8560175694822" kind="variable"><name>DreiecksPunkte</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a770141bbffede1bd869a46ea25be78d8" kind="variable"><name>sCurrentcolor</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a8e2d2affda97efce2e2a3efb5ef68be1" kind="variable"><name>dKreisausgleich</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a5f9b26e7e633086c397ba641714ed2b8" kind="variable"><name>fDroptime</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a917587f8eb8898612183148eebc45c2d" kind="variable"><name>iGewinnAnzahl</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a6cfc5c69cc36ad71465258b1627459d0" kind="variable"><name>iOldSpalte</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a1c51b8ecbac03545f8fb29f71885968a" kind="variable"><name>iSpielfeldHeightPx</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a0c9b7cbcb20fcee603c7762e3d317ecc" kind="variable"><name>iSpielfeldWidthPx</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a7aa405514b08f9ff253902b49418c249" kind="variable"><name>bAimationFlag</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1ace782e6bf9d12fa5c77ba59d6f4a1c6f" kind="variable"><name>bResizing</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1af43ca02cd5790ea356e442f1b739ac16" kind="variable"><name>Spielfeldframe</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1ac17f6777f1b1f8df0f802ce45261fe1c" kind="variable"><name>Spielfeldgraphic</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1ad93b720d50a65b03f518b84f43b600e4" kind="variable"><name>Bitmapgraphic</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a5136ba1e1df0f828cbf454676a125d2e" kind="variable"><name>iSpielfeldHeight</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1ad648fc73a9627bea5e55caaec2e7be29" kind="variable"><name>iSpielfeldWidth</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a62bacb18a743ca200fe8013475d7ce57" kind="variable"><name>Spielfelder</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a132fb8fd232ad582e49d36281bbe0007" kind="function"><name>AllocConsole</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a2ae06036d399d7e241050f7a8ed267b6" kind="function"><name>MeineIP</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a963acb6659fc38e6edf9602e9e0c2ba1" kind="function"><name>SpielerWählen</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a3029bb4ea7d52802c5c08a7f23f96c3e" kind="function"><name>SpielFelInizialisieren</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1ae30b4cb9d3f8b505882b51ce7fe57181" kind="function"><name>btn_Suchen_Click</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a0b27c560390af950424d888887590392" kind="function"><name>ServerHosten_Click</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1aaa79ccf4d26a82f1417085bcb5ce3fff" kind="function"><name>btn_ConnectTo_Click</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a25079b3e501c713b0c2ccf6f78dac20c" kind="function"><name>btn_ZumMenue_Click</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a5f8d2b7c79f46d3960a7a579712fe6e1" kind="function"><name>backgroundWorker1_DoWork</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a41222676a7fe2a69be84131913eae5fb" kind="function"><name>backgroundWorker1_RunWorkerCompleted</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a019889a271aacdb2390fe4701fe9fb31" kind="function"><name>ConnectionSuchen</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1ad8c296d44bcd5162f9d0b7c7578ff092" kind="function"><name>btn_cancel_Click</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a52b0a46b5c630f9b96bfb4a94fb88da3" kind="function"><name>backgroundWorker1_ProgressChanged</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1aef994b8b956b4e6112b7546af7265b0b" kind="function"><name>SpielfeldErstellen</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a66770383e33139d9963a89669497bb34" kind="function"><name>SpielfeldZeichnen</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a2b7d0bcc2b8673bec8c43df88b2d3612" kind="function"><name>SpielsteineZeichnen</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1aa8af2d4841895036859aef72bcdde27b" kind="function"><name>EckenBerechnen</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1aa5f813d28bdc4b32414037aa67740e69" kind="function"><name>SpielfeldTileZeichnen</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a517c3af8a829974d93afba76c7c963d6" kind="function"><name>Form3_Paint</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1aa008bfa78029f9cb1129aaba4a206f8f" kind="function"><name>GegnerZug</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a61cc1a89637c87218572467ff44df995" kind="function"><name>Form3_Click</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a73693785967b08f0b557ea9b54a9bdbf" kind="function"><name>KreiszeichnenAnimation</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1afdc6cd136214351abb7138f299723ffa" kind="function"><name>Kreiszeichnen</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1aa7119c823b2da96ddc3c21225379e4f7" kind="function"><name>Gewonnen</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a0b441bcbdde2608f374b9f573c8c88e0" kind="function"><name>Form3_MouseMove</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1ade460433d2948f7f3aaf4d0a8ec11d0d" kind="function"><name>Hovereffekt</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a77ccec0297f099fac85bf07a4aa37f5f" kind="function"><name>KreisDrehen</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a90265036b5283ca2163271493c7b654e" kind="function"><name>Form3_Resize</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1afb21b5482f05bae5385c1871977674e8" kind="function"><name>Form3_ResizeEnd</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1ac29b48d9c2b9abba7205f9d61853d988" kind="function"><name>progressBar1_Click</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1ac27d1059bbfc235dc6020c948d5e9269" kind="function"><name>lab_Info_Click</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a06d5ba8f870d48c5be2331bf56d782c5" kind="function"><name>Form3</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a4d0ade1395d5f1f45c1849a4042b2cb8" kind="function"><name>StartListening</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a970a30f5e0c415219e358065ee1bea2e" kind="function"><name>StartClient</name></member>
+    <member refid="class_vier_gewinnt_1_1_form3_1a00740629674b919eb6fadacf10196735" kind="function"><name>OnClosed</name></member>
+  </compound>
+  <compound refid="class_vier_gewinnt_1_1_program" kind="class"><name>VierGewinnt::Program</name>
+    <member refid="class_vier_gewinnt_1_1_program_1a85ad4fb54460897fa14c6d1eef5da0cd" kind="function"><name>Main</name></member>
+  </compound>
+  <compound refid="struct_vier_gewinnt_1_1_form2_1_1_spielfeld_tile" kind="struct"><name>VierGewinnt::Form2::SpielfeldTile</name>
+    <member refid="struct_vier_gewinnt_1_1_form2_1_1_spielfeld_tile_1aa44c6318023d8b5f2e40d36bb93c0ec3" kind="variable"><name>sFarbe</name></member>
+    <member refid="struct_vier_gewinnt_1_1_form2_1_1_spielfeld_tile_1ab5009cc37207eb3d7a9b57c3c9c93316" kind="variable"><name>iX</name></member>
+    <member refid="struct_vier_gewinnt_1_1_form2_1_1_spielfeld_tile_1a664e38c978792eae0beef954520f85ee" kind="variable"><name>iY</name></member>
+    <member refid="struct_vier_gewinnt_1_1_form2_1_1_spielfeld_tile_1a4ab16a4fbaad9e201a6ef2311c7a8810" kind="variable"><name>iWidth</name></member>
+    <member refid="struct_vier_gewinnt_1_1_form2_1_1_spielfeld_tile_1adbe099d212018811f77d78fd64d3f481" kind="variable"><name>iHeight</name></member>
+  </compound>
+  <compound refid="struct_vier_gewinnt_1_1_form3_1_1_spielfeld_tile" kind="struct"><name>VierGewinnt::Form3::SpielfeldTile</name>
+    <member refid="struct_vier_gewinnt_1_1_form3_1_1_spielfeld_tile_1a0f7d4b8ef7290af699a3e4b6e3e05d24" kind="variable"><name>sFarbe</name></member>
+    <member refid="struct_vier_gewinnt_1_1_form3_1_1_spielfeld_tile_1aa4c813957dbb0c02ced7b6ac213902d1" kind="variable"><name>iX</name></member>
+    <member refid="struct_vier_gewinnt_1_1_form3_1_1_spielfeld_tile_1a68f36739d6cc24ed0500971aba76ec72" kind="variable"><name>iY</name></member>
+    <member refid="struct_vier_gewinnt_1_1_form3_1_1_spielfeld_tile_1a31027713f0c5f3abe6e98b662de984f9" kind="variable"><name>iWidth</name></member>
+    <member refid="struct_vier_gewinnt_1_1_form3_1_1_spielfeld_tile_1aa8a28aa208202d1a23a03bf2aaeea6bd" kind="variable"><name>iHeight</name></member>
+  </compound>
+  <compound refid="namespace_system" kind="namespace"><name>System</name>
+  </compound>
+  <compound refid="namespace_system_1_1_collections_1_1_generic" kind="namespace"><name>System::Collections::Generic</name>
+  </compound>
+  <compound refid="namespace_system_1_1_component_model" kind="namespace"><name>System::ComponentModel</name>
+  </compound>
+  <compound refid="namespace_system_1_1_data" kind="namespace"><name>System::Data</name>
+  </compound>
+  <compound refid="namespace_system_1_1_diagnostics_1_1_code_analysis" kind="namespace"><name>System::Diagnostics::CodeAnalysis</name>
+  </compound>
+  <compound refid="namespace_system_1_1_drawing" kind="namespace"><name>System::Drawing</name>
+  </compound>
+  <compound refid="namespace_system_1_1_linq" kind="namespace"><name>System::Linq</name>
+  </compound>
+  <compound refid="namespace_system_1_1_net" kind="namespace"><name>System::Net</name>
+  </compound>
+  <compound refid="namespace_system_1_1_net_1_1_sockets" kind="namespace"><name>System::Net::Sockets</name>
+  </compound>
+  <compound refid="namespace_system_1_1_runtime_1_1_interop_services" kind="namespace"><name>System::Runtime::InteropServices</name>
+  </compound>
+  <compound refid="namespace_system_1_1_text" kind="namespace"><name>System::Text</name>
+  </compound>
+  <compound refid="namespace_system_1_1_threading" kind="namespace"><name>System::Threading</name>
+  </compound>
+  <compound refid="namespace_system_1_1_threading_1_1_tasks" kind="namespace"><name>System::Threading::Tasks</name>
+  </compound>
+  <compound refid="namespace_system_1_1_windows_1_1_forms" kind="namespace"><name>System::Windows::Forms</name>
+  </compound>
+  <compound refid="namespace_vier_gewinnt" kind="namespace"><name>VierGewinnt</name>
+  </compound>
+  <compound refid="_form1_8cs" kind="file"><name>Form1.cs</name>
+  </compound>
+  <compound refid="_form2_8cs" kind="file"><name>Form2.cs</name>
+  </compound>
+  <compound refid="_form3_8cs" kind="file"><name>Form3.cs</name>
+  </compound>
+  <compound refid="_global_suppressions_8cs" kind="file"><name>GlobalSuppressions.cs</name>
+  </compound>
+  <compound refid="_program_8cs" kind="file"><name>Program.cs</name>
+  </compound>
+  <compound refid="dir_c0982b51aaba3dff83b1ca888a44ea61" kind="dir"><name>C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt</name>
+  </compound>
+  <compound refid="dir_14a1b826914ef2903e95c8dc4691a98a" kind="dir"><name>C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt</name>
+  </compound>
+</doxygenindex>

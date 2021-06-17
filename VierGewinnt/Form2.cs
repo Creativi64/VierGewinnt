@@ -4,7 +4,8 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using System.Media;
+using System.IO;
 namespace VierGewinnt
 {
     public partial class Form2 : Form
@@ -470,11 +471,20 @@ namespace VierGewinnt
         private void Gewonnen(string sGewinner)
         {
             //this.Hide();
+            Task ts = Task.Run(() => {
+                SoundPlayer simpleSound = new SoundPlayer(@"Sounds\mixkit-animated-small-group-applause-523.wav");
+                simpleSound.Play();
+            });
             var Result = MessageBox.Show($"{sGewinner} Hat gewonnen",
                 $"{sGewinner} hat Gewonnen", MessageBoxButtons.RetryCancel, MessageBoxIcon.Information);
 
             if (Result == DialogResult.Retry)
             {
+                Task t2s = Task.Run(() => {
+                    SoundPlayer simpleSound = new SoundPlayer(@"Sounds\mixkit-medieval-show-fanfare-announcement-226.wav");
+                    simpleSound.Play();
+                });
+                Thread.Sleep(8000);
                 Form2 frm = new();
 
                 frm.Show();
@@ -494,6 +504,11 @@ namespace VierGewinnt
         /// <param name="iSpalte">Die entsprechende spalte -1 heist, dass der Kreis auf keiner Zeile gedrawt werden soll</param>
         private void Hovereffekt(int iSpalte)
         {
+         
+            
+            Task ts = Task.Run(() => { 
+            SoundPlayer simpleSound = new SoundPlayer(@"Sounds\mixkit-arcade-game-jump-coin-216.wav");
+            simpleSound.Play();});
             if (iSpalte >= 0)
             {
                 if (iOldSpalte >= 0)
@@ -525,6 +540,10 @@ namespace VierGewinnt
         /// <param name="iDrehungen">Die Anzahl der Drehungen</param>
         private void KreisDrehen(Point[] KreisKoordinaten, int iDrehungen)
         {
+            Task ts = Task.Run(() => {
+                SoundPlayer simpleSound = new SoundPlayer(@"Sounds\mixkit-casino-reward-1980.wav");
+                simpleSound.Play();
+            });
             int Drehgeschwindigkeit = 5;
             for (int k = 0; k < iDrehungen; k++)                         //schleife pro Drehung
             {
@@ -591,6 +610,10 @@ namespace VierGewinnt
 
         private void KreiszeichnenAnimation(int iX, int iY, string sFarbe, Graphics G)
         {
+            Task ts = Task.Run(() => {
+                SoundPlayer simpleSound = new SoundPlayer(@"Sounds\mixkit-slot-machine-win-1928.wav");
+                simpleSound.Play();
+            });
             int iHilfszahl = 0;
             int iHilfszahl1 = 0;
             int multiplyer = (int)fDroptime; // durch 2 teil bare Zahlen funktionieren am besten da Dann Weniger Komma stellen Entstehen die Ignoriert werden
@@ -704,6 +727,10 @@ namespace VierGewinnt
         /// </summary>
         private void SpielfeldErstellen()
         {
+            Task ts = Task.Run(() => {
+                SoundPlayer simpleSound = new SoundPlayer(@"Sounds\mixkit-casino-reward-1980.wav");
+                simpleSound.Play();
+            });
             int ispielfeldformat;
             if (iSpielfeldHeightPx / iSpielfeldHeight <= iSpielfeldWidthPx / iSpielfeldWidth)               //spielfeldformat wird so gewählt, dass das Spielfeld immer in das Fenster passt
 
@@ -772,8 +799,6 @@ namespace VierGewinnt
 
             //spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
         }
-
-
         /// <summary>
         /// Zeichnet die Bereits gelegten Spielsteine anhand des Structs Spielfelder.
         /// </summary>

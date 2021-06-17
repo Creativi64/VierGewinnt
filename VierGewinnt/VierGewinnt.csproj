@@ -22,9 +22,40 @@
   <ItemGroup>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-     
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Sounds\mixkit-animated-small-group-applause-523.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Sounds\mixkit-arcade-game-jump-coin-216.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CustomToolNamespace>Sounds</CustomToolNamespace>
+    </None>
+    <None Update="Sounds\mixkit-casino-reward-1980.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CustomToolNamespace>Sounds</CustomToolNamespace>
+    </None>
+    <None Update="Sounds\mixkit-ethereal-fairy-win-sound-2019.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CustomToolNamespace>Sounds</CustomToolNamespace>
+    </None>
+    <None Update="Sounds\mixkit-huge-crowd-cheering-victory-462.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CustomToolNamespace>Sounds</CustomToolNamespace>
+    </None>
+    <None Update="Sounds\mixkit-male-voice-cheer-2010.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Sounds\mixkit-medieval-show-fanfare-announcement-226.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CustomToolNamespace>Sounds</CustomToolNamespace>
+    </None>
+    <None Update="Sounds\mixkit-slot-machine-win-1928.wav">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CustomToolNamespace>Sounds</CustomToolNamespace>
+    </None>
+  </ItemGroup>
 </Project>

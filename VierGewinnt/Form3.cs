@@ -11,24 +11,23 @@ using System.Windows.Forms;
 
 namespace VierGewinnt
 {
+    /// <summary>
+    ///
+    /// Kann Nach Offen Servern Im Netzwerk Suchen (192.168)
+    ///
+    /// Man kann ein spiel auf machen auf das jemand conecten kann
+    ///
+    /// Mit einem offenen spiel connecten
+    ///
+    /// Der Code Fürs Game Ist der Gleiche Wie Im Lokalen (Form2)
+    /// Unterschiedlich ist nur das Alle Label Änderungen Mit invoke von einem anderen thread aufgerufen werden da diese meist nicht im main thread Aufgreiden werden
+    /// Block und MeinZug Blokieren am Anfang die spielfeld erstellung und dann immer wenn man nicht dran ist
+    /// Von der Click Event Funktion Gibt es eine Kopie Die Nur Dien Empfangenen zug übergeben bekommt und die gleiche logig mit diesem aus führt wie als häte man es selbst gemacht
+    /// Nach Dem man selbst Gecklickt hat wird der zug beendet und weggeschickt
+    ///
+    /// </summary>
     public partial class Form3 : Form
     {
-        /// <summary>
-        ///
-        /// Kann Nach Offen Servern Im Netzwerk Suchen (192.168)
-        ///
-        /// Man kann ein spiel auf machen auf das jemand conecten kann
-        ///
-        /// Mit einem offenen spiel connecten
-        ///
-        /// Der Code Fürs Game Ist der Gleiche Wie Im Lokalen (Form2)
-        /// Unterschiedlich ist nur das Alle Label Änderungen Mit invoke von einem anderen thread aufgerufen werden da diese meist nicht im main thread Aufgreiden werden
-        /// Block und MeinZug Blokieren am Anfang die spielfeld erstellung und dann immer wenn man nicht dran ist
-        /// Von der Click Event Funktion Gibt es eine Kopie Die Nur Dien Empfangenen zug übergeben bekommt und die gleiche logig mit diesem aus führt wie als häte man es selbst gemacht
-        /// Nach Dem man selbst Gecklickt hat wird der zug beendet und weggeschickt
-        ///
-        /// </summary>
-
         #region Console
 
         /// <summary>
@@ -335,8 +334,6 @@ namespace VierGewinnt
 
             string EmpfangeneIp = null;
 
-            
-
             /// Empfängt die Ip Des Zu verbindenden
             EmpfangenSignal.Reset();
             do
@@ -387,23 +384,31 @@ namespace VierGewinnt
 
             /// je nachdem welche Farbe Anfängt wird Ein Andere Spiel Verlauf Genutzt wenn die Farbe Rot ist wird 1. Genutzt
             /// wenn die farbe nicht so ist dann 2.
-            /// <example>
-            /// | = listen, - = Senden
+            /// 
+            ///  L listen, S = Senden
             ///
             /// 1.
-            /// Es wird zuerst Selbst Gesendet und dann Empangen und wieder Gesendet
-            /// - |
-            /// | -
-            /// - |
+            /// Es wird zuerst Selbst Gesendet und dann Empfangen und wieder Gesendet
+            /// 
+            ///    S L
+            ///
+            ///    L S
+            ///
+            ///    S L
+            ///
             /// ...
-
+            /// 
             /// 2.
             /// es wird Zuerst Empfangen und dann gesenter und dann Empfangen
-            /// | -
-            /// - |
-            /// | -
+            ///
+            ///    L S
+            ///
+            ///    S L
+            ///
+            ///    L S
+            /// 
             /// ...
-            /// <example>
+            /// 
             /// Dies Muss immer mit der Gegen seite Syncron laufen
 
             if (sCurrentcolor == "red")
@@ -504,8 +509,8 @@ namespace VierGewinnt
         /// wennn er dies nich kann bricht er ab und meldet über das label das es nicht geklappt hat
         /// Wenn er eine verbindung hat beginnt der daten austauscht und es wird angefangen zu lauschen um die parameter fürs spiel zu empfangen
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        /// <param name="sender">object sender</param>
+        /// <param name="e"> EventArgs</param>
         private void btn_ConnectTo_Click(object sender, EventArgs e)
         {
             /// CLIENT IST IMMER YELLOW
@@ -573,25 +578,36 @@ namespace VierGewinnt
                     //this.Refresh();
                     //spielfeldgraphic.DrawImage(Spielfeldframe, 0, 0);
                     Thread.Sleep(1000);
-
+                    
                     /// je nachdem welche Farbe Anfängt wird Ein Andere Spiel Verlauf Genutzt wenn die Farbe Rot ist wird 1. Genutzt
                     /// wenn die farbe nicht so ist dann 2.
-                    /// <example>
-                    /// | = listen, - = Senden
-                    ///1.
-                    ///es wird Zuerst Empfangen und dann gesenter und dann Empfangen
-                    ///| -
-                    ///- |
-                    ///| -
-
+                    ///
+                    /// L = listen, S = Senden
+                    /// 
+                    /// 1.
+                    /// es wird Zuerst Empfangen und dann gesenter und dann Empfangen
+                    /// 
+                    ///    L S
+                    ///
+                    ///    S L
+                    ///
+                    ///    L S
+                    /// 
+                    /// ...
+                    /// 
                     ///2.
-                    ///Es wird zuerst Selbst Gesendet und dann Empangen und wieder Gesendet
-                    ///- |
-                    ///| -
-                    ///- |
-                    /// <example>
+                    /// Es wird zuerst Selbst Gesendet und dann Empangen und wieder Gesendet
+                    ///
+                    ///    S L
+                    ///
+                    ///    L S
+                    ///
+                    ///    S L
+                    ///
+                    /// ...
+                    /// 
                     /// Dies Muss immer mit der Gegen seite Syncron laufen
-
+                   
                     if (sCurrentcolor == "red")
                     {
                         //auf zug warten
@@ -1813,12 +1829,10 @@ namespace VierGewinnt
 
         private void progressBar1_Click(object sender, EventArgs e)
         {
-
         }
 
         private void lab_Info_Click(object sender, EventArgs e)
         {
-
         }
     }
 }

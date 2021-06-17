@@ -1,0 +1,28 @@
+var class_vier_gewinnt_1_1_form1 =
+[
+    [ "Form1", "class_vier_gewinnt_1_1_form1.html#a2dd41cb81acd48138aac0d98bd84eee2", null ],
+    [ "AllocConsole", "class_vier_gewinnt_1_1_form1.html#ad54a86171bc96a07a62a31ddfb20f27c", null ],
+    [ "Btn_Network_Click", "class_vier_gewinnt_1_1_form1.html#a36b011c5547cd55d5c16173870eae76e", null ],
+    [ "Btn_Play_Click", "class_vier_gewinnt_1_1_form1.html#a6c906b4648420a7de56a9d758c25e5c9", null ],
+    [ "Btn_Quit_Click", "class_vier_gewinnt_1_1_form1.html#a1a3f5e7bc293ec8407264762df9f985b", null ],
+    [ "EckenBerechnen", "class_vier_gewinnt_1_1_form1.html#ab6a8c6ae8102a6590008f603d0f00425", null ],
+    [ "Form1_Paint", "class_vier_gewinnt_1_1_form1.html#a3894c4cdd36930fd0c26fb3a9b4f2e3c", null ],
+    [ "OnClosed", "class_vier_gewinnt_1_1_form1.html#afd19f86c635026310aa67de167cf284d", null ],
+    [ "SpielfeldTileZeichnen", "class_vier_gewinnt_1_1_form1.html#a4ac65adad7acc75d917c331804b6990a", null ],
+    [ "SpielfeldZeichnen", "class_vier_gewinnt_1_1_form1.html#a227de9b229f183ae38c4ad5c53040311", null ],
+    [ "TextBox1_TextChanged", "class_vier_gewinnt_1_1_form1.html#aa1cd952ce853243fad62c697ab822ddb", null ],
+    [ "TrackBarX_Scroll", "class_vier_gewinnt_1_1_form1.html#a0acef878273c93ea72cf2f11c94b76fc", null ],
+    [ "TrackBarY_Scroll", "class_vier_gewinnt_1_1_form1.html#a795260ee58629f395b1311e32672ba45", null ],
+    [ "Bitmapgraphic", "class_vier_gewinnt_1_1_form1.html#a2d5fab78b6c6f4581090efc786a9bf3b", null ],
+    [ "Dreieckspunkte", "class_vier_gewinnt_1_1_form1.html#ab4f25fceab274245efc6725b9b0af67e", null ],
+    [ "iSpielfeldFormat", "class_vier_gewinnt_1_1_form1.html#a5878e2761e33fb2f36089219545c1c87", null ],
+    [ "iSpielfeldHeightMax", "class_vier_gewinnt_1_1_form1.html#afadc25d695713fbf5f8733fab8d2af3d", null ],
+    [ "iSpielfeldWidthMax", "class_vier_gewinnt_1_1_form1.html#a87979e43a5eb15b168409b72a26900d6", null ],
+    [ "iXstart", "class_vier_gewinnt_1_1_form1.html#acdbd5de296735df73b7cedddc64c9fd1", null ],
+    [ "iXstartMin", "class_vier_gewinnt_1_1_form1.html#a378aa78491ba1740d2637d5dd9a9a158", null ],
+    [ "iYstart", "class_vier_gewinnt_1_1_form1.html#ab991b7516727a6f77d05ba44c8f684d2", null ],
+    [ "iYstartMin", "class_vier_gewinnt_1_1_form1.html#ac2c6e3b5e3188143c837a7f3e68dac5e", null ],
+    [ "sGewinnAnzahl", "class_vier_gewinnt_1_1_form1.html#a337e2296f79bf42f057b89e480c3842a", null ],
+    [ "Spielfeldframe", "class_vier_gewinnt_1_1_form1.html#aadd9420ab1612ca4a44fd8d0e64a2194", null ],
+    [ "spielfeldgraphic", "class_vier_gewinnt_1_1_form1.html#a69c325a0c374ea74fe27b8022528f8d8", null ]
+];

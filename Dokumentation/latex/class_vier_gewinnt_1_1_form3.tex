@@ -1,0 +1,776 @@
+\hypertarget{class_vier_gewinnt_1_1_form3}{}\doxysection{Vier\+Gewinnt.\+Form3 Klassenreferenz}
+\label{class_vier_gewinnt_1_1_form3}\index{VierGewinnt.Form3@{VierGewinnt.Form3}}
+
+
+ 
+
+
+Klassendiagramm für Vier\+Gewinnt.\+Form3\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_vier_gewinnt_1_1_form3}
+\end{center}
+\end{figure}
+\doxysubsection*{Datenstrukturen}
+\begin{DoxyCompactItemize}
+\item 
+struct \mbox{\hyperlink{struct_vier_gewinnt_1_1_form3_1_1_spielfeld_tile}{Spielfeld\+Tile}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Öffentliche Methoden}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a06d5ba8f870d48c5be2331bf56d782c5}{Form3}} ()
+\begin{DoxyCompactList}\small\item\em Beim Inizialisieren Von Form 3 \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a4d0ade1395d5f1f45c1849a4042b2cb8}{Start\+Listening}} (string Senden)
+\begin{DoxyCompactList}\small\item\em Startet Ein Listening Prozzess um daten entegen zu nehmen Encodeing und Decoding Leuft gleich Über UTF8 es muss der zu sendende oder empfangende vorher nicht geändert werden \end{DoxyCompactList}\item 
+string \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a970a30f5e0c415219e358065ee1bea2e}{Start\+Client}} (string Senden)
+\begin{DoxyCompactList}\small\item\em Startet Einen Client der daten an einen Server sendet der am lauschen ist Encodeing und Decoding Leuft Über UTF8 es muss der zu sendende oder empfangende vorher nicht geändert werden \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Datenfelder}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{struct_vier_gewinnt_1_1_form3_1_1_spielfeld_tile}{Spielfeld\+Tile}}\mbox{[},\mbox{]} \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a62bacb18a743ca200fe8013475d7ce57}{Spielfelder}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Statische öffentliche Attribute}
+\begin{DoxyCompactItemize}
+\item 
+static int \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a5136ba1e1df0f828cbf454676a125d2e}{i\+Spielfeld\+Height}} = 4
+\item 
+static int \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_ad648fc73a9627bea5e55caaec2e7be29}{i\+Spielfeld\+Width}} = 4
+\end{DoxyCompactItemize}
+\doxysubsection*{Geschützte Methoden}
+\begin{DoxyCompactItemize}
+\item 
+override void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a00740629674b919eb6fadacf10196735}{On\+Closed}} (Event\+Args e)
+\begin{DoxyCompactList}\small\item\em Wenn Man Das Fenster Schliest Sorgt dies Dafür das Alles geschlossen wird auch wenn noch die suche läuft oder ein Task/\+Thread hintergrund wartet und diese auch beendet werden Es wird eine message box Angezeigt die sagt das Das Programm beendet wurde \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Private Methoden}
+\begin{DoxyCompactItemize}
+\item 
+static bool \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a132fb8fd232ad582e49d36281bbe0007}{Alloc\+Console}} ()
+\begin{DoxyCompactList}\small\item\em Erlaubt Uns Zum Form eine console zu starten \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a2ae06036d399d7e241050f7a8ed267b6}{Meine\+IP}} ()
+\begin{DoxyCompactList}\small\item\em Zeig Die Erste ip von einem selbst an \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a963acb6659fc38e6edf9602e9e0c2ba1}{Spieler\+Wählen}} ()
+\begin{DoxyCompactList}\small\item\em zufällige farbewählen die dann als erste eine spielzug macht \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a3029bb4ea7d52802c5c08a7f23f96c3e}{Spiel\+Fel\+Inizialisieren}} ()
+\begin{DoxyCompactList}\small\item\em Wird aufgerufen vom server bevor der die daten Sendet und vom Client nachtdem er alle Daten bekommen hat Es Fängt dann an das spielfeld zu zeichn \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_ae30b4cb9d3f8b505882b51ce7fe57181}{btn\+\_\+\+Suchen\+\_\+\+Click}} (object sender, Event\+Args e)
+\begin{DoxyCompactList}\small\item\em Startet den Background worker der dann nach Offenen Ports Im Lokalen Netzwerk sucht \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a0b27c560390af950424d888887590392}{Server\+Hosten\+\_\+\+Click}} (object sender, Event\+Args e)
+\begin{DoxyCompactList}\small\item\em Hostet ein spiel, Bezieht sich aber nur darauf wer die parameter am spiel anfang festlegt Startet bei Einem Den Listening prozess der Darauf wartet das sich jemand verbindet nach der Verbindung werden die spiel daten ausgetauscht \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_aaa79ccf4d26a82f1417085bcb5ce3fff}{btn\+\_\+\+Connect\+To\+\_\+\+Click}} (object sender, Event\+Args e)
+\begin{DoxyCompactList}\small\item\em Versicht sich zu der in tx\+B\+\_\+\+Verbinden\+IP Eingegeben ip zu verbinden wennn er dies nich kann bricht er ab und meldet über das label das es nicht geklappt hat Wenn er eine verbindung hat beginnt der daten austauscht und es wird angefangen zu lauschen um die parameter fürs spiel zu empfangen \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a25079b3e501c713b0c2ccf6f78dac20c}{btn\+\_\+\+Zum\+Menue\+\_\+\+Click}} (object sender, Event\+Args e)
+\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a5f8d2b7c79f46d3960a7a579712fe6e1}{background\+Worker1\+\_\+\+Do\+Work}} (object sender, Do\+Work\+Event\+Args e)
+\begin{DoxyCompactList}\small\item\em Startet den such prozess als Background\+Worker im Hintergrund \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a41222676a7fe2a69be84131913eae5fb}{background\+Worker1\+\_\+\+Run\+Worker\+Completed}} (object sender, Run\+Worker\+Completed\+Event\+Args e)
+\begin{DoxyCompactList}\small\item\em Wird Vom Background\+Worker nach beendigung aufgerufen sotiert nach Canceled Error wenn ein Fehler Passiert ist Normaler Durchlauf Hier nach werden die Ergebnise in der Li\+B\+\_\+\+Gefundenen\+End\+Points Aufgelistet \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a019889a271aacdb2390fe4701fe9fb31}{Connection\+Suchen}} (Background\+Worker bw)
+\begin{DoxyCompactList}\small\item\em Wird vom Background\+Worker aufgerufen um nach den Endpoints zu sichen \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_ad8c296d44bcd5162f9d0b7c7578ff092}{btn\+\_\+cancel\+\_\+\+Click}} (object sender, Event\+Args e)
+\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a52b0a46b5c630f9b96bfb4a94fb88da3}{background\+Worker1\+\_\+\+Progress\+Changed}} (object sender, Progress\+Changed\+Event\+Args e)
+\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_aef994b8b956b4e6112b7546af7265b0b}{Spielfeld\+Erstellen}} ()
+\begin{DoxyCompactList}\small\item\em Mehr Informationeen Zu dem Game In \mbox{\hyperlink{class_vier_gewinnt_1_1_form2}{Form2}} \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a66770383e33139d9963a89669497bb34}{Spielfeld\+Zeichnen}} (Graphics G)
+\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a2b7d0bcc2b8673bec8c43df88b2d3612}{Spielsteine\+Zeichnen}} (Graphics G, int i\+StartY)
+\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_aa8af2d4841895036859aef72bcdde27b}{Ecken\+Berechnen}} (int iX, int iY, int i\+Width, int i\+Height)
+\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_aa5f813d28bdc4b32414037aa67740e69}{Spielfeld\+Tile\+Zeichnen}} (int iX, int iY, int i\+Width, int i\+Height, Graphics G)
+\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a517c3af8a829974d93afba76c7c963d6}{Form3\+\_\+\+Paint}} (object sender, Paint\+Event\+Args e)
+\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_aa008bfa78029f9cb1129aaba4a206f8f}{Gegner\+Zug}} (int Spalte)
+\begin{DoxyCompactList}\small\item\em macht in eigene Spielfend den zug der Empfangen wurde \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a61cc1a89637c87218572467ff44df995}{Form3\+\_\+\+Click}} (object sender, Event\+Args e)
+\begin{DoxyCompactList}\small\item\em nach dem man gecklickt hat wird der zug gesendet und er dann Von Gegner\+Zug Auch bei gegner gemacht Die anzeige und Animation passiert Nahezu syncron bei beiden spielern \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a73693785967b08f0b557ea9b54a9bdbf}{Kreiszeichnen\+Animation}} (int iX, int iY, string s\+Farbe, Graphics G)
+\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_afdc6cd136214351abb7138f299723ffa}{Kreiszeichnen}} (int iX, int iY, string s\+Farbe, Graphics G, int i\+StartY)
+\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_aa7119c823b2da96ddc3c21225379e4f7}{Gewonnen}} (string Gewinner)
+\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a0b441bcbdde2608f374b9f573c8c88e0}{Form3\+\_\+\+Mouse\+Move}} (object sender, Mouse\+Event\+Args e)
+\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_ade460433d2948f7f3aaf4d0a8ec11d0d}{Hovereffekt}} (int i\+Spalte)
+\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a77ccec0297f099fac85bf07a4aa37f5f}{Kreis\+Drehen}} (Point\mbox{[}$\,$\mbox{]} Kreis\+Koordinaten, int i\+Drehungen)
+\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a90265036b5283ca2163271493c7b654e}{Form3\+\_\+\+Resize}} (object sender, Event\+Args e)
+\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_afb21b5482f05bae5385c1871977674e8}{Form3\+\_\+\+Resize\+End}} (object sender, Event\+Args e)
+\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_ac29b48d9c2b9abba7205f9d61853d988}{progress\+Bar1\+\_\+\+Click}} (object sender, Event\+Args e)
+\item 
+void \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_ac27d1059bbfc235dc6020c948d5e9269}{lab\+\_\+\+Info\+\_\+\+Click}} (object sender, Event\+Args e)
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attribute}
+\begin{DoxyCompactItemize}
+\item 
+IPEnd\+Point\mbox{[}$\,$\mbox{]} \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a21a07186d3eecfa85ff1724076e01e15}{Gefunden\+Endpoints}}
+\item 
+int \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a7808739648dae9a83777a51ae2e16d94}{i\+Letzter\+Gefundene\+Endpoint}} = 0
+\item 
+IPAddress \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a0f12311643359151f28f341684f96d1e}{Anderer\+Spieler}}
+\item 
+bool \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a9556ec327d5cf02b8baac6836203c936}{b\+Block}} = true
+\item 
+bool \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a49867996a693ca2505e690b0ce9fae70}{b\+Mein\+Zug}} = false
+\item 
+bool \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_adf0b1ebdee3c7ea19f297459a883595c}{b\+Spiel\+Ende}} = false
+\item 
+bool \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_aa15c3a57f752f4b458bbcc722bf89059}{b\+Inizialisiert\+Flag}} = false
+\item 
+PointF\mbox{[},\mbox{]} \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a2e7bb6c697fed4d929a8560175694822}{Dreiecks\+Punkte}}
+\item 
+string \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a770141bbffede1bd869a46ea25be78d8}{s\+Currentcolor}}
+\item 
+float \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a8e2d2affda97efce2e2a3efb5ef68be1}{d\+Kreisausgleich}}
+\item 
+float \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a5f9b26e7e633086c397ba641714ed2b8}{f\+Droptime}} = 50
+\item 
+int \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a917587f8eb8898612183148eebc45c2d}{i\+Gewinn\+Anzahl}}
+\item 
+int \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a6cfc5c69cc36ad71465258b1627459d0}{i\+Old\+Spalte}} = 0
+\item 
+int \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a1c51b8ecbac03545f8fb29f71885968a}{i\+Spielfeld\+Height\+Px}}
+\item 
+int \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a0c9b7cbcb20fcee603c7762e3d317ecc}{i\+Spielfeld\+Width\+Px}}
+\item 
+bool \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a7aa405514b08f9ff253902b49418c249}{b\+Aimation\+Flag}} = false
+\item 
+bool \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_ace782e6bf9d12fa5c77ba59d6f4a1c6f}{b\+Resizing}} = false
+\item 
+Bitmap \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_af43ca02cd5790ea356e442f1b739ac16}{Spielfeldframe}}
+\item 
+Graphics \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_ac17f6777f1b1f8df0f802ce45261fe1c}{Spielfeldgraphic}}
+\item 
+Graphics \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_ad93b720d50a65b03f518b84f43b600e4}{Bitmapgraphic}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Statische, private Attribute}
+\begin{DoxyCompactItemize}
+\item 
+const int \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a72b86c2f686ccd41bf5b6626a1cf84cc}{PORT}} = 42069
+\item 
+static Manual\+Reset\+Event \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_ab61d8b200e2c524d0384605a8efa85d4}{Empfangen\+Signal}} = new(false)
+\begin{DoxyCompactList}\small\item\em Signaliseirt Den Task/\+Threads ob was Empfangen wurde damit sie nicht mehr wartenüssen \end{DoxyCompactList}\item 
+static Manual\+Reset\+Event \mbox{\hyperlink{class_vier_gewinnt_1_1_form3_a6351c481df15e85e4147a70a69e3af7f}{Mein\+Zug\+Signal}} = new(false)
+\begin{DoxyCompactList}\small\item\em Mein Zug Signalisert wann Der Eigene Zug Zuendet ist undnicht mehr darauf gewartet werden muss Das man sein zug macht \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Ausführliche Beschreibung}
+
+
+Kann Nach Offen Servern Im Netzwerk Suchen (192.\+168)
+
+Man kann ein spiel auf machen auf das jemand conecten kann
+
+Mit einem offenen spiel connecten
+
+Der Code Fürs Game Ist der Gleiche Wie Im Lokalen (\mbox{\hyperlink{class_vier_gewinnt_1_1_form2}{Form2}}) Unterschiedlich ist nur das Alle Label Änderungen Mit invoke von einem anderen thread aufgerufen werden da diese meist nicht im main thread Aufgreiden werden Block und Mein\+Zug Blokieren am Anfang die spielfeld erstellung und dann immer wenn man nicht dran ist Von der Click Event Funktion Gibt es eine Kopie Die Nur Dien Empfangenen zug übergeben bekommt und die gleiche logig mit diesem aus führt wie als häte man es selbst gemacht Nach Dem man selbst Gecklickt hat wird der zug beendet und weggeschickt
+
+\doxysubsection{Beschreibung der Konstruktoren und Destruktoren}
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a06d5ba8f870d48c5be2331bf56d782c5}\label{class_vier_gewinnt_1_1_form3_a06d5ba8f870d48c5be2331bf56d782c5}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!Form3@{Form3}}
+\index{Form3@{Form3}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{Form3()}{Form3()}}
+{\footnotesize\ttfamily Vier\+Gewinnt.\+Form3.\+Form3 (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Beim Inizialisieren Von Form 3 
+
+Array Von Endpoinst Difiniert Die Bei Der Suche Nach Diesen Gefüllt wird Momentan wird davon ausgegangen das im gleichen Netztwerk nicht mehr als 10 sind
+
+Window Pratmeter wie Window state maximise box -\/$>$ ob man das Fenster vergrößern kann
+
+die Größe Der Pixel Von den Federn X und Y
+
+Die Bitmap Frame Wird Definiert
+
+Die Bitmap Wird mit der Hintergrund farbe gefüllt
+
+Das Switch Case Legt Die Gewinnummer Fest Auf Der Bsis Was man In \mbox{\hyperlink{class_vier_gewinnt_1_1_form1}{Form1}} Eingegeben hat Der Default ist 4 Eher Ein Easter Egg da es nicht gesagt wird das Man Die Gewinnummer Änder kann
+
+Am Ende Wird nach der Inizialisertung Noch die Ip Des Pc abgefragt und angezeigt Es Wird immer Die erste IP genommen auch wenn er mehr findet nimmt er immer die erste
+
+\doxysubsection{Dokumentation der Elementfunktionen}
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a132fb8fd232ad582e49d36281bbe0007}\label{class_vier_gewinnt_1_1_form3_a132fb8fd232ad582e49d36281bbe0007}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!AllocConsole@{AllocConsole}}
+\index{AllocConsole@{AllocConsole}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{AllocConsole()}{AllocConsole()}}
+{\footnotesize\ttfamily static bool Vier\+Gewinnt.\+Form3.\+Alloc\+Console (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Erlaubt Uns Zum Form eine console zu starten 
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a5f8d2b7c79f46d3960a7a579712fe6e1}\label{class_vier_gewinnt_1_1_form3_a5f8d2b7c79f46d3960a7a579712fe6e1}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!backgroundWorker1\_DoWork@{backgroundWorker1\_DoWork}}
+\index{backgroundWorker1\_DoWork@{backgroundWorker1\_DoWork}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{backgroundWorker1\_DoWork()}{backgroundWorker1\_DoWork()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+background\+Worker1\+\_\+\+Do\+Work (\begin{DoxyParamCaption}\item[{object}]{sender,  }\item[{Do\+Work\+Event\+Args}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Startet den such prozess als Background\+Worker im Hintergrund 
+
+
+\begin{DoxyParams}{Parameter}
+{\em sender} & sender Objekt Vom aufrufer\\
+\hline
+{\em e} & Do\+Work\+Event\+Args um die Events zu verarbeiten wird nur für Cancel Genutzt\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a52b0a46b5c630f9b96bfb4a94fb88da3}\label{class_vier_gewinnt_1_1_form3_a52b0a46b5c630f9b96bfb4a94fb88da3}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!backgroundWorker1\_ProgressChanged@{backgroundWorker1\_ProgressChanged}}
+\index{backgroundWorker1\_ProgressChanged@{backgroundWorker1\_ProgressChanged}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{backgroundWorker1\_ProgressChanged()}{backgroundWorker1\_ProgressChanged()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+background\+Worker1\+\_\+\+Progress\+Changed (\begin{DoxyParamCaption}\item[{object}]{sender,  }\item[{Progress\+Changed\+Event\+Args}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a41222676a7fe2a69be84131913eae5fb}\label{class_vier_gewinnt_1_1_form3_a41222676a7fe2a69be84131913eae5fb}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!backgroundWorker1\_RunWorkerCompleted@{backgroundWorker1\_RunWorkerCompleted}}
+\index{backgroundWorker1\_RunWorkerCompleted@{backgroundWorker1\_RunWorkerCompleted}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{backgroundWorker1\_RunWorkerCompleted()}{backgroundWorker1\_RunWorkerCompleted()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+background\+Worker1\+\_\+\+Run\+Worker\+Completed (\begin{DoxyParamCaption}\item[{object}]{sender,  }\item[{Run\+Worker\+Completed\+Event\+Args}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Wird Vom Background\+Worker nach beendigung aufgerufen sotiert nach Canceled Error wenn ein Fehler Passiert ist Normaler Durchlauf Hier nach werden die Ergebnise in der Li\+B\+\_\+\+Gefundenen\+End\+Points Aufgelistet 
+
+
+\begin{DoxyParams}{Parameter}
+{\em sender} & sender Objekt Vom aufrufer\\
+\hline
+{\em e} & die Run\+Worker\+Completed\+Event\+Args die dann den beendigungs grund mitliefern \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_ad8c296d44bcd5162f9d0b7c7578ff092}\label{class_vier_gewinnt_1_1_form3_ad8c296d44bcd5162f9d0b7c7578ff092}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!btn\_cancel\_Click@{btn\_cancel\_Click}}
+\index{btn\_cancel\_Click@{btn\_cancel\_Click}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{btn\_cancel\_Click()}{btn\_cancel\_Click()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+btn\+\_\+cancel\+\_\+\+Click (\begin{DoxyParamCaption}\item[{object}]{sender,  }\item[{Event\+Args}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_aaa79ccf4d26a82f1417085bcb5ce3fff}\label{class_vier_gewinnt_1_1_form3_aaa79ccf4d26a82f1417085bcb5ce3fff}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!btn\_ConnectTo\_Click@{btn\_ConnectTo\_Click}}
+\index{btn\_ConnectTo\_Click@{btn\_ConnectTo\_Click}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{btn\_ConnectTo\_Click()}{btn\_ConnectTo\_Click()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+btn\+\_\+\+Connect\+To\+\_\+\+Click (\begin{DoxyParamCaption}\item[{object}]{sender,  }\item[{Event\+Args}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Versicht sich zu der in tx\+B\+\_\+\+Verbinden\+IP Eingegeben ip zu verbinden wennn er dies nich kann bricht er ab und meldet über das label das es nicht geklappt hat Wenn er eine verbindung hat beginnt der daten austauscht und es wird angefangen zu lauschen um die parameter fürs spiel zu empfangen 
+
+
+\begin{DoxyParams}{Parameter}
+{\em sender} & object sender\\
+\hline
+{\em e} & Event\+Args\\
+\hline
+\end{DoxyParams}
+CLIENT IST IMMER YELLOW
+
+die Ip adresse prüfen
+
+prüfen ob man sich auf die adresse verbidnen kann
+
+wemm man sich mit dem Endpoint verbinden kann wird die verbindung wieder getrennt und danacht die Richtige verbindung erstellt
+
+sendet Seine Ip An Den server
+
+empängt Spielfeld Höhe, breite, gewinnummer und Die farbe
+
+je nachdem welche Farbe Anfängt wird Ein Andere Spiel Verlauf Genutzt wenn die Farbe Rot ist wird 1. Genutzt wenn die farbe nicht so ist dann 2.
+
+L = listen, S = Senden
+
+1. es wird Zuerst Empfangen und dann gesenter und dann Empfangen
+
+L S
+
+S L
+
+L S
+
+...
+
+2. Es wird zuerst Selbst Gesendet und dann Empangen und wieder Gesendet
+
+S L
+
+L S
+
+S L
+
+...
+
+Dies Muss immer mit der Gegen seite Syncron laufen\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_ae30b4cb9d3f8b505882b51ce7fe57181}\label{class_vier_gewinnt_1_1_form3_ae30b4cb9d3f8b505882b51ce7fe57181}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!btn\_Suchen\_Click@{btn\_Suchen\_Click}}
+\index{btn\_Suchen\_Click@{btn\_Suchen\_Click}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{btn\_Suchen\_Click()}{btn\_Suchen\_Click()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+btn\+\_\+\+Suchen\+\_\+\+Click (\begin{DoxyParamCaption}\item[{object}]{sender,  }\item[{Event\+Args}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Startet den Background worker der dann nach Offenen Ports Im Lokalen Netzwerk sucht 
+
+
+\begin{DoxyParams}{Parameter}
+{\em sender} & Sender object\\
+\hline
+{\em e} & Event\+Args\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a25079b3e501c713b0c2ccf6f78dac20c}\label{class_vier_gewinnt_1_1_form3_a25079b3e501c713b0c2ccf6f78dac20c}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!btn\_ZumMenue\_Click@{btn\_ZumMenue\_Click}}
+\index{btn\_ZumMenue\_Click@{btn\_ZumMenue\_Click}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{btn\_ZumMenue\_Click()}{btn\_ZumMenue\_Click()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+btn\+\_\+\+Zum\+Menue\+\_\+\+Click (\begin{DoxyParamCaption}\item[{object}]{sender,  }\item[{Event\+Args}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a019889a271aacdb2390fe4701fe9fb31}\label{class_vier_gewinnt_1_1_form3_a019889a271aacdb2390fe4701fe9fb31}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!ConnectionSuchen@{ConnectionSuchen}}
+\index{ConnectionSuchen@{ConnectionSuchen}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{ConnectionSuchen()}{ConnectionSuchen()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+Connection\+Suchen (\begin{DoxyParamCaption}\item[{Background\+Worker}]{bw }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Wird vom Background\+Worker aufgerufen um nach den Endpoints zu sichen 
+
+
+\begin{DoxyParams}{Parameter}
+{\em bw} & der Background\+Worker wird übergeben um zu wissen welcher status er hat und Den prozess vortschritt zurück zu geben\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_aa8af2d4841895036859aef72bcdde27b}\label{class_vier_gewinnt_1_1_form3_aa8af2d4841895036859aef72bcdde27b}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!EckenBerechnen@{EckenBerechnen}}
+\index{EckenBerechnen@{EckenBerechnen}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{EckenBerechnen()}{EckenBerechnen()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+Ecken\+Berechnen (\begin{DoxyParamCaption}\item[{int}]{iX,  }\item[{int}]{iY,  }\item[{int}]{i\+Width,  }\item[{int}]{i\+Height }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a61cc1a89637c87218572467ff44df995}\label{class_vier_gewinnt_1_1_form3_a61cc1a89637c87218572467ff44df995}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!Form3\_Click@{Form3\_Click}}
+\index{Form3\_Click@{Form3\_Click}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{Form3\_Click()}{Form3\_Click()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+Form3\+\_\+\+Click (\begin{DoxyParamCaption}\item[{object}]{sender,  }\item[{Event\+Args}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+nach dem man gecklickt hat wird der zug gesendet und er dann Von Gegner\+Zug Auch bei gegner gemacht Die anzeige und Animation passiert Nahezu syncron bei beiden spielern 
+
+
+\begin{DoxyParams}{Parameter}
+{\em sender} & \\
+\hline
+{\em e} & \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a0b441bcbdde2608f374b9f573c8c88e0}\label{class_vier_gewinnt_1_1_form3_a0b441bcbdde2608f374b9f573c8c88e0}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!Form3\_MouseMove@{Form3\_MouseMove}}
+\index{Form3\_MouseMove@{Form3\_MouseMove}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{Form3\_MouseMove()}{Form3\_MouseMove()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+Form3\+\_\+\+Mouse\+Move (\begin{DoxyParamCaption}\item[{object}]{sender,  }\item[{Mouse\+Event\+Args}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a517c3af8a829974d93afba76c7c963d6}\label{class_vier_gewinnt_1_1_form3_a517c3af8a829974d93afba76c7c963d6}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!Form3\_Paint@{Form3\_Paint}}
+\index{Form3\_Paint@{Form3\_Paint}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{Form3\_Paint()}{Form3\_Paint()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+Form3\+\_\+\+Paint (\begin{DoxyParamCaption}\item[{object}]{sender,  }\item[{Paint\+Event\+Args}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a90265036b5283ca2163271493c7b654e}\label{class_vier_gewinnt_1_1_form3_a90265036b5283ca2163271493c7b654e}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!Form3\_Resize@{Form3\_Resize}}
+\index{Form3\_Resize@{Form3\_Resize}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{Form3\_Resize()}{Form3\_Resize()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+Form3\+\_\+\+Resize (\begin{DoxyParamCaption}\item[{object}]{sender,  }\item[{Event\+Args}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_afb21b5482f05bae5385c1871977674e8}\label{class_vier_gewinnt_1_1_form3_afb21b5482f05bae5385c1871977674e8}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!Form3\_ResizeEnd@{Form3\_ResizeEnd}}
+\index{Form3\_ResizeEnd@{Form3\_ResizeEnd}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{Form3\_ResizeEnd()}{Form3\_ResizeEnd()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+Form3\+\_\+\+Resize\+End (\begin{DoxyParamCaption}\item[{object}]{sender,  }\item[{Event\+Args}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_aa008bfa78029f9cb1129aaba4a206f8f}\label{class_vier_gewinnt_1_1_form3_aa008bfa78029f9cb1129aaba4a206f8f}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!GegnerZug@{GegnerZug}}
+\index{GegnerZug@{GegnerZug}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{GegnerZug()}{GegnerZug()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+Gegner\+Zug (\begin{DoxyParamCaption}\item[{int}]{Spalte }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+macht in eigene Spielfend den zug der Empfangen wurde 
+
+
+\begin{DoxyParams}{Parameter}
+{\em Spalte} & Die Spalte in der Der Zug gemacht werden soll\\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_aa7119c823b2da96ddc3c21225379e4f7}\label{class_vier_gewinnt_1_1_form3_aa7119c823b2da96ddc3c21225379e4f7}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!Gewonnen@{Gewonnen}}
+\index{Gewonnen@{Gewonnen}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{Gewonnen()}{Gewonnen()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+Gewonnen (\begin{DoxyParamCaption}\item[{string}]{Gewinner }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_ade460433d2948f7f3aaf4d0a8ec11d0d}\label{class_vier_gewinnt_1_1_form3_ade460433d2948f7f3aaf4d0a8ec11d0d}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!Hovereffekt@{Hovereffekt}}
+\index{Hovereffekt@{Hovereffekt}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{Hovereffekt()}{Hovereffekt()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+Hovereffekt (\begin{DoxyParamCaption}\item[{int}]{i\+Spalte }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a77ccec0297f099fac85bf07a4aa37f5f}\label{class_vier_gewinnt_1_1_form3_a77ccec0297f099fac85bf07a4aa37f5f}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!KreisDrehen@{KreisDrehen}}
+\index{KreisDrehen@{KreisDrehen}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{KreisDrehen()}{KreisDrehen()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+Kreis\+Drehen (\begin{DoxyParamCaption}\item[{Point\mbox{[}$\,$\mbox{]}}]{Kreis\+Koordinaten,  }\item[{int}]{i\+Drehungen }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_afdc6cd136214351abb7138f299723ffa}\label{class_vier_gewinnt_1_1_form3_afdc6cd136214351abb7138f299723ffa}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!Kreiszeichnen@{Kreiszeichnen}}
+\index{Kreiszeichnen@{Kreiszeichnen}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{Kreiszeichnen()}{Kreiszeichnen()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+Kreiszeichnen (\begin{DoxyParamCaption}\item[{int}]{iX,  }\item[{int}]{iY,  }\item[{string}]{s\+Farbe,  }\item[{Graphics}]{G,  }\item[{int}]{i\+StartY }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a73693785967b08f0b557ea9b54a9bdbf}\label{class_vier_gewinnt_1_1_form3_a73693785967b08f0b557ea9b54a9bdbf}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!KreiszeichnenAnimation@{KreiszeichnenAnimation}}
+\index{KreiszeichnenAnimation@{KreiszeichnenAnimation}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{KreiszeichnenAnimation()}{KreiszeichnenAnimation()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+Kreiszeichnen\+Animation (\begin{DoxyParamCaption}\item[{int}]{iX,  }\item[{int}]{iY,  }\item[{string}]{s\+Farbe,  }\item[{Graphics}]{G }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_ac27d1059bbfc235dc6020c948d5e9269}\label{class_vier_gewinnt_1_1_form3_ac27d1059bbfc235dc6020c948d5e9269}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!lab\_Info\_Click@{lab\_Info\_Click}}
+\index{lab\_Info\_Click@{lab\_Info\_Click}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{lab\_Info\_Click()}{lab\_Info\_Click()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+lab\+\_\+\+Info\+\_\+\+Click (\begin{DoxyParamCaption}\item[{object}]{sender,  }\item[{Event\+Args}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a2ae06036d399d7e241050f7a8ed267b6}\label{class_vier_gewinnt_1_1_form3_a2ae06036d399d7e241050f7a8ed267b6}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!MeineIP@{MeineIP}}
+\index{MeineIP@{MeineIP}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{MeineIP()}{MeineIP()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+Meine\+IP (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Zeig Die Erste ip von einem selbst an 
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a00740629674b919eb6fadacf10196735}\label{class_vier_gewinnt_1_1_form3_a00740629674b919eb6fadacf10196735}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!OnClosed@{OnClosed}}
+\index{OnClosed@{OnClosed}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{OnClosed()}{OnClosed()}}
+{\footnotesize\ttfamily override void Vier\+Gewinnt.\+Form3.\+On\+Closed (\begin{DoxyParamCaption}\item[{Event\+Args}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Wenn Man Das Fenster Schliest Sorgt dies Dafür das Alles geschlossen wird auch wenn noch die suche läuft oder ein Task/\+Thread hintergrund wartet und diese auch beendet werden Es wird eine message box Angezeigt die sagt das Das Programm beendet wurde 
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_ac29b48d9c2b9abba7205f9d61853d988}\label{class_vier_gewinnt_1_1_form3_ac29b48d9c2b9abba7205f9d61853d988}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!progressBar1\_Click@{progressBar1\_Click}}
+\index{progressBar1\_Click@{progressBar1\_Click}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{progressBar1\_Click()}{progressBar1\_Click()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+progress\+Bar1\+\_\+\+Click (\begin{DoxyParamCaption}\item[{object}]{sender,  }\item[{Event\+Args}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a0b27c560390af950424d888887590392}\label{class_vier_gewinnt_1_1_form3_a0b27c560390af950424d888887590392}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!ServerHosten\_Click@{ServerHosten\_Click}}
+\index{ServerHosten\_Click@{ServerHosten\_Click}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{ServerHosten\_Click()}{ServerHosten\_Click()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+Server\+Hosten\+\_\+\+Click (\begin{DoxyParamCaption}\item[{object}]{sender,  }\item[{Event\+Args}]{e }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Hostet ein spiel, Bezieht sich aber nur darauf wer die parameter am spiel anfang festlegt Startet bei Einem Den Listening prozess der Darauf wartet das sich jemand verbindet nach der Verbindung werden die spiel daten ausgetauscht 
+
+
+\begin{DoxyParams}{Parameter}
+{\em sender} & Sender object\\
+\hline
+{\em e} & Event\+Args\\
+\hline
+\end{DoxyParams}
+HOST IST IMMER RED
+
+Empfängt die Ip Des Zu verbindenden
+
+Feld Inizialisieren und Spieler Wählen
+
+Feld Höhe, Breite , Farbe und Gewinnnummer werden Übertragen
+
+je nachdem welche Farbe Anfängt wird Ein Andere Spiel Verlauf Genutzt wenn die Farbe Rot ist wird 1. Genutzt wenn die farbe nicht so ist dann 2.
+
+L listen, S = Senden
+
+1. Es wird zuerst Selbst Gesendet und dann Empfangen und wieder Gesendet
+
+S L
+
+L S
+
+S L
+
+...
+
+2. es wird Zuerst Empfangen und dann gesenter und dann Empfangen
+
+L S
+
+S L
+
+L S
+
+...
+
+Dies Muss immer mit der Gegen seite Syncron laufen\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a963acb6659fc38e6edf9602e9e0c2ba1}\label{class_vier_gewinnt_1_1_form3_a963acb6659fc38e6edf9602e9e0c2ba1}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!SpielerWählen@{SpielerWählen}}
+\index{SpielerWählen@{SpielerWählen}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{SpielerWählen()}{SpielerWählen()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+Spieler\+Wählen (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+zufällige farbewählen die dann als erste eine spielzug macht 
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_aef994b8b956b4e6112b7546af7265b0b}\label{class_vier_gewinnt_1_1_form3_aef994b8b956b4e6112b7546af7265b0b}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!SpielfeldErstellen@{SpielfeldErstellen}}
+\index{SpielfeldErstellen@{SpielfeldErstellen}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{SpielfeldErstellen()}{SpielfeldErstellen()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+Spielfeld\+Erstellen (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Mehr Informationeen Zu dem Game In \mbox{\hyperlink{class_vier_gewinnt_1_1_form2}{Form2}} 
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_aa5f813d28bdc4b32414037aa67740e69}\label{class_vier_gewinnt_1_1_form3_aa5f813d28bdc4b32414037aa67740e69}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!SpielfeldTileZeichnen@{SpielfeldTileZeichnen}}
+\index{SpielfeldTileZeichnen@{SpielfeldTileZeichnen}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{SpielfeldTileZeichnen()}{SpielfeldTileZeichnen()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+Spielfeld\+Tile\+Zeichnen (\begin{DoxyParamCaption}\item[{int}]{iX,  }\item[{int}]{iY,  }\item[{int}]{i\+Width,  }\item[{int}]{i\+Height,  }\item[{Graphics}]{G }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a66770383e33139d9963a89669497bb34}\label{class_vier_gewinnt_1_1_form3_a66770383e33139d9963a89669497bb34}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!SpielfeldZeichnen@{SpielfeldZeichnen}}
+\index{SpielfeldZeichnen@{SpielfeldZeichnen}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{SpielfeldZeichnen()}{SpielfeldZeichnen()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+Spielfeld\+Zeichnen (\begin{DoxyParamCaption}\item[{Graphics}]{G }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a3029bb4ea7d52802c5c08a7f23f96c3e}\label{class_vier_gewinnt_1_1_form3_a3029bb4ea7d52802c5c08a7f23f96c3e}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!SpielFelInizialisieren@{SpielFelInizialisieren}}
+\index{SpielFelInizialisieren@{SpielFelInizialisieren}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{SpielFelInizialisieren()}{SpielFelInizialisieren()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+Spiel\+Fel\+Inizialisieren (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Wird aufgerufen vom server bevor der die daten Sendet und vom Client nachtdem er alle Daten bekommen hat Es Fängt dann an das spielfeld zu zeichn 
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a2b7d0bcc2b8673bec8c43df88b2d3612}\label{class_vier_gewinnt_1_1_form3_a2b7d0bcc2b8673bec8c43df88b2d3612}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!SpielsteineZeichnen@{SpielsteineZeichnen}}
+\index{SpielsteineZeichnen@{SpielsteineZeichnen}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{SpielsteineZeichnen()}{SpielsteineZeichnen()}}
+{\footnotesize\ttfamily void Vier\+Gewinnt.\+Form3.\+Spielsteine\+Zeichnen (\begin{DoxyParamCaption}\item[{Graphics}]{G,  }\item[{int}]{i\+StartY }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a970a30f5e0c415219e358065ee1bea2e}\label{class_vier_gewinnt_1_1_form3_a970a30f5e0c415219e358065ee1bea2e}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!StartClient@{StartClient}}
+\index{StartClient@{StartClient}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{StartClient()}{StartClient()}}
+{\footnotesize\ttfamily string Vier\+Gewinnt.\+Form3.\+Start\+Client (\begin{DoxyParamCaption}\item[{string}]{Senden }\end{DoxyParamCaption})}
+
+
+
+Startet Einen Client der daten an einen Server sendet der am lauschen ist Encodeing und Decoding Leuft Über UTF8 es muss der zu sendende oder empfangende vorher nicht geändert werden 
+
+
+\begin{DoxyParams}{Parameter}
+{\em Senden} & der zu sendende string\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Rückgabe}
+Gibt zürück was es von server als antwort auf das erhaltenn von den daten bekommt
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a4d0ade1395d5f1f45c1849a4042b2cb8}\label{class_vier_gewinnt_1_1_form3_a4d0ade1395d5f1f45c1849a4042b2cb8}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!StartListening@{StartListening}}
+\index{StartListening@{StartListening}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{StartListening()}{StartListening()}}
+{\footnotesize\ttfamily string Vier\+Gewinnt.\+Form3.\+Start\+Listening (\begin{DoxyParamCaption}\item[{string}]{Senden }\end{DoxyParamCaption})}
+
+
+
+Startet Ein Listening Prozzess um daten entegen zu nehmen Encodeing und Decoding Leuft gleich Über UTF8 es muss der zu sendende oder empfangende vorher nicht geändert werden 
+
+
+\begin{DoxyParams}{Parameter}
+{\em Senden} & Es wird Ein String Übergeben der nach den empfangen von etwas zurück gesendet wird\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Rückgabe}
+Gibt das empfangenen als string zurück
+\end{DoxyReturn}
+
+
+\doxysubsection{Dokumentation der Felder}
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a0f12311643359151f28f341684f96d1e}\label{class_vier_gewinnt_1_1_form3_a0f12311643359151f28f341684f96d1e}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!AndererSpieler@{AndererSpieler}}
+\index{AndererSpieler@{AndererSpieler}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{AndererSpieler}{AndererSpieler}}
+{\footnotesize\ttfamily IPAddress Vier\+Gewinnt.\+Form3.\+Anderer\+Spieler\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a7aa405514b08f9ff253902b49418c249}\label{class_vier_gewinnt_1_1_form3_a7aa405514b08f9ff253902b49418c249}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!bAimationFlag@{bAimationFlag}}
+\index{bAimationFlag@{bAimationFlag}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{bAimationFlag}{bAimationFlag}}
+{\footnotesize\ttfamily bool Vier\+Gewinnt.\+Form3.\+b\+Aimation\+Flag = false\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a9556ec327d5cf02b8baac6836203c936}\label{class_vier_gewinnt_1_1_form3_a9556ec327d5cf02b8baac6836203c936}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!bBlock@{bBlock}}
+\index{bBlock@{bBlock}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{bBlock}{bBlock}}
+{\footnotesize\ttfamily bool Vier\+Gewinnt.\+Form3.\+b\+Block = true\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_aa15c3a57f752f4b458bbcc722bf89059}\label{class_vier_gewinnt_1_1_form3_aa15c3a57f752f4b458bbcc722bf89059}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!bInizialisiertFlag@{bInizialisiertFlag}}
+\index{bInizialisiertFlag@{bInizialisiertFlag}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{bInizialisiertFlag}{bInizialisiertFlag}}
+{\footnotesize\ttfamily bool Vier\+Gewinnt.\+Form3.\+b\+Inizialisiert\+Flag = false\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_ad93b720d50a65b03f518b84f43b600e4}\label{class_vier_gewinnt_1_1_form3_ad93b720d50a65b03f518b84f43b600e4}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!Bitmapgraphic@{Bitmapgraphic}}
+\index{Bitmapgraphic@{Bitmapgraphic}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{Bitmapgraphic}{Bitmapgraphic}}
+{\footnotesize\ttfamily Graphics Vier\+Gewinnt.\+Form3.\+Bitmapgraphic\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a49867996a693ca2505e690b0ce9fae70}\label{class_vier_gewinnt_1_1_form3_a49867996a693ca2505e690b0ce9fae70}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!bMeinZug@{bMeinZug}}
+\index{bMeinZug@{bMeinZug}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{bMeinZug}{bMeinZug}}
+{\footnotesize\ttfamily bool Vier\+Gewinnt.\+Form3.\+b\+Mein\+Zug = false\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_ace782e6bf9d12fa5c77ba59d6f4a1c6f}\label{class_vier_gewinnt_1_1_form3_ace782e6bf9d12fa5c77ba59d6f4a1c6f}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!bResizing@{bResizing}}
+\index{bResizing@{bResizing}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{bResizing}{bResizing}}
+{\footnotesize\ttfamily bool Vier\+Gewinnt.\+Form3.\+b\+Resizing = false\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_adf0b1ebdee3c7ea19f297459a883595c}\label{class_vier_gewinnt_1_1_form3_adf0b1ebdee3c7ea19f297459a883595c}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!bSpielEnde@{bSpielEnde}}
+\index{bSpielEnde@{bSpielEnde}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{bSpielEnde}{bSpielEnde}}
+{\footnotesize\ttfamily bool Vier\+Gewinnt.\+Form3.\+b\+Spiel\+Ende = false\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a8e2d2affda97efce2e2a3efb5ef68be1}\label{class_vier_gewinnt_1_1_form3_a8e2d2affda97efce2e2a3efb5ef68be1}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!dKreisausgleich@{dKreisausgleich}}
+\index{dKreisausgleich@{dKreisausgleich}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{dKreisausgleich}{dKreisausgleich}}
+{\footnotesize\ttfamily float Vier\+Gewinnt.\+Form3.\+d\+Kreisausgleich\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a2e7bb6c697fed4d929a8560175694822}\label{class_vier_gewinnt_1_1_form3_a2e7bb6c697fed4d929a8560175694822}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!DreiecksPunkte@{DreiecksPunkte}}
+\index{DreiecksPunkte@{DreiecksPunkte}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{DreiecksPunkte}{DreiecksPunkte}}
+{\footnotesize\ttfamily PointF \mbox{[},\mbox{]} Vier\+Gewinnt.\+Form3.\+Dreiecks\+Punkte\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_ab61d8b200e2c524d0384605a8efa85d4}\label{class_vier_gewinnt_1_1_form3_ab61d8b200e2c524d0384605a8efa85d4}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!EmpfangenSignal@{EmpfangenSignal}}
+\index{EmpfangenSignal@{EmpfangenSignal}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{EmpfangenSignal}{EmpfangenSignal}}
+{\footnotesize\ttfamily Manual\+Reset\+Event Vier\+Gewinnt.\+Form3.\+Empfangen\+Signal = new(false)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+Signaliseirt Den Task/\+Threads ob was Empfangen wurde damit sie nicht mehr wartenüssen 
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a5f9b26e7e633086c397ba641714ed2b8}\label{class_vier_gewinnt_1_1_form3_a5f9b26e7e633086c397ba641714ed2b8}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!fDroptime@{fDroptime}}
+\index{fDroptime@{fDroptime}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{fDroptime}{fDroptime}}
+{\footnotesize\ttfamily float Vier\+Gewinnt.\+Form3.\+f\+Droptime = 50\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a21a07186d3eecfa85ff1724076e01e15}\label{class_vier_gewinnt_1_1_form3_a21a07186d3eecfa85ff1724076e01e15}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!GefundenEndpoints@{GefundenEndpoints}}
+\index{GefundenEndpoints@{GefundenEndpoints}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{GefundenEndpoints}{GefundenEndpoints}}
+{\footnotesize\ttfamily IPEnd\+Point \mbox{[}$\,$\mbox{]} Vier\+Gewinnt.\+Form3.\+Gefunden\+Endpoints\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a917587f8eb8898612183148eebc45c2d}\label{class_vier_gewinnt_1_1_form3_a917587f8eb8898612183148eebc45c2d}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!iGewinnAnzahl@{iGewinnAnzahl}}
+\index{iGewinnAnzahl@{iGewinnAnzahl}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{iGewinnAnzahl}{iGewinnAnzahl}}
+{\footnotesize\ttfamily int Vier\+Gewinnt.\+Form3.\+i\+Gewinn\+Anzahl\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a7808739648dae9a83777a51ae2e16d94}\label{class_vier_gewinnt_1_1_form3_a7808739648dae9a83777a51ae2e16d94}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!iLetzterGefundeneEndpoint@{iLetzterGefundeneEndpoint}}
+\index{iLetzterGefundeneEndpoint@{iLetzterGefundeneEndpoint}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{iLetzterGefundeneEndpoint}{iLetzterGefundeneEndpoint}}
+{\footnotesize\ttfamily int Vier\+Gewinnt.\+Form3.\+i\+Letzter\+Gefundene\+Endpoint = 0\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a6cfc5c69cc36ad71465258b1627459d0}\label{class_vier_gewinnt_1_1_form3_a6cfc5c69cc36ad71465258b1627459d0}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!iOldSpalte@{iOldSpalte}}
+\index{iOldSpalte@{iOldSpalte}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{iOldSpalte}{iOldSpalte}}
+{\footnotesize\ttfamily int Vier\+Gewinnt.\+Form3.\+i\+Old\+Spalte = 0\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a5136ba1e1df0f828cbf454676a125d2e}\label{class_vier_gewinnt_1_1_form3_a5136ba1e1df0f828cbf454676a125d2e}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!iSpielfeldHeight@{iSpielfeldHeight}}
+\index{iSpielfeldHeight@{iSpielfeldHeight}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{iSpielfeldHeight}{iSpielfeldHeight}}
+{\footnotesize\ttfamily int Vier\+Gewinnt.\+Form3.\+i\+Spielfeld\+Height = 4\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a1c51b8ecbac03545f8fb29f71885968a}\label{class_vier_gewinnt_1_1_form3_a1c51b8ecbac03545f8fb29f71885968a}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!iSpielfeldHeightPx@{iSpielfeldHeightPx}}
+\index{iSpielfeldHeightPx@{iSpielfeldHeightPx}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{iSpielfeldHeightPx}{iSpielfeldHeightPx}}
+{\footnotesize\ttfamily int Vier\+Gewinnt.\+Form3.\+i\+Spielfeld\+Height\+Px\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_ad648fc73a9627bea5e55caaec2e7be29}\label{class_vier_gewinnt_1_1_form3_ad648fc73a9627bea5e55caaec2e7be29}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!iSpielfeldWidth@{iSpielfeldWidth}}
+\index{iSpielfeldWidth@{iSpielfeldWidth}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{iSpielfeldWidth}{iSpielfeldWidth}}
+{\footnotesize\ttfamily int Vier\+Gewinnt.\+Form3.\+i\+Spielfeld\+Width = 4\hspace{0.3cm}{\ttfamily [static]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a0c9b7cbcb20fcee603c7762e3d317ecc}\label{class_vier_gewinnt_1_1_form3_a0c9b7cbcb20fcee603c7762e3d317ecc}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!iSpielfeldWidthPx@{iSpielfeldWidthPx}}
+\index{iSpielfeldWidthPx@{iSpielfeldWidthPx}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{iSpielfeldWidthPx}{iSpielfeldWidthPx}}
+{\footnotesize\ttfamily int Vier\+Gewinnt.\+Form3.\+i\+Spielfeld\+Width\+Px\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a6351c481df15e85e4147a70a69e3af7f}\label{class_vier_gewinnt_1_1_form3_a6351c481df15e85e4147a70a69e3af7f}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!MeinZugSignal@{MeinZugSignal}}
+\index{MeinZugSignal@{MeinZugSignal}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{MeinZugSignal}{MeinZugSignal}}
+{\footnotesize\ttfamily Manual\+Reset\+Event Vier\+Gewinnt.\+Form3.\+Mein\+Zug\+Signal = new(false)\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+
+
+Mein Zug Signalisert wann Der Eigene Zug Zuendet ist undnicht mehr darauf gewartet werden muss Das man sein zug macht 
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a72b86c2f686ccd41bf5b6626a1cf84cc}\label{class_vier_gewinnt_1_1_form3_a72b86c2f686ccd41bf5b6626a1cf84cc}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!PORT@{PORT}}
+\index{PORT@{PORT}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{PORT}{PORT}}
+{\footnotesize\ttfamily const int Vier\+Gewinnt.\+Form3.\+PORT = 42069\hspace{0.3cm}{\ttfamily [static]}, {\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a770141bbffede1bd869a46ea25be78d8}\label{class_vier_gewinnt_1_1_form3_a770141bbffede1bd869a46ea25be78d8}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!sCurrentcolor@{sCurrentcolor}}
+\index{sCurrentcolor@{sCurrentcolor}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{sCurrentcolor}{sCurrentcolor}}
+{\footnotesize\ttfamily string Vier\+Gewinnt.\+Form3.\+s\+Currentcolor\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_a62bacb18a743ca200fe8013475d7ce57}\label{class_vier_gewinnt_1_1_form3_a62bacb18a743ca200fe8013475d7ce57}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!Spielfelder@{Spielfelder}}
+\index{Spielfelder@{Spielfelder}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{Spielfelder}{Spielfelder}}
+{\footnotesize\ttfamily \mbox{\hyperlink{struct_vier_gewinnt_1_1_form3_1_1_spielfeld_tile}{Spielfeld\+Tile}} \mbox{[},\mbox{]} Vier\+Gewinnt.\+Form3.\+Spielfelder}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_af43ca02cd5790ea356e442f1b739ac16}\label{class_vier_gewinnt_1_1_form3_af43ca02cd5790ea356e442f1b739ac16}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!Spielfeldframe@{Spielfeldframe}}
+\index{Spielfeldframe@{Spielfeldframe}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{Spielfeldframe}{Spielfeldframe}}
+{\footnotesize\ttfamily Bitmap Vier\+Gewinnt.\+Form3.\+Spielfeldframe\hspace{0.3cm}{\ttfamily [private]}}
+
+\mbox{\Hypertarget{class_vier_gewinnt_1_1_form3_ac17f6777f1b1f8df0f802ce45261fe1c}\label{class_vier_gewinnt_1_1_form3_ac17f6777f1b1f8df0f802ce45261fe1c}} 
+\index{VierGewinnt.Form3@{VierGewinnt.Form3}!Spielfeldgraphic@{Spielfeldgraphic}}
+\index{Spielfeldgraphic@{Spielfeldgraphic}!VierGewinnt.Form3@{VierGewinnt.Form3}}
+\doxysubsubsection{\texorpdfstring{Spielfeldgraphic}{Spielfeldgraphic}}
+{\footnotesize\ttfamily Graphics Vier\+Gewinnt.\+Form3.\+Spielfeldgraphic\hspace{0.3cm}{\ttfamily [private]}}
+
+
+
+Die Dokumentation für diese Klasse wurde erzeugt aufgrund der Datei\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/\+Kreuzerphilipp/\+One\+Drive -\/ Staatliches berufliches Schulzentrum Roth/\+Projekt\+Woche/\+Vier\+Gewinnt/\+Vier\+Gewinnt/\mbox{\hyperlink{_form3_8cs}{Form3.\+cs}}\end{DoxyCompactItemize}

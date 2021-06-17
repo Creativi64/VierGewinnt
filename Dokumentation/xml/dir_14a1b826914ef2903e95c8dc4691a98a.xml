@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="de">
+  <compounddef id="dir_14a1b826914ef2903e95c8dc4691a98a" kind="dir">
+    <compoundname>C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt</compoundname>
+    <innerfile refid="_form1_8cs">Form1.cs</innerfile>
+    <innerfile refid="_form2_8cs">Form2.cs</innerfile>
+    <innerfile refid="_form3_8cs">Form3.cs</innerfile>
+    <innerfile refid="_global_suppressions_8cs">GlobalSuppressions.cs</innerfile>
+    <innerfile refid="_program_8cs">Program.cs</innerfile>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+    </detaileddescription>
+    <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/"/>
+  </compounddef>
+</doxygen>

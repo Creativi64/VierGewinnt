@@ -1,0 +1,1382 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<doxygen xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="compound.xsd" version="1.9.1" xml:lang="de">
+  <compounddef id="class_vier_gewinnt_1_1_form3" kind="class" language="C#" prot="public">
+    <compoundname>VierGewinnt::Form3</compoundname>
+    <basecompoundref prot="public" virt="non-virtual">Form</basecompoundref>
+    <innerclass refid="struct_vier_gewinnt_1_1_form3_1_1_spielfeld_tile" prot="public">VierGewinnt::Form3::SpielfeldTile</innerclass>
+      <sectiondef kind="private-static-attrib">
+      <memberdef kind="variable" id="class_vier_gewinnt_1_1_form3_1a72b86c2f686ccd41bf5b6626a1cf84cc" prot="private" static="yes" mutable="no">
+        <type>const int</type>
+        <definition>const int VierGewinnt.Form3.PORT</definition>
+        <argsstring></argsstring>
+        <name>PORT</name>
+        <initializer>= 42069</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="42" column="27" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="42" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_vier_gewinnt_1_1_form3_1ab61d8b200e2c524d0384605a8efa85d4" prot="private" static="yes" mutable="no">
+        <type>ManualResetEvent</type>
+        <definition>ManualResetEvent VierGewinnt.Form3.EmpfangenSignal</definition>
+        <argsstring></argsstring>
+        <name>EmpfangenSignal</name>
+        <initializer>= new(false)</initializer>
+        <briefdescription>
+<para>Signaliseirt Den Task/Threads ob was Empfangen wurde damit sie nicht mehr wartenüssen </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="57" column="41" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="57" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_vier_gewinnt_1_1_form3_1a6351c481df15e85e4147a70a69e3af7f" prot="private" static="yes" mutable="no">
+        <type>ManualResetEvent</type>
+        <definition>ManualResetEvent VierGewinnt.Form3.MeinZugSignal</definition>
+        <argsstring></argsstring>
+        <name>MeinZugSignal</name>
+        <initializer>= new(false)</initializer>
+        <briefdescription>
+<para>Mein Zug Signalisert wann Der Eigene Zug Zuendet ist undnicht mehr darauf gewartet werden muss Das man sein zug macht </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="62" column="41" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="62" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-attrib">
+      <memberdef kind="variable" id="class_vier_gewinnt_1_1_form3_1a21a07186d3eecfa85ff1724076e01e15" prot="private" static="no" mutable="no">
+        <type>IPEndPoint[]</type>
+        <definition>IPEndPoint [] VierGewinnt.Form3.GefundenEndpoints</definition>
+        <argsstring></argsstring>
+        <name>GefundenEndpoints</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="44" column="28" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="44" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_vier_gewinnt_1_1_form3_1a7808739648dae9a83777a51ae2e16d94" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int VierGewinnt.Form3.iLetzterGefundeneEndpoint</definition>
+        <argsstring></argsstring>
+        <name>iLetzterGefundeneEndpoint</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="45" column="21" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="45" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_vier_gewinnt_1_1_form3_1a0f12311643359151f28f341684f96d1e" prot="private" static="no" mutable="no">
+        <type>IPAddress</type>
+        <definition>IPAddress VierGewinnt.Form3.AndererSpieler</definition>
+        <argsstring></argsstring>
+        <name>AndererSpieler</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="47" column="27" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="47" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_vier_gewinnt_1_1_form3_1a9556ec327d5cf02b8baac6836203c936" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool VierGewinnt.Form3.bBlock</definition>
+        <argsstring></argsstring>
+        <name>bBlock</name>
+        <initializer>= true</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="49" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="49" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_vier_gewinnt_1_1_form3_1a49867996a693ca2505e690b0ce9fae70" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool VierGewinnt.Form3.bMeinZug</definition>
+        <argsstring></argsstring>
+        <name>bMeinZug</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="50" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="50" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_vier_gewinnt_1_1_form3_1adf0b1ebdee3c7ea19f297459a883595c" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool VierGewinnt.Form3.bSpielEnde</definition>
+        <argsstring></argsstring>
+        <name>bSpielEnde</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="51" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="51" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_vier_gewinnt_1_1_form3_1aa15c3a57f752f4b458bbcc722bf89059" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool VierGewinnt.Form3.bInizialisiertFlag</definition>
+        <argsstring></argsstring>
+        <name>bInizialisiertFlag</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="52" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="52" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_vier_gewinnt_1_1_form3_1a2e7bb6c697fed4d929a8560175694822" prot="private" static="no" mutable="no">
+        <type>PointF[,]</type>
+        <definition>PointF [,] VierGewinnt.Form3.DreiecksPunkte</definition>
+        <argsstring></argsstring>
+        <name>DreiecksPunkte</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="70" column="24" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="70" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_vier_gewinnt_1_1_form3_1a770141bbffede1bd869a46ea25be78d8" prot="private" static="no" mutable="no">
+        <type>string</type>
+        <definition>string VierGewinnt.Form3.sCurrentcolor</definition>
+        <argsstring></argsstring>
+        <name>sCurrentcolor</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="72" column="24" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="72" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_vier_gewinnt_1_1_form3_1a8e2d2affda97efce2e2a3efb5ef68be1" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float VierGewinnt.Form3.dKreisausgleich</definition>
+        <argsstring></argsstring>
+        <name>dKreisausgleich</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="74" column="23" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="74" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_vier_gewinnt_1_1_form3_1a5f9b26e7e633086c397ba641714ed2b8" prot="private" static="no" mutable="no">
+        <type>float</type>
+        <definition>float VierGewinnt.Form3.fDroptime</definition>
+        <argsstring></argsstring>
+        <name>fDroptime</name>
+        <initializer>= 50</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="75" column="23" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="75" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_vier_gewinnt_1_1_form3_1a917587f8eb8898612183148eebc45c2d" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int VierGewinnt.Form3.iGewinnAnzahl</definition>
+        <argsstring></argsstring>
+        <name>iGewinnAnzahl</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="77" column="21" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="77" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_vier_gewinnt_1_1_form3_1a6cfc5c69cc36ad71465258b1627459d0" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int VierGewinnt.Form3.iOldSpalte</definition>
+        <argsstring></argsstring>
+        <name>iOldSpalte</name>
+        <initializer>= 0</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="78" column="21" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="78" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_vier_gewinnt_1_1_form3_1a1c51b8ecbac03545f8fb29f71885968a" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int VierGewinnt.Form3.iSpielfeldHeightPx</definition>
+        <argsstring></argsstring>
+        <name>iSpielfeldHeightPx</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="79" column="21" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="79" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_vier_gewinnt_1_1_form3_1a0c9b7cbcb20fcee603c7762e3d317ecc" prot="private" static="no" mutable="no">
+        <type>int</type>
+        <definition>int VierGewinnt.Form3.iSpielfeldWidthPx</definition>
+        <argsstring></argsstring>
+        <name>iSpielfeldWidthPx</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="80" column="21" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="80" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_vier_gewinnt_1_1_form3_1a7aa405514b08f9ff253902b49418c249" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool VierGewinnt.Form3.bAimationFlag</definition>
+        <argsstring></argsstring>
+        <name>bAimationFlag</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="82" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="82" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_vier_gewinnt_1_1_form3_1ace782e6bf9d12fa5c77ba59d6f4a1c6f" prot="private" static="no" mutable="no">
+        <type>bool</type>
+        <definition>bool VierGewinnt.Form3.bResizing</definition>
+        <argsstring></argsstring>
+        <name>bResizing</name>
+        <initializer>= false</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="83" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="83" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_vier_gewinnt_1_1_form3_1af43ca02cd5790ea356e442f1b739ac16" prot="private" static="no" mutable="no">
+        <type>Bitmap</type>
+        <definition>Bitmap VierGewinnt.Form3.Spielfeldframe</definition>
+        <argsstring></argsstring>
+        <name>Spielfeldframe</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="85" column="24" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="85" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_vier_gewinnt_1_1_form3_1ac17f6777f1b1f8df0f802ce45261fe1c" prot="private" static="no" mutable="no">
+        <type>Graphics</type>
+        <definition>Graphics VierGewinnt.Form3.Spielfeldgraphic</definition>
+        <argsstring></argsstring>
+        <name>Spielfeldgraphic</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="87" column="26" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="87" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_vier_gewinnt_1_1_form3_1ad93b720d50a65b03f518b84f43b600e4" prot="private" static="no" mutable="no">
+        <type>Graphics</type>
+        <definition>Graphics VierGewinnt.Form3.Bitmapgraphic</definition>
+        <argsstring></argsstring>
+        <name>Bitmapgraphic</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="88" column="26" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="88" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-static-attrib">
+      <memberdef kind="variable" id="class_vier_gewinnt_1_1_form3_1a5136ba1e1df0f828cbf454676a125d2e" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int VierGewinnt.Form3.iSpielfeldHeight</definition>
+        <argsstring></argsstring>
+        <name>iSpielfeldHeight</name>
+        <initializer>= 4</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="66" column="27" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="66" bodyend="-1"/>
+      </memberdef>
+      <memberdef kind="variable" id="class_vier_gewinnt_1_1_form3_1ad648fc73a9627bea5e55caaec2e7be29" prot="public" static="yes" mutable="no">
+        <type>int</type>
+        <definition>int VierGewinnt.Form3.iSpielfeldWidth</definition>
+        <argsstring></argsstring>
+        <name>iSpielfeldWidth</name>
+        <initializer>= 4</initializer>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="67" column="27" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="67" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-attrib">
+      <memberdef kind="variable" id="class_vier_gewinnt_1_1_form3_1a62bacb18a743ca200fe8013475d7ce57" prot="public" static="no" mutable="no">
+        <type><ref refid="struct_vier_gewinnt_1_1_form3_1_1_spielfeld_tile" kindref="compound">SpielfeldTile</ref>[,]</type>
+        <definition>SpielfeldTile [,] VierGewinnt.Form3.Spielfelder</definition>
+        <argsstring></argsstring>
+        <name>Spielfelder</name>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="69" column="30" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="69" bodyend="-1"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="private-func">
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1a132fb8fd232ad582e49d36281bbe0007" prot="private" static="no" const="no" explicit="no" inline="no" virt="non-virtual">
+        <type>bool</type>
+        <definition>static bool VierGewinnt.Form3.AllocConsole</definition>
+        <argsstring>()</argsstring>
+        <name>AllocConsole</name>
+        <briefdescription>
+<para>Erlaubt Uns Zum Form eine console zu starten </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="38" column="36"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1a2ae06036d399d7e241050f7a8ed267b6" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.MeineIP</definition>
+        <argsstring>()</argsstring>
+        <name>MeineIP</name>
+        <briefdescription>
+<para>Zeig Die Erste ip von einem selbst an </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="194" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="194" bodyend="198"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1a963acb6659fc38e6edf9602e9e0c2ba1" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.SpielerWählen</definition>
+        <argsstring>()</argsstring>
+        <name>SpielerWählen</name>
+        <briefdescription>
+<para>zufällige farbewählen die dann als erste eine spielzug macht </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="203" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="203" bodyend="215"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1a3029bb4ea7d52802c5c08a7f23f96c3e" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.SpielFelInizialisieren</definition>
+        <argsstring>()</argsstring>
+        <name>SpielFelInizialisieren</name>
+        <briefdescription>
+<para>Wird aufgerufen vom server bevor der die daten Sendet und vom Client nachtdem er alle Daten bekommen hat Es Fängt dann an das spielfeld zu zeichn </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="221" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="221" bodyend="263"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1ae30b4cb9d3f8b505882b51ce7fe57181" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.btn_Suchen_Click</definition>
+        <argsstring>(object sender, EventArgs e)</argsstring>
+        <name>btn_Suchen_Click</name>
+        <param>
+          <type>object</type>
+          <declname>sender</declname>
+        </param>
+        <param>
+          <type>EventArgs</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+<para>Startet den Background worker der dann nach Offenen Ports Im Lokalen Netzwerk sucht </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>sender</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Sender object</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>e</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>EventArgs</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="293" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="293" bodyend="312"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1a0b27c560390af950424d888887590392" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.ServerHosten_Click</definition>
+        <argsstring>(object sender, EventArgs e)</argsstring>
+        <name>ServerHosten_Click</name>
+        <param>
+          <type>object</type>
+          <declname>sender</declname>
+        </param>
+        <param>
+          <type>EventArgs</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+<para>Hostet ein spiel, Bezieht sich aber nur darauf wer die parameter am spiel anfang festlegt Startet bei Einem Den Listening prozess der Darauf wartet das sich jemand verbindet nach der Verbindung werden die spiel daten ausgetauscht </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>sender</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Sender object</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>e</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>EventArgs</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+<para>HOST IST IMMER RED</para>
+<para>Empfängt die Ip Des Zu verbindenden</para>
+<para>Feld Inizialisieren und Spieler Wählen</para>
+<para>Feld Höhe, Breite , Farbe und Gewinnnummer werden Übertragen</para>
+<para>je nachdem welche Farbe Anfängt wird Ein Andere Spiel Verlauf Genutzt wenn die Farbe Rot ist wird 1. Genutzt wenn die farbe nicht so ist dann 2.</para>
+<para>L listen, S = Senden</para>
+<para>1. Es wird zuerst Selbst Gesendet und dann Empfangen und wieder Gesendet</para>
+<para>S L</para>
+<para>L S</para>
+<para>S L</para>
+<para>...</para>
+<para>2. es wird Zuerst Empfangen und dann gesenter und dann Empfangen</para>
+<para>L S</para>
+<para>S L</para>
+<para>L S</para>
+<para>...</para>
+<para>Dies Muss immer mit der Gegen seite Syncron laufen</para>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="321" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="321" bodyend="504"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1aaa79ccf4d26a82f1417085bcb5ce3fff" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.btn_ConnectTo_Click</definition>
+        <argsstring>(object sender, EventArgs e)</argsstring>
+        <name>btn_ConnectTo_Click</name>
+        <param>
+          <type>object</type>
+          <declname>sender</declname>
+        </param>
+        <param>
+          <type>EventArgs</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+<para>Versicht sich zu der in txB_VerbindenIP Eingegeben ip zu verbinden wennn er dies nich kann bricht er ab und meldet über das label das es nicht geklappt hat Wenn er eine verbindung hat beginnt der daten austauscht und es wird angefangen zu lauschen um die parameter fürs spiel zu empfangen </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>sender</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>object sender</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>e</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>EventArgs</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+<para>CLIENT IST IMMER YELLOW</para>
+<para>die Ip adresse prüfen</para>
+<para>prüfen ob man sich auf die adresse verbidnen kann</para>
+<para>wemm man sich mit dem Endpoint verbinden kann wird die verbindung wieder getrennt und danacht die Richtige verbindung erstellt</para>
+<para>sendet Seine Ip An Den server</para>
+<para>empängt Spielfeld Höhe, breite, gewinnummer und Die farbe</para>
+<para>je nachdem welche Farbe Anfängt wird Ein Andere Spiel Verlauf Genutzt wenn die Farbe Rot ist wird 1. Genutzt wenn die farbe nicht so ist dann 2.</para>
+<para>L = listen, S = Senden</para>
+<para>1. es wird Zuerst Empfangen und dann gesenter und dann Empfangen</para>
+<para>L S</para>
+<para>S L</para>
+<para>L S</para>
+<para>...</para>
+<para>2. Es wird zuerst Selbst Gesendet und dann Empangen und wieder Gesendet</para>
+<para>S L</para>
+<para>L S</para>
+<para>S L</para>
+<para>...</para>
+<para>Dies Muss immer mit der Gegen seite Syncron laufen</para>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="513" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="513" bodyend="714"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1a25079b3e501c713b0c2ccf6f78dac20c" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.btn_ZumMenue_Click</definition>
+        <argsstring>(object sender, EventArgs e)</argsstring>
+        <name>btn_ZumMenue_Click</name>
+        <param>
+          <type>object</type>
+          <declname>sender</declname>
+        </param>
+        <param>
+          <type>EventArgs</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="716" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="716" bodyend="722"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1a5f8d2b7c79f46d3960a7a579712fe6e1" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.backgroundWorker1_DoWork</definition>
+        <argsstring>(object sender, DoWorkEventArgs e)</argsstring>
+        <name>backgroundWorker1_DoWork</name>
+        <param>
+          <type>object</type>
+          <declname>sender</declname>
+        </param>
+        <param>
+          <type>DoWorkEventArgs</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+<para>Startet den such prozess als BackgroundWorker im Hintergrund </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>sender</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>sender Objekt Vom aufrufer</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>e</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>DoWorkEventArgs um die Events zu verarbeiten wird nur für Cancel Genutzt</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="731" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="731" bodyend="748"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1a41222676a7fe2a69be84131913eae5fb" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.backgroundWorker1_RunWorkerCompleted</definition>
+        <argsstring>(object sender, RunWorkerCompletedEventArgs e)</argsstring>
+        <name>backgroundWorker1_RunWorkerCompleted</name>
+        <param>
+          <type>object</type>
+          <declname>sender</declname>
+        </param>
+        <param>
+          <type>RunWorkerCompletedEventArgs</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+<para>Wird Vom BackgroundWorker nach beendigung aufgerufen sotiert nach Canceled Error wenn ein Fehler Passiert ist Normaler Durchlauf Hier nach werden die Ergebnise in der LiB_GefundenenEndPoints Aufgelistet </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>sender</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>sender Objekt Vom aufrufer</para>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>e</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>die RunWorkerCompletedEventArgs die dann den beendigungs grund mitliefern </para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="758" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="758" bodyend="801"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1a019889a271aacdb2390fe4701fe9fb31" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.ConnectionSuchen</definition>
+        <argsstring>(BackgroundWorker bw)</argsstring>
+        <name>ConnectionSuchen</name>
+        <param>
+          <type>BackgroundWorker</type>
+          <declname>bw</declname>
+        </param>
+        <briefdescription>
+<para>Wird vom BackgroundWorker aufgerufen um nach den Endpoints zu sichen </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>bw</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>der BackgroundWorker wird übergeben um zu wissen welcher status er hat und Den prozess vortschritt zurück zu geben</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="807" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="807" bodyend="873"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1ad8c296d44bcd5162f9d0b7c7578ff092" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.btn_cancel_Click</definition>
+        <argsstring>(object sender, EventArgs e)</argsstring>
+        <name>btn_cancel_Click</name>
+        <param>
+          <type>object</type>
+          <declname>sender</declname>
+        </param>
+        <param>
+          <type>EventArgs</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="875" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="875" bodyend="878"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1a52b0a46b5c630f9b96bfb4a94fb88da3" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.backgroundWorker1_ProgressChanged</definition>
+        <argsstring>(object sender, ProgressChangedEventArgs e)</argsstring>
+        <name>backgroundWorker1_ProgressChanged</name>
+        <param>
+          <type>object</type>
+          <declname>sender</declname>
+        </param>
+        <param>
+          <type>ProgressChangedEventArgs</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="880" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="880" bodyend="884"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1aef994b8b956b4e6112b7546af7265b0b" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.SpielfeldErstellen</definition>
+        <argsstring>()</argsstring>
+        <name>SpielfeldErstellen</name>
+        <briefdescription>
+<para>Mehr Informationeen Zu dem Game In <ref refid="class_vier_gewinnt_1_1_form2" kindref="compound">Form2</ref> </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="1046" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="1046" bodyend="1071"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1a66770383e33139d9963a89669497bb34" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.SpielfeldZeichnen</definition>
+        <argsstring>(Graphics G)</argsstring>
+        <name>SpielfeldZeichnen</name>
+        <param>
+          <type>Graphics</type>
+          <declname>G</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="1073" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="1073" bodyend="1084"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1a2b7d0bcc2b8673bec8c43df88b2d3612" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.SpielsteineZeichnen</definition>
+        <argsstring>(Graphics G, int iStartY)</argsstring>
+        <name>SpielsteineZeichnen</name>
+        <param>
+          <type>Graphics</type>
+          <declname>G</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>iStartY</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="1086" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="1086" bodyend="1100"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1aa8af2d4841895036859aef72bcdde27b" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.EckenBerechnen</definition>
+        <argsstring>(int iX, int iY, int iWidth, int iHeight)</argsstring>
+        <name>EckenBerechnen</name>
+        <param>
+          <type>int</type>
+          <declname>iX</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>iY</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>iWidth</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>iHeight</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="1102" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="1102" bodyend="1122"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1aa5f813d28bdc4b32414037aa67740e69" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.SpielfeldTileZeichnen</definition>
+        <argsstring>(int iX, int iY, int iWidth, int iHeight, Graphics G)</argsstring>
+        <name>SpielfeldTileZeichnen</name>
+        <param>
+          <type>int</type>
+          <declname>iX</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>iY</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>iWidth</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>iHeight</declname>
+        </param>
+        <param>
+          <type>Graphics</type>
+          <declname>G</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="1124" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="1124" bodyend="1144"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1a517c3af8a829974d93afba76c7c963d6" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.Form3_Paint</definition>
+        <argsstring>(object sender, PaintEventArgs e)</argsstring>
+        <name>Form3_Paint</name>
+        <param>
+          <type>object</type>
+          <declname>sender</declname>
+        </param>
+        <param>
+          <type>PaintEventArgs</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="1146" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="1146" bodyend="1152"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1aa008bfa78029f9cb1129aaba4a206f8f" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.GegnerZug</definition>
+        <argsstring>(int Spalte)</argsstring>
+        <name>GegnerZug</name>
+        <param>
+          <type>int</type>
+          <declname>Spalte</declname>
+        </param>
+        <briefdescription>
+<para>macht in eigene Spielfend den zug der Empfangen wurde </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>Spalte</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Die Spalte in der Der Zug gemacht werden soll</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="1158" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="1158" bodyend="1338"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1a61cc1a89637c87218572467ff44df995" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.Form3_Click</definition>
+        <argsstring>(object sender, EventArgs e)</argsstring>
+        <name>Form3_Click</name>
+        <param>
+          <type>object</type>
+          <declname>sender</declname>
+        </param>
+        <param>
+          <type>EventArgs</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+<para>nach dem man gecklickt hat wird der zug gesendet und er dann Von GegnerZug Auch bei gegner gemacht Die anzeige und Animation passiert Nahezu syncron bei beiden spielern </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>sender</parametername>
+</parameternamelist>
+<parameterdescription>
+</parameterdescription>
+</parameteritem>
+<parameteritem>
+<parameternamelist>
+<parametername>e</parametername>
+</parameternamelist>
+<parameterdescription>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="1346" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="1346" bodyend="1538"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1a73693785967b08f0b557ea9b54a9bdbf" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.KreiszeichnenAnimation</definition>
+        <argsstring>(int iX, int iY, string sFarbe, Graphics G)</argsstring>
+        <name>KreiszeichnenAnimation</name>
+        <param>
+          <type>int</type>
+          <declname>iX</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>iY</declname>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>sFarbe</declname>
+        </param>
+        <param>
+          <type>Graphics</type>
+          <declname>G</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="1540" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="1540" bodyend="1648"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1afdc6cd136214351abb7138f299723ffa" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.Kreiszeichnen</definition>
+        <argsstring>(int iX, int iY, string sFarbe, Graphics G, int iStartY)</argsstring>
+        <name>Kreiszeichnen</name>
+        <param>
+          <type>int</type>
+          <declname>iX</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>iY</declname>
+        </param>
+        <param>
+          <type>string</type>
+          <declname>sFarbe</declname>
+        </param>
+        <param>
+          <type>Graphics</type>
+          <declname>G</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>iStartY</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="1650" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="1650" bodyend="1656"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1aa7119c823b2da96ddc3c21225379e4f7" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.Gewonnen</definition>
+        <argsstring>(string Gewinner)</argsstring>
+        <name>Gewonnen</name>
+        <param>
+          <type>string</type>
+          <declname>Gewinner</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="1658" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="1658" bodyend="1682"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1a0b441bcbdde2608f374b9f573c8c88e0" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.Form3_MouseMove</definition>
+        <argsstring>(object sender, MouseEventArgs e)</argsstring>
+        <name>Form3_MouseMove</name>
+        <param>
+          <type>object</type>
+          <declname>sender</declname>
+        </param>
+        <param>
+          <type>MouseEventArgs</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="1684" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="1684" bodyend="1702"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1ade460433d2948f7f3aaf4d0a8ec11d0d" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.Hovereffekt</definition>
+        <argsstring>(int iSpalte)</argsstring>
+        <name>Hovereffekt</name>
+        <param>
+          <type>int</type>
+          <declname>iSpalte</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="1704" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="1704" bodyend="1731"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1a77ccec0297f099fac85bf07a4aa37f5f" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.KreisDrehen</definition>
+        <argsstring>(Point[] KreisKoordinaten, int iDrehungen)</argsstring>
+        <name>KreisDrehen</name>
+        <param>
+          <type>Point[]</type>
+          <declname>KreisKoordinaten</declname>
+        </param>
+        <param>
+          <type>int</type>
+          <declname>iDrehungen</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="1733" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="1733" bodyend="1789"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1a90265036b5283ca2163271493c7b654e" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.Form3_Resize</definition>
+        <argsstring>(object sender, EventArgs e)</argsstring>
+        <name>Form3_Resize</name>
+        <param>
+          <type>object</type>
+          <declname>sender</declname>
+        </param>
+        <param>
+          <type>EventArgs</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="1791" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="1791" bodyend="1800"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1afb21b5482f05bae5385c1871977674e8" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.Form3_ResizeEnd</definition>
+        <argsstring>(object sender, EventArgs e)</argsstring>
+        <name>Form3_ResizeEnd</name>
+        <param>
+          <type>object</type>
+          <declname>sender</declname>
+        </param>
+        <param>
+          <type>EventArgs</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="1802" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="1802" bodyend="1825"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1ac29b48d9c2b9abba7205f9d61853d988" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.progressBar1_Click</definition>
+        <argsstring>(object sender, EventArgs e)</argsstring>
+        <name>progressBar1_Click</name>
+        <param>
+          <type>object</type>
+          <declname>sender</declname>
+        </param>
+        <param>
+          <type>EventArgs</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="1829" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="1829" bodyend="1831"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1ac27d1059bbfc235dc6020c948d5e9269" prot="private" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>void</type>
+        <definition>void VierGewinnt.Form3.lab_Info_Click</definition>
+        <argsstring>(object sender, EventArgs e)</argsstring>
+        <name>lab_Info_Click</name>
+        <param>
+          <type>object</type>
+          <declname>sender</declname>
+        </param>
+        <param>
+          <type>EventArgs</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="1833" column="22" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="1833" bodyend="1835"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="public-func">
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1a06d5ba8f870d48c5be2331bf56d782c5" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type></type>
+        <definition>VierGewinnt.Form3.Form3</definition>
+        <argsstring>()</argsstring>
+        <name>Form3</name>
+        <briefdescription>
+<para>Beim Inizialisieren Von Form 3 </para>
+        </briefdescription>
+        <detaileddescription>
+<para>Array Von Endpoinst Difiniert Die Bei Der Suche Nach Diesen Gefüllt wird Momentan wird davon ausgegangen das im gleichen Netztwerk nicht mehr als 10 sind</para>
+<para>Window Pratmeter wie Window state maximise box -&gt; ob man das Fenster vergrößern kann</para>
+<para>die Größe Der Pixel Von den Federn X und Y</para>
+<para>Die Bitmap Frame Wird Definiert</para>
+<para>Die Bitmap Wird mit der Hintergrund farbe gefüllt</para>
+<para>Das Switch Case Legt Die Gewinnummer Fest Auf Der Bsis Was man In <ref refid="class_vier_gewinnt_1_1_form1" kindref="compound">Form1</ref> Eingegeben hat Der Default ist 4 Eher Ein Easter Egg da es nicht gesagt wird das Man Die Gewinnummer Änder kann</para>
+<para>Am Ende Wird nach der Inizialisertung Noch die Ip Des Pc abgefragt und angezeigt Es Wird immer Die erste IP genommen auch wenn er mehr findet nimmt er immer die erste</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="121" column="16" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="121" bodyend="189"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1a4d0ade1395d5f1f45c1849a4042b2cb8" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>string</type>
+        <definition>string VierGewinnt.Form3.StartListening</definition>
+        <argsstring>(string Senden)</argsstring>
+        <name>StartListening</name>
+        <param>
+          <type>string</type>
+          <declname>Senden</declname>
+        </param>
+        <briefdescription>
+<para>Startet Ein Listening Prozzess um daten entegen zu nehmen Encodeing und Decoding Leuft gleich Über UTF8 es muss der zu sendende oder empfangende vorher nicht geändert werden </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>Senden</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>Es wird Ein String Übergeben der nach den empfangen von etwas zurück gesendet wird</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Gibt das empfangenen als string zurück</para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="896" column="23" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="896" bodyend="965"/>
+      </memberdef>
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1a970a30f5e0c415219e358065ee1bea2e" prot="public" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>string</type>
+        <definition>string VierGewinnt.Form3.StartClient</definition>
+        <argsstring>(string Senden)</argsstring>
+        <name>StartClient</name>
+        <param>
+          <type>string</type>
+          <declname>Senden</declname>
+        </param>
+        <briefdescription>
+<para>Startet Einen Client der daten an einen Server sendet der am lauschen ist Encodeing und Decoding Leuft Über UTF8 es muss der zu sendende oder empfangende vorher nicht geändert werden </para>
+        </briefdescription>
+        <detaileddescription>
+<para><parameterlist kind="param"><parameteritem>
+<parameternamelist>
+<parametername>Senden</parametername>
+</parameternamelist>
+<parameterdescription>
+<para>der zu sendende string</para>
+</parameterdescription>
+</parameteritem>
+</parameterlist>
+<simplesect kind="return"><para>Gibt zürück was es von server als antwort auf das erhaltenn von den daten bekommt</para>
+</simplesect>
+</para>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="977" column="23" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="977" bodyend="1036"/>
+      </memberdef>
+      </sectiondef>
+      <sectiondef kind="protected-func">
+      <memberdef kind="function" id="class_vier_gewinnt_1_1_form3_1a00740629674b919eb6fadacf10196735" prot="protected" static="no" const="no" explicit="no" inline="yes" virt="non-virtual">
+        <type>override void</type>
+        <definition>override void VierGewinnt.Form3.OnClosed</definition>
+        <argsstring>(EventArgs e)</argsstring>
+        <name>OnClosed</name>
+        <param>
+          <type>EventArgs</type>
+          <declname>e</declname>
+        </param>
+        <briefdescription>
+<para>Wenn Man Das Fenster Schliest Sorgt dies Dafür das Alles geschlossen wird auch wenn noch die suche läuft oder ein Task/Thread hintergrund wartet und diese auch beendet werden Es wird eine message box Angezeigt die sagt das Das Programm beendet wurde </para>
+        </briefdescription>
+        <detaileddescription>
+        </detaileddescription>
+        <inbodydescription>
+        </inbodydescription>
+        <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="270" column="33" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="270" bodyend="286"/>
+      </memberdef>
+      </sectiondef>
+    <briefdescription>
+    </briefdescription>
+    <detaileddescription>
+<para>Kann Nach Offen Servern Im Netzwerk Suchen (192.168)</para>
+<para>Man kann ein spiel auf machen auf das jemand conecten kann</para>
+<para>Mit einem offenen spiel connecten</para>
+<para>Der Code Fürs Game Ist der Gleiche Wie Im Lokalen (<ref refid="class_vier_gewinnt_1_1_form2" kindref="compound">Form2</ref>) Unterschiedlich ist nur das Alle Label Änderungen Mit invoke von einem anderen thread aufgerufen werden da diese meist nicht im main thread Aufgreiden werden Block und MeinZug Blokieren am Anfang die spielfeld erstellung und dann immer wenn man nicht dran ist Von der Click Event Funktion Gibt es eine Kopie Die Nur Dien Empfangenen zug übergeben bekommt und die gleiche logig mit diesem aus führt wie als häte man es selbst gemacht Nach Dem man selbst Gecklickt hat wird der zug beendet und weggeschickt</para>
+    </detaileddescription>
+    <inheritancegraph>
+      <node id="2">
+        <label>Form</label>
+      </node>
+      <node id="1">
+        <label>VierGewinnt.Form3</label>
+        <link refid="class_vier_gewinnt_1_1_form3"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+      </node>
+    </inheritancegraph>
+    <collaborationgraph>
+      <node id="2">
+        <label>Form</label>
+      </node>
+      <node id="1">
+        <label>VierGewinnt.Form3</label>
+        <link refid="class_vier_gewinnt_1_1_form3"/>
+        <childnode refid="2" relation="public-inheritance">
+        </childnode>
+        <childnode refid="3" relation="usage">
+          <edgelabel>Spielfelder</edgelabel>
+        </childnode>
+      </node>
+      <node id="3">
+        <label>VierGewinnt.Form3.SpielfeldTile</label>
+        <link refid="struct_vier_gewinnt_1_1_form3_1_1_spielfeld_tile"/>
+      </node>
+    </collaborationgraph>
+    <location file="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" line="29" column="19" bodyfile="C:/Users/Kreuzerphilipp/OneDrive - Staatliches berufliches Schulzentrum Roth/ProjektWoche/VierGewinnt/VierGewinnt/Form3.cs" bodystart="30" bodyend="1836"/>
+    <listofallmembers>
+      <member refid="class_vier_gewinnt_1_1_form3_1a132fb8fd232ad582e49d36281bbe0007" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>AllocConsole</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a0f12311643359151f28f341684f96d1e" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>AndererSpieler</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a5f8d2b7c79f46d3960a7a579712fe6e1" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>backgroundWorker1_DoWork</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a52b0a46b5c630f9b96bfb4a94fb88da3" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>backgroundWorker1_ProgressChanged</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a41222676a7fe2a69be84131913eae5fb" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>backgroundWorker1_RunWorkerCompleted</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a7aa405514b08f9ff253902b49418c249" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>bAimationFlag</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a9556ec327d5cf02b8baac6836203c936" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>bBlock</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1aa15c3a57f752f4b458bbcc722bf89059" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>bInizialisiertFlag</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1ad93b720d50a65b03f518b84f43b600e4" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>Bitmapgraphic</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a49867996a693ca2505e690b0ce9fae70" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>bMeinZug</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1ace782e6bf9d12fa5c77ba59d6f4a1c6f" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>bResizing</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1adf0b1ebdee3c7ea19f297459a883595c" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>bSpielEnde</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1ad8c296d44bcd5162f9d0b7c7578ff092" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>btn_cancel_Click</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1aaa79ccf4d26a82f1417085bcb5ce3fff" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>btn_ConnectTo_Click</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1ae30b4cb9d3f8b505882b51ce7fe57181" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>btn_Suchen_Click</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a25079b3e501c713b0c2ccf6f78dac20c" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>btn_ZumMenue_Click</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a019889a271aacdb2390fe4701fe9fb31" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>ConnectionSuchen</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a8e2d2affda97efce2e2a3efb5ef68be1" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>dKreisausgleich</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a2e7bb6c697fed4d929a8560175694822" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>DreiecksPunkte</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1aa8af2d4841895036859aef72bcdde27b" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>EckenBerechnen</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1ab61d8b200e2c524d0384605a8efa85d4" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>EmpfangenSignal</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a5f9b26e7e633086c397ba641714ed2b8" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>fDroptime</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a06d5ba8f870d48c5be2331bf56d782c5" prot="public" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>Form3</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a61cc1a89637c87218572467ff44df995" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>Form3_Click</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a0b441bcbdde2608f374b9f573c8c88e0" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>Form3_MouseMove</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a517c3af8a829974d93afba76c7c963d6" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>Form3_Paint</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a90265036b5283ca2163271493c7b654e" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>Form3_Resize</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1afb21b5482f05bae5385c1871977674e8" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>Form3_ResizeEnd</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a21a07186d3eecfa85ff1724076e01e15" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>GefundenEndpoints</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1aa008bfa78029f9cb1129aaba4a206f8f" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>GegnerZug</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1aa7119c823b2da96ddc3c21225379e4f7" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>Gewonnen</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1ade460433d2948f7f3aaf4d0a8ec11d0d" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>Hovereffekt</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a917587f8eb8898612183148eebc45c2d" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>iGewinnAnzahl</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a7808739648dae9a83777a51ae2e16d94" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>iLetzterGefundeneEndpoint</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a6cfc5c69cc36ad71465258b1627459d0" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>iOldSpalte</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a5136ba1e1df0f828cbf454676a125d2e" prot="public" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>iSpielfeldHeight</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a1c51b8ecbac03545f8fb29f71885968a" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>iSpielfeldHeightPx</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1ad648fc73a9627bea5e55caaec2e7be29" prot="public" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>iSpielfeldWidth</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a0c9b7cbcb20fcee603c7762e3d317ecc" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>iSpielfeldWidthPx</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a77ccec0297f099fac85bf07a4aa37f5f" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>KreisDrehen</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1afdc6cd136214351abb7138f299723ffa" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>Kreiszeichnen</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a73693785967b08f0b557ea9b54a9bdbf" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>KreiszeichnenAnimation</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1ac27d1059bbfc235dc6020c948d5e9269" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>lab_Info_Click</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a2ae06036d399d7e241050f7a8ed267b6" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>MeineIP</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a6351c481df15e85e4147a70a69e3af7f" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>MeinZugSignal</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a00740629674b919eb6fadacf10196735" prot="protected" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>OnClosed</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a72b86c2f686ccd41bf5b6626a1cf84cc" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>PORT</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1ac29b48d9c2b9abba7205f9d61853d988" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>progressBar1_Click</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a770141bbffede1bd869a46ea25be78d8" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>sCurrentcolor</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a0b27c560390af950424d888887590392" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>ServerHosten_Click</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a963acb6659fc38e6edf9602e9e0c2ba1" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>SpielerWählen</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a62bacb18a743ca200fe8013475d7ce57" prot="public" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>Spielfelder</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1aef994b8b956b4e6112b7546af7265b0b" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>SpielfeldErstellen</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1af43ca02cd5790ea356e442f1b739ac16" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>Spielfeldframe</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1ac17f6777f1b1f8df0f802ce45261fe1c" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>Spielfeldgraphic</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1aa5f813d28bdc4b32414037aa67740e69" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>SpielfeldTileZeichnen</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a66770383e33139d9963a89669497bb34" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>SpielfeldZeichnen</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a3029bb4ea7d52802c5c08a7f23f96c3e" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>SpielFelInizialisieren</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a2b7d0bcc2b8673bec8c43df88b2d3612" prot="private" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>SpielsteineZeichnen</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a970a30f5e0c415219e358065ee1bea2e" prot="public" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>StartClient</name></member>
+      <member refid="class_vier_gewinnt_1_1_form3_1a4d0ade1395d5f1f45c1849a4042b2cb8" prot="public" virt="non-virtual"><scope>VierGewinnt::Form3</scope><name>StartListening</name></member>
+    </listofallmembers>
+  </compounddef>
+</doxygen>
