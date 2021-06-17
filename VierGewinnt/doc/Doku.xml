@@ -279,7 +279,7 @@
         <member name="M:VierGewinnt.Form3.Form3_Click(System.Object,System.EventArgs)">
             <summary>
             nach dem man gecklickt hat wird der zug gesendet und er dann Von GegnerZug Auch bei gegner gemacht
-            Die anzeige und Animation passiert Nahezu syncron bei beiden spielern 
+            Die anzeige und Animation passiert Nahezu syncron bei beiden spielern
             </summary>
             <param name="sender"></param>
             <param name="e"></param>

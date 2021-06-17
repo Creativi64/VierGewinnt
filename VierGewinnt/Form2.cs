@@ -189,7 +189,7 @@ namespace VierGewinnt
 
         private void Button1_Click(object sender, EventArgs e)  //Zurück zum Menü
         {
-            Form1 frm = new Form1();
+            Form1 frm = new();
 
             frm.Show();
             this.Hide();
@@ -475,14 +475,14 @@ namespace VierGewinnt
 
             if (Result == DialogResult.Retry)
             {
-                Form2 frm = new Form2();
+                Form2 frm = new();
 
                 frm.Show();
                 this.Hide();
             }
             if (Result == DialogResult.Cancel)
             {
-                Form1 frm = new Form1();
+                Form1 frm = new();
 
                 frm.Show();
                 this.Hide();
@@ -594,7 +594,7 @@ namespace VierGewinnt
             int iHilfszahl = 0;
             int iHilfszahl1 = 0;
             int multiplyer = (int)fDroptime; // durch 2 teil bare Zahlen funktionieren am besten da Dann Weniger Komma stellen Entstehen die Ignoriert werden
-            Task animation1 = new Task(() =>
+            Task animation1 = new(() =>
             {
                 bAimationFlag = true;
 
@@ -625,7 +625,7 @@ namespace VierGewinnt
                     }
                     else
                     {
-                        Task draw = new Task(() =>
+                        Task draw = new(() =>
                         {
                             iHilfszahl = i / multiplyer;
 
@@ -739,7 +739,7 @@ namespace VierGewinnt
             PointF[] hilfsarray = new PointF[3];
 
             //int x = 50, y = 50, iwidth = 100, iheight = 100;
-            Task Feld = new Task(() =>
+            Task Feld = new(() =>
             {
                 for (int j = 0; j < 4; j++)
                 {

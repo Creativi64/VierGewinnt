@@ -29,7 +29,9 @@ namespace VierGewinnt
         private static Bitmap Spielfeldframe;
         
         private Graphics Bitmapgraphic;
+
         private Graphics spielfeldgraphic;
+
         #region Console
         /// <summary>
         /// Erlaubt Uns Zum Form eine console zu starten
@@ -96,7 +98,7 @@ namespace VierGewinnt
 
         private void Btn_Network_Click(object sender, EventArgs e)
         {
-            Form3 frm = new Form3();
+            Form3 frm = new();
 
             frm.Show();
             this.Hide();
@@ -104,7 +106,7 @@ namespace VierGewinnt
 
         private void Btn_Play_Click(object sender, EventArgs e)
         {
-            Form2 frm = new Form2();
+            Form2 frm = new();
             frm.Show();
             this.Hide();
 
@@ -132,7 +134,7 @@ namespace VierGewinnt
             PointF[] hilfsarray = new PointF[3];
 
             //int x = 50, y = 50, iwidth = 100, iheight = 100;
-            Task Feld = new Task(() =>
+            Task Feld = new(() =>
             {
                 for (int j = 0; j < 4; j++)
                 {

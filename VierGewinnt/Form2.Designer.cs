@@ -92,7 +92,7 @@ namespace VierGewinnt
             this.Controls.Add(this.btn_Test);
             this.Controls.Add(this.button1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-   
+            this.MinimumSize = new System.Drawing.Size(800, 600);
             this.Name = "Form2";
             this.Text = "Da Game";
             this.ResizeEnd += new System.EventHandler(this.Form2_ResizeEnd);
