@@ -8,6 +8,7 @@
     <ApplicationIcon />
     <StartupObject />
     <NeutralLanguage />
+  
   </PropertyGroup>
 
   <ItemGroup>

@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Media;
+ 
+
 namespace VierGewinnt
 {
     public partial class Form1 : Form
@@ -174,7 +176,8 @@ namespace VierGewinnt
         {
             sGewinnAnzahl = textBox1.Text;
         }
-        
+
+   
         private void TrackBarX_Scroll(object sender, EventArgs e)
         {
             Task ts = Task.Run(() => {
@@ -190,8 +193,10 @@ namespace VierGewinnt
         
         private void TrackBarY_Scroll(object sender, EventArgs e)
         {
+          
             Task ts = Task.Run(() => {
                 SoundPlayer simpleSound = new SoundPlayer(@"Sounds\mixkit-male-voice-cheer-2010.wav");
+                
                 simpleSound.Play();
             });
             //spielfeldgraphic.FillRectangle(new SolidBrush(Color.White), 0, 0, this.Width, this.Height);
